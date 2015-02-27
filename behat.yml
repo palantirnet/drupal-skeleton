@@ -1,0 +1,15 @@
+default:
+  paths:
+    features: 'acceptance'
+  extensions:
+    Behat\MinkExtension\Extension:
+      goutte: ~
+      selenium2:
+        wd_host: "http://127.0.0.1:8643/wd/hub"
+      base_url: http://rff.dev
+    Drupal\DrupalExtension\Extension:
+      blackbox: ~
+      region_map:
+      api_driver: 'drupal'
+      drupal:
+        drupal_root: 'www'

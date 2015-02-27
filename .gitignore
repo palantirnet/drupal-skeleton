@@ -1,0 +1,52 @@
+cnf/config.yml
+cnf/settings.php
+files
+www
+vendor
+.env
+bin/*
+!bin/wrapper
+
+# Ignore database artifacts
+*.sql*
+
+# Ignore Vagrant box
+.vagrant/
+
+# Ruby
+.bundle
+.ruby-version
+
+# sass-cache
+.sass-cache/
+
+# Exclude IDE management files.
+# PHP Storm
+.idea
+
+# Eclipse
+.project
+.settings
+.buildpath
+
+# Netbeans
+netbeans
+
+# Exclude hidden OS files.
+.DS_Store
+._*
+Thumbs.db
+
+# Exclude other VCS tracking files.
+#CVS
+.#*
+.svn
+.bzr
+
+# Exclude files used by FTP, Dreamweaver, Frontpage, vi, etc.
+WS_FTP.LOG
+_notes
+_vti_*
+*.LCK
+*.TMP
+*~

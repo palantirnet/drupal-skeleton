@@ -1,0 +1,40 @@
+{
+    "minimum-stability": "alpha",
+    "name": "palantir/drupal-default",
+    "license": "proprietary",
+    "description": "Default Drupal shell for Palantir.",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://static.drupal-packagist.org/v0.2.0"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:promet/drop_ship"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:promet/kw_manifests"
+        }
+    ],
+    "require": {
+        "composer/composer": "~1.0@alpha",
+        "drush/drush": "6.*",
+        "winmillwill/settings_compile": "~2.1.1"
+    },
+    "config": {
+        "bin-dir": "bin",
+        "process-timeout": 1200
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "bin/wrapper",
+            "bin/drupal_tangle",
+        ],
+        "post-update-cmd": [
+            "bin/wrapper",
+            "bin/drupal_tangle",
+        ]
+    },
+    "type": "project"
+}
