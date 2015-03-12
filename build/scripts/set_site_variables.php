@@ -1,7 +1,7 @@
 <?php
 $enable = array(
-  'site_frontpage' => 'home',
-  'site_slogan' => 'Economic thinking for environmental policy.'
+  'site_frontpage' => 'node',
+  'site_slogan' => "Palantir.net's starter website kit."
 );
 foreach ($enable as $var => $setting) {
   if (!is_numeric($var)) {
