@@ -35,7 +35,7 @@ before_script:
   # Build the project.
 - cp cnf/config.yml.travis cnf/config.yml
 - composer self-update
-- composer install --dev --prefer-dist
+- composer install --prefer-dist
 - cp env.dist .env
 - source env.dist
 - build/install.sh
