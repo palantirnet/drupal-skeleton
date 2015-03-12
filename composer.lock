@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1984966b0b1f8f5ddd22a95e7b59ee1b",
+    "hash": "6bb96b7cb9956c5232ff17cfac2534d4",
     "packages": [
         {
             "name": "behat/behat",
@@ -655,16 +655,16 @@
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "3.0.x-dev",
+            "version": "v3.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "977b4ce5a54bb2cf4581618026061acf68888db6"
+                "reference": "344cac7199e4c6c0b5180d34ee09e80b22df343c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/977b4ce5a54bb2cf4581618026061acf68888db6",
-                "reference": "977b4ce5a54bb2cf4581618026061acf68888db6",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/344cac7199e4c6c0b5180d34ee09e80b22df343c",
+                "reference": "344cac7199e4c6c0b5180d34ee09e80b22df343c",
                 "shasum": ""
             },
             "require": {
@@ -673,7 +673,7 @@
                 "behat/mink-extension": "~2.0",
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
-                "drupal/drupal-driver": "dev-master"
+                "drupal/drupal-driver": "~1.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "~2.0",
@@ -709,7 +709,7 @@
                 "test",
                 "web"
             ],
-            "time": "2015-03-02 18:06:48"
+            "time": "2015-02-14 00:01:41"
         },
         {
             "name": "drupal/registry_rebuild",
@@ -1983,8 +1983,7 @@
     "minimum-stability": "alpha",
     "stability-flags": {
         "behat/behat": 20,
-        "composer/composer": 15,
-        "drupal/drupal-extension": 20
+        "composer/composer": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
