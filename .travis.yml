@@ -3,6 +3,13 @@ language: php
 php:
 - 5.5
 
+notifications:
+  email:
+  recipients:
+    - krejci@palantir.net
+  on_success: change
+  on_failure: always
+
 cache:
   apt: true
 
