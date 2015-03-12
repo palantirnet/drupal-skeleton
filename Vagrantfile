@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   # tunables
   env_prefix  = ENV['DRUPAL_VAGRANT_ENV_PREFIX'] || 'DRUPAL_VAGRANT'
   ip          = ENV["#{env_prefix}_IP"] || '10.33.36.12'
-  project     = ENV["#{env_prefix}_PROJECT"] || 'default'
+  project     = ENV["#{env_prefix}_PROJECT"] || 'skeleton'
   # end tunables
 
   config.vm.box     = "palantir/ubuntu-default"
