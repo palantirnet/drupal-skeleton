@@ -1,15 +1,20 @@
 default:
-  paths:
-    features: 'acceptance'
+  suites:
+    default:
+      contexts:
+      - FeatureContext
+      - Drupal\DrupalExtension\Context\DrupalContext
+      - Drupal\DrupalExtension\Context\MinkContext
+      - Drupal\DrupalExtension\Context\MessageContext
+      - Drupal\DrupalExtension\Context\DrushContext
   extensions:
-    Behat\MinkExtension\Extension:
+    Behat\MinkExtension:
       goutte: ~
       selenium2:
         wd_host: "http://127.0.0.1:8643/wd/hub"
-      base_url: http://default.dev
-    Drupal\DrupalExtension\Extension:
+      base_url: http://skeleton.dev
+    Drupal\DrupalExtension:
       blackbox: ~
-      region_map:
       api_driver: 'drupal'
       drupal:
         drupal_root: 'www'

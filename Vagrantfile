@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   # tunables
   env_prefix  = ENV['DRUPAL_VAGRANT_ENV_PREFIX'] || 'DRUPAL_VAGRANT'
   ip          = ENV["#{env_prefix}_IP"] || '10.33.36.12'
-  project     = ENV["#{env_prefix}_PROJECT"] || 'default'
+  project     = ENV["#{env_prefix}_PROJECT"] || 'skeleton'
   # end tunables
 
   config.vm.box     = "palantir/ubuntu-default"
@@ -12,9 +12,9 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", :disabled => true
   config.vm.synced_folder ".", path, :nfs => true
   config.vm.hostname = "#{project}.dev"
-
   config.vm.network :private_network, ip: ip
-  config.vm.network "forwarded_port", guest: 4000, host: 4000, guest_ip: '0.0.0.0:4000'
+
+  config.ssh.forward_agent = true
 
   config.vm.provision :shell, inline: <<SCRIPT
   set -ex

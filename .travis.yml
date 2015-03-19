@@ -1,0 +1,51 @@
+language: php
+
+php:
+- 5.5
+
+notifications:
+  email:
+  recipients:
+    - krejci@palantir.net
+  on_success: change
+  on_failure: always
+
+cache:
+  apt: true
+
+services:
+- mysql
+
+before_script:
+  # Apache webserver and PHP configuration
+- sudo apt-get update > /dev/null
+- sudo apt-get install -y -q --force-yes apache2 libapache2-mod-fastcgi
+- sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv
+  version-name)/etc/php-fpm.conf
+- sudo a2enmod rewrite actions fastcgi alias
+- echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- echo "sendmail_path=/bin/true" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+- sudo cp -f cnf/travis.conf /etc/apache2/sites-available/default
+- sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)/www?g" --in-place /etc/apache2/sites-available/default
+- sudo service apache2 restart
+
+  # Create host and start phantomjs driver.
+- echo "127.0.0.1 skeleton.dev" | sudo tee -a /etc/hosts
+- sudo phantomjs --webdriver=8643 &>/dev/null &
+
+  # MySQL database configuration
+- mysql -e 'set global max_allowed_packet=20000000;'
+- mysql -e 'set global query_cache_size=128000000;'
+- mysql -e 'create database skeleton;'
+
+  # Build the project.
+- cp cnf/config.yml.travis cnf/config.yml
+- composer self-update
+- composer install --prefer-dist
+- cp env.dist .env
+- source env.dist
+- build/install.sh
+- sudo chown -R travis:www-data www
+
+script: bin/behat -f pretty
