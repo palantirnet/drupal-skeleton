@@ -5,10 +5,10 @@ php:
 
 notifications:
   email:
-  recipients:
-    - krejci@palantir.net
-  on_success: change
-  on_failure: always
+    recipients:
+      - krejci@palantir.net
+    on_success: change
+    on_failure: always
 
 cache:
   apt: true
