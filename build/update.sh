@@ -10,7 +10,6 @@ echo "Enabling modules";
 $drush en $(echo $DROPSHIP_SEEDS | tr ':' ' ')
 echo "Rebuilding registry and clearing caches.";
 $drush cc drush
-$drush rr
 echo "Set basic site variables";
 $drush scr $base/build/scripts/set_site_variables.php
 echo "Clearing caches one last time.";
