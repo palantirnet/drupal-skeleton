@@ -7,6 +7,7 @@
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
 * [vagrant](http://downloads.vagrantup.com/) >= 1.6.x
 * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
+* Make sure your `cnf` directory is writable.
 
 ## Getting Started
 
