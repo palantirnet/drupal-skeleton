@@ -1,3 +1,7 @@
+unless Vagrant.has_plugin?("vagrant-hostmanager")
+      raise "vagrant-hostmanager plugin is not installed"
+end
+
 Vagrant.configure("2") do |config|
 
   # tunables
