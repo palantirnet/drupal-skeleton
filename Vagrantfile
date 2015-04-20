@@ -7,12 +7,14 @@ Vagrant.configure("2") do |config|
   # end tunables
 
   config.vm.box     = "palantir/ubuntu-default"
-  path = "/var/www/sites/#{project}.dev"
+  path = "/var/www/sites/#{project}.local"
 
   config.vm.synced_folder ".", "/vagrant", :disabled => true
   config.vm.synced_folder ".", path, :nfs => true
-  config.vm.hostname = "#{project}.dev"
+  config.vm.hostname = "#{project}.local"
   config.vm.network :private_network, ip: ip
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
 
   config.ssh.forward_agent = true
 
