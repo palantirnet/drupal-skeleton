@@ -6,7 +6,6 @@ package = "Skeleton install"
 core = "7.x"
 
 ; Contrib
-dependencies[] = registry_rebuild
 
 ; Custom
 
