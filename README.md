@@ -12,10 +12,11 @@
 ------------------
 
 1. Clone this repo and blow away its `.git`.
-1. Name your project in the `Vagrantfile` (line 6).
-1. Make `README.dist.md` your own project's `README.md`.
-1. Run `vagrant up` and if all went well, you can visit `YOURPROJECT.dev` in your brower of choice.
-1. Rename all the things (see some bash hints below, which can be run inside your project root in vagrant).
+2. Name your project in the `Vagrantfile` (line 6).
+3. Update the IP Address from the [next available](https://github.com/palantirnet/palantir-maker-box/wiki/Vagrant-IP-Address) and update the wiki page
+4. Make `README.dist.md` your own project's `README.md`.
+5. Run `vagrant up` and if all went well, you can visit `YOURPROJECT.dev` in your brower of choice.
+6. Rename all the things (see some bash hints below, which can be run inside your project root in vagrant).
 
 Rename things the bash way:
 
