@@ -5,7 +5,23 @@
 ------------
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
 * [vagrant](http://downloads.vagrantup.com/) >= 1.6.x
-* [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
+* [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
+  * Install with: `vagrant plugin install vagrant-hostmanager`
+
+  Note: On OSX, if installing vagrant-hostmanager fails with an error like:
+  ```
+  Bundler, the underlying system Vagrant uses to install plugins,
+  reported an error. The error is shown below. These errors are usually
+  caused by misconfigured plugin installations or transient network
+  issues. The error from Bundler is:
+
+  An error occurred while installing nokogiri (1.6.6.2), and Bundler cannot continue.
+  Make sure that `gem install nokogiri -v '1.6.6.2'` succeeds before bundling.
+  ```
+
+  ...and `gem install nokogiri -v '1.6.6.2'` does not resolve the problem, try `gem install nokogiri -v '1.6.6.2' -- --use-system-libraries --with-iconv-dir=/usr/local/Cellar/libiconv/1.14 --with-xml2-include=/usr/include/libxml2 --with-xml2-lib=/usr/lib/`
+
+  @see https://github.com/sparklemotion/nokogiri/issues/1166 for details.
 
 ## Getting Started Using the Skeleton
 
