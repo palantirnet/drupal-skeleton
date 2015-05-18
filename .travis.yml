@@ -31,7 +31,7 @@ before_script:
 - sudo service apache2 restart
 
   # Create host and start phantomjs driver.
-- echo "127.0.0.1 skeleton.dev" | sudo tee -a /etc/hosts
+- echo "127.0.0.1 skeleton.local" | sudo tee -a /etc/hosts
 - sudo phantomjs --webdriver=8643 &>/dev/null &
 
   # MySQL database configuration
