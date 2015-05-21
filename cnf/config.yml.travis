@@ -3,8 +3,8 @@ drupal:
         databases:
             default:
                 default:
-                    database: rff
-                    username: travis
+                    database: 
+                    username: 
                     password:
                     driver: mysql
                     host: localhost
