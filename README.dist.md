@@ -36,4 +36,10 @@ There is your project. Run `drush` commands from the `www` directory just like y
 sudo /Library/Application\ Support/VirtualBox/LaunchDaemons/VirtualBoxStartup.sh restart
 ```
 
+* If you vagrant up and note that there are no files in your /var/www/sites/SITE, it is very likely that your NFS did not mount correctly. The solution is to halt the box, remove your exports file, and reboot the box. If this was not the problem, no harm will be done.
+```
+vagrant halt;
+sudo rm /etc/exports;
+vagrant up;
+```
 
