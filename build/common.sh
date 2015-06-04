@@ -12,4 +12,4 @@ else
   exit 1
 fi
 
-sudo chown -R vagrant:vagrant /home/vagrant/.rvm
+sudo chown -R $USER:$USER /home/vagrant/.rvm
