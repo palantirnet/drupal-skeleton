@@ -4,7 +4,7 @@
 
 ------------
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
-* [vagrant](http://downloads.vagrantup.com/) >= 1.6.x
+* [vagrant](http://downloads.vagrantup.com/) >= 1.7.2
 * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
   * Install with: `vagrant plugin install vagrant-hostmanager`
 
