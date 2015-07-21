@@ -24,12 +24,6 @@ Vagrant.configure("2") do |config|
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = true
 
-  config.vm.provider :virtualbox do |vb|
-    vb.cpus   = 1
-    # vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
-    # vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
-  end
-
   config.ssh.forward_agent = true
 
   config.vm.provision :shell, inline: <<SCRIPT
