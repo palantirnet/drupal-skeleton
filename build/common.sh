@@ -11,5 +11,3 @@ else
   echo "No env file found. Please create one. You can use env.dist as an example."
   exit 1
 fi
-
-sudo chown -R $USER:$USER /home/vagrant/.rvm
