@@ -4,7 +4,7 @@ drupal:
             default:
                 default:
                     database: skeleton
-                    username:
+                    username: travis
                     password:
                     driver: mysql
                     host: localhost
