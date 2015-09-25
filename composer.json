@@ -26,11 +26,11 @@
     "scripts": {
         "post-install-cmd": [
             "bin/wrapper",
-            "bin/rootcanal"
+            "bin/rootcanal --source=conf"
         ],
         "post-update-cmd": [
             "bin/wrapper",
-            "bin/rootcanal"
+            "bin/rootcanal --source=conf"
         ]
     },
     "type": "project"
