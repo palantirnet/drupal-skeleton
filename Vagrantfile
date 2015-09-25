@@ -28,6 +28,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :shell, inline: <<SCRIPT
   set -ex
+
   /opt/phantomjs --webdriver=8643 &> /dev/null &
   su vagrant -c 'cd #{path} && composer install;
   cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && build/install.sh'
