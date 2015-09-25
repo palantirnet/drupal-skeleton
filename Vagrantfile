@@ -1,3 +1,5 @@
+Vagrant.require_version ">= 1.7"
+
 unless Vagrant.has_plugin?("vagrant-hostmanager")
     raise "vagrant-hostmanager plugin is not installed. Please install it with vagrant plugin install vagrant-hostmanager"
 end
