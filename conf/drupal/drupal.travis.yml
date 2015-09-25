@@ -1,0 +1,12 @@
+drupal:
+    settings:
+        databases:
+            default:
+                default:
+                    database: skeleton
+                    username: travis
+                    password:
+                    driver: mysql
+                    host: localhost
+    include:
+        require_once: [%DRUPAL_ROOT . '/sites/default/vendor/autoload.php']
