@@ -4,9 +4,12 @@
 
 ------------
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
-* [vagrant](http://downloads.vagrantup.com/) >= 1.7.2
+* [vagrant](http://downloads.vagrantup.com/) >= 1.7.x
 * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
   * Install with: `vagrant plugin install vagrant-hostmanager`
+* [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
+
+If you have been running a previous version of Vagrant you may need to do: `vagrant plugin update` to ensure that you can install the plugins.
 
 ## Getting Started Using the Skeleton
 
@@ -14,10 +17,9 @@
 
 1. Clone this repo and blow away its `.git`.
 2. Name your project in the `Vagrantfile` (line 6).
-3. Update the IP Address from the [next available](https://github.com/palantirnet/palantir-maker-box/wiki/Vagrant-IP-Address) and update the wiki page
-4. Make `README.dist.md` your own project's `README.md`.
-5. Run `vagrant up` and if all went well, you can visit `YOURPROJECT.dev` in your brower of choice.
-6. Rename all the things (see some bash hints below, which can be run inside your project root in vagrant).
+3. Make `README.dist.md` your own project's `README.md`.
+4. Run `vagrant up` and if all went well, you can visit `YOURPROJECT.local` in your brower of choice.
+5. Rename all the things (see some bash hints below, which can be run inside your project root in vagrant).
 
 Rename things the bash way:
 
@@ -34,7 +36,6 @@ sed -i -- 's/skeleton/YOURPROJECT/g' **/*
 
 ### Virtual Machine
 
-* IP Address: ``10.33.36.12``
 * Base Memory: ``2048``
 
 ### SSH
