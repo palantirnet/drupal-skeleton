@@ -7,12 +7,16 @@
         {
             "type": "composer",
             "url": "http://packagist.drupal-composer.org/"
+        },
+        {
+           "type": "vcs",
+           "url": "https://github.com/arthur24b6/rootcanal"
         }
     ],
     "require": {
         "behat/behat": "3.0.*@dev",
         "composer/composer": "~1.0@alpha",
-        "craychee/rootcanal": "1.*",
+        "craychee/rootcanal": "dev-config-path",
         "drupal/drupal": "7.*",
         "drupal/drupal-extension": "3.0.*",
         "drupal/registry_rebuild": "7.*",
