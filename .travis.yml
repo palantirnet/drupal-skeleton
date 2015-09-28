@@ -40,7 +40,7 @@ before_script:
 - mysql -e 'create database skeleton;'
 
   # Build the project.
-- cp conf/drupal/drupal.travis.yml conf/drupal/drupal.yml
+- cp conf/drupal/config.travis.yml conf/drupal/config.yml
 - composer self-update
 - composer install --prefer-dist
 - cp env.dist .env
