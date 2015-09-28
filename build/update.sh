@@ -4,7 +4,7 @@ path=$(dirname "$0")
 source $path/common.sh
 
 chmod -R +w $base/www/sites/default
-chmod -R +w $base/cnf
+chmod -R +w $base/conf
 
 echo "Enabling modules";
 $drush en $(echo $DROPSHIP_SEEDS | tr ':' ' ')

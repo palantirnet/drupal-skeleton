@@ -1,5 +1,5 @@
-cnf/config.yml
-cnf/settings.php
+conf/config.yml
+conf/settings.php
 files
 www
 vendor
