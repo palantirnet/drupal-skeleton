@@ -1,0 +1,18 @@
+default:
+  destination_paths:
+    root: www
+    module: sites/all/modules
+    theme: sites/all/themes
+    drush: sites/all/drush
+    profile: profiles
+    vendor: sites/default/vendor
+    files_public: sites/default/files
+    files_private: sites/default/files-private
+    settings: sites/default/settings.php
+  source_paths:
+    files_public: conf/files
+    files_private: conf/private
+    settings: conf/settings.php
+  finder_settings:
+    ignore_dirs: [vendor, cnf]
+    custom_file_extensions: [php, inc, module, info, install]

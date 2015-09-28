@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2dbba8edd36aa93e4e2c32ff8a5cc90c",
+    "hash": "8cc7af2a62091778147c3a9c7ee8870e",
     "packages": [
         {
             "name": "behat/behat",
@@ -436,16 +436,16 @@
         },
         {
             "name": "behat/transliterator",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "c93521d3462a554332d1ef5bb0e9b5b8ca4106c4"
+                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/c93521d3462a554332d1ef5bb0e9b5b8ca4106c4",
-                "reference": "c93521d3462a554332d1ef5bb0e9b5b8ca4106c4",
+                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/868e05be3a9f25ba6424c2dd4849567f50715003",
+                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003",
                 "shasum": ""
             },
             "require": {
@@ -454,7 +454,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -472,7 +472,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2014-05-15 22:08:22"
+            "time": "2015-09-28 16:26:35"
         },
         {
             "name": "composer/composer",
@@ -544,16 +544,16 @@
         },
         {
             "name": "craychee/rootcanal",
-            "version": "v1.0.0",
+            "version": "dev-config-path",
             "source": {
                 "type": "git",
-                "url": "https://github.com/craychee/rootcanal.git",
-                "reference": "17b9b5871fa8487d7fcd925339580fe1f5961cb3"
+                "url": "https://github.com/arthur24b6/rootcanal.git",
+                "reference": "2a7e3be4327fac0f173b632a8f480ee3937ada98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craychee/rootcanal/zipball/17b9b5871fa8487d7fcd925339580fe1f5961cb3",
-                "reference": "17b9b5871fa8487d7fcd925339580fe1f5961cb3",
+                "url": "https://api.github.com/repos/arthur24b6/rootcanal/zipball/2a7e3be4327fac0f173b632a8f480ee3937ada98",
+                "reference": "2a7e3be4327fac0f173b632a8f480ee3937ada98",
                 "shasum": ""
             },
             "require": {
@@ -575,9 +575,16 @@
                     "Rootcanal": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-0": {
+                    "spec\\Rootcanal": "spec"
+                }
+            },
             "description": "Workflow manager to build a Drupal7 root with composer",
-            "time": "2015-09-04 15:51:28"
+            "support": {
+                "source": "https://github.com/arthur24b6/rootcanal/tree/config-path"
+            },
+            "time": "2015-09-28 19:04:56"
         },
         {
             "name": "drupal/drupal",
@@ -2063,7 +2070,8 @@
     "minimum-stability": "alpha",
     "stability-flags": {
         "behat/behat": 20,
-        "composer/composer": 15
+        "composer/composer": 15,
+        "craychee/rootcanal": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
