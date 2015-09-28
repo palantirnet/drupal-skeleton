@@ -1,9 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-if(!file_exists('conf/config.yml')) {
-  copy('conf/config.yml.dist', 'conf/config.yml');
+if(!file_exists('conf/drupal/config.yml')) {
+  copy('conf/drupal/drupal.dist.yml', 'conf/drupal/drupal.yml');
   echo "File config.yml copied to conf directory\n\n";
 }
 $path = __DIR__ . "/../";
-exec($path . "bin/settings_compile conf/config.yml conf/settings.php");
+exec($path . "bin/settings_compile conf/drupal/drupal.yml conf/drupal/settings.php");
