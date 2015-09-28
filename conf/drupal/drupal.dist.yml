@@ -10,9 +10,9 @@ default:
     files_private: sites/default/files-private
     settings: sites/default/settings.php
   source_paths:
-    files_public: conf/files
-    files_private: conf/private
-    settings: conf/settings.php
+    files_public: conf/drupal/files
+    files_private: conf/drupal/private
+    settings: conf/drupal/settings.php
   finder_settings:
     ignore_dirs: [vendor, cnf]
     custom_file_extensions: [php, inc, module, info, install]

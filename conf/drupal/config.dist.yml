@@ -3,9 +3,9 @@ drupal:
         databases:
             default:
                 default:
-                    database: skeleton
-                    username: travis
-                    password:
+                    database: default
+                    username: default
+                    password: default
                     driver: mysql
                     host: localhost
     include:
