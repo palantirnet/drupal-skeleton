@@ -3,7 +3,7 @@ drupal:
         databases:
             default:
                 default:
-                    database: rff
+                    database: skeleton
                     username: travis
                     password:
                     driver: mysql
