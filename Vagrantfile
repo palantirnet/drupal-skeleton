@@ -37,8 +37,9 @@ Vagrant.configure("2") do |config|
   composer self-update
 
   # Enable PHP error reporting for development.
+  # @todo remove once this is configured at the box level
   echo "error_reporting = E_ALL" | tee -a /etc/php5/apache2/php.ini
-  echo "display_errors = Off" | tee -a /etc/php5/apache2/php.ini
+  echo "display_errors = On" | tee -a /etc/php5/apache2/php.ini
 
   # Restart apache.
   service apache2 restart
