@@ -45,7 +45,7 @@ before_script:
 - composer install --prefer-dist
 - cp env.dist .env
 - source env.dist
-- build/install.sh
+- bin/build/install.sh
 - sudo chown -R travis:www-data www
 
 script: bin/behat -f pretty
