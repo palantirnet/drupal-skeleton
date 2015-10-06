@@ -5,7 +5,8 @@
 ------------
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
 * [vagrant](http://downloads.vagrantup.com/) >= 1.7.x
-* [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
+* [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
+  * Install with: `vagrant plugin install vagrant-hostmanager`
 * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
 
 If you have been running a previous version of Vagrant you may need to do: `vagrant plugin update` to ensure that you can install the plugins.
