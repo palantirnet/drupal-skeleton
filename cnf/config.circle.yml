@@ -1,0 +1,12 @@
+drupal:
+    settings:
+        databases:
+            default:
+                default:
+                    database: circle_test
+                    username: ubuntu
+                    password:
+                    driver: mysql
+                    host: 127.0.0.1
+    include:
+        require_once: [%DRUPAL_ROOT . '/sites/default/vendor/autoload.php']
