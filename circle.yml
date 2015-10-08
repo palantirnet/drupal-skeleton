@@ -17,12 +17,17 @@ dependencies:
     # following to add a github token environmental variable. You will need to
     # add this variable in the project settings in the circle ci project.
     # - composer config --global github-oauth.github.com $GITHUB_TOKEN
+
+  override:
+    - composer install --prefer-dist
+    
   post:
     - source env.dist
     - build/install.sh
     - phantomjs --webdriver=8643:
         background: true
-    
+  cache_directories:
+    - vendor
 test:
   override:
     - bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
