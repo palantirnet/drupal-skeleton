@@ -20,12 +20,13 @@ dependencies:
 
   override:
     - composer install --prefer-dist
-    
+
   post:
     - source env.dist
     - build/install.sh
     - phantomjs --webdriver=8643:
         background: true
+  
   cache_directories:
     - vendor
 test:
