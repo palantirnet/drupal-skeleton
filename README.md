@@ -1,5 +1,11 @@
 # Drupal Skeleton
 
+## About this project
+
+Drupal Skeleton is a selection of the finest libraries and tools used by your colleagues to build out new Drupal projects. At any point it should include examples of best practices which make new projects more efficient and elegant. Your role in keeping that up to date is crucial.
+
+When you initiate a new project with Drupal Skeleton, you’ll be cloning the repository and blowing away the git history, and from that point the installation is managed as a stand-alone unit. If you find new tools or potential improvements, please do contribute them back to Drupal Skeleton. It’s a highly collaborative project, and you’re welcome to make it even better with your pull requests.
+
 ## Requirements
 
 ------------
