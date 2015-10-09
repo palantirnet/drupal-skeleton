@@ -13,10 +13,9 @@ dependencies:
     - echo "sendmail_path=/bin/true" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - cp cnf/config.circle.yml cnf/config.yml
     - cp env.dist .env
-    # If you are having issues with github authorization, you can use the
-    # following to add a github token environmental variable. You will need to
-    # add this variable in the project settings in the circle ci project.
-    # - composer config --global github-oauth.github.com $GITHUB_TOKEN
+    # You will need to add this variable in the project settings in the circle
+    # ci project. This needs to be configured per project.
+    - composer config --global github-oauth.github.com $GITHUB_TOKEN
 
   override:
     - composer install --prefer-dist
@@ -26,9 +25,11 @@ dependencies:
     - build/install.sh
     - phantomjs --webdriver=8643:
         background: true
-  
+
   cache_directories:
     - vendor
+    - bin
+
 test:
   override:
     - bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
