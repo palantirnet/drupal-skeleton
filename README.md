@@ -1,5 +1,11 @@
 # Drupal Skeleton
 
+## About this project
+
+Drupal Skeleton is an opinionated approach to building new Drupal 7 projects. It is derived from our experience of building, testing, and deploying projects for our clients. It is a work in progress which is reflective of the fact that we are always striving to find better, easier, and more efficient ways of doing our work. It is critical that you bring your own discoveries and insights back to this project.
+
+When you initiate a new project with Drupal Skeleton, you’ll be cloning the repository and blowing away the git history, and from that point the installation is managed as a stand-alone unit. If you find new tools or potential improvements, please do contribute them back to Drupal Skeleton. It’s a highly collaborative project, and you’re welcome to make it even better with your pull requests.
+
 ## Requirements
 
 ------------
