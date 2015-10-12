@@ -32,6 +32,7 @@ dependencies:
 
 test:
   override:
+    - sitespeed.io -u https://skeleton.local --budget cnf/sitespeed/budget.json -b chrome -n 11
     - bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
     # For Drupal simple tests, the following should be a starting point:
     # bin/drush en simpletest -y && bin/drush test-run TESTNAME --xml=$CIRCLE_TEST_REPORTS/simpletest
