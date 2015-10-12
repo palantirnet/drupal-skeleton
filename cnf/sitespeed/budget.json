@@ -1,8 +1,5 @@
 {
-  "wpt" : {
-    "requests": 20,
-    "TTFB": 200,
-    "bytesIn": 1000000,
-    "SpeedIndex" : 1000
+  "timings": {
+    "speedIndex": 1000
   }
 }
