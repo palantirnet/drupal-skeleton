@@ -70,12 +70,12 @@ Managed with one file: ``Vagrantfile``
 
 **Managed with**
 * ``behat.yml``
-* ``.travis.yml``
+* ``circle.yml``
 * ``features``
 
 **customize by**
 * Editing ``behat.yml``
-* make your build explicit in ``.travis.yml``
+* make your build explicit in ``circle.yml``
 * add your acceptance testing inside ``features``
 
 ### Composer
@@ -117,4 +117,3 @@ In the `Vagrantfile`, the `env.dist` is copied to `.env`. It is this file that i
 * Drupal is initialized with `install.sh` using the minimal profile.
 * After the install, a series of commands are run to actually configure Drupal.
 * Variables are set by sourcing scripts inside `scripts`.
-
