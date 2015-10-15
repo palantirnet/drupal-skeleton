@@ -16,6 +16,7 @@ dependencies:
     # You will need to add this variable in the project settings in the circle
     # ci project. This needs to be configured per project.
     - composer config --global github-oauth.github.com $GITHUB_TOKEN
+    - npm install -g sitespeed.io
 
   override:
     - composer install --prefer-dist
