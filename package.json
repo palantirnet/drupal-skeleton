@@ -1,0 +1,9 @@
+{
+    "name": "palantir_sitespeed_testing",
+    "description": "Install sitespeed.io for testing.",
+    "license": "proprietary",
+    "private": true,
+    "dependencies": {
+        "sitespeed.io": "*"
+    }
+}
