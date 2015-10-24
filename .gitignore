@@ -1,6 +1,7 @@
 cnf/config.yml
 cnf/settings.php
 files
+node_modules
 www
 vendor
 .env

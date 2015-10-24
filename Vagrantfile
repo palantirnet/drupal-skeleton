@@ -36,9 +36,8 @@ Vagrant.configure("2") do |config|
 
   apt-get update; apt-get -fy install default-jre
 
-  npm install -g sitespeed.io
-
   su vagrant -c 'cd #{path} && composer install;
+  cd #{path} && npm install;
   cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && build/install.sh'
 SCRIPT
 end
