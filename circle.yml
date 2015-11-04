@@ -24,6 +24,7 @@ dependencies:
   post:
     - source env.dist
     - build/install.sh
+    - npm install -g sitespeed.io
     - phantomjs --webdriver=8643:
         background: true
 

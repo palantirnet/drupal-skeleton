@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
   path = "/var/www/sites/#{project}.local"
 
   config.vm.synced_folder ".", "/vagrant", :disabled => true
-  config.vm.synced_folder ".", path, :nfs => true#, :mount_options => ['async','nolock','noatime','nodiratime','rw','hard','intr']
+  config.vm.synced_folder ".", path, :nfs => true
   config.vm.hostname = "#{project}.local"
   config.vm.network "private_network", :auto_network => true
   config.hostmanager.enabled = true
@@ -32,6 +32,12 @@ Vagrant.configure("2") do |config|
   set -ex
 
   /opt/phantomjs --webdriver=8643 &> /dev/null &
+  ln -s /opt/phantomjs /usr/local/bin/
+
+  apt-get update; apt-get -fy install default-jre
+
+  npm install -g sitespeed.io
+
   su vagrant -c 'cd #{path} && composer install;
   cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && build/install.sh'
 SCRIPT
