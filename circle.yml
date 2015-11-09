@@ -1,0 +1,40 @@
+machine:
+  hosts:
+    skeleton.local: 127.0.0.1
+  php:
+    version: 5.5.21
+
+dependencies:
+  pre:
+    - cp $HOME/$CIRCLE_PROJECT_REPONAME/cnf/apache.circle.conf /etc/apache2/sites-available/default
+    - sed -e "s?%PROJECT_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+    - sudo a2enmod rewrite
+    - sudo service apache2 restart
+    - echo "sendmail_path=/bin/true" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - cp cnf/config.circle.yml cnf/config.yml
+    - cp env.dist .env
+    # You will need to add this variable in the project settings in the circle
+    # ci project. This needs to be configured per project.
+    - composer config --global github-oauth.github.com $GITHUB_TOKEN
+    - npm install -g sitespeed.io
+
+  override:
+    - composer install --prefer-dist
+
+  post:
+    - source env.dist
+    - build/install.sh
+    - phantomjs --webdriver=8643:
+        background: true
+
+  cache_directories:
+    - vendor
+    - bin
+    - node_modules
+
+test:
+  override:
+    - sitespeed.io -u http://skeleton.local --budget cnf/sitespeed/budget.json -b chrome -n 3 -r $CIRCLE_ARTIFACTS/sitespeed --suppressDomainFolder --outputFolderName test
+    - bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
+    # For Drupal simple tests, the following should be a starting point:
+    # bin/drush en simpletest -y && bin/drush test-run TESTNAME --xml=$CIRCLE_TEST_REPORTS/simpletest
