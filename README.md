@@ -83,7 +83,7 @@ sed -i -- 's/skeleton/YOURPROJECT/g' **/*
 
 * Adding project dependencies.
 
-NOTE: After successful `composer update` or `composer install`, `bin/wrapper` is called to create Drupal's `settings.php` file, and `bin/rootcanal` is called to build the Drupal root at `www`.
+NOTE: After successful `composer update` or `composer install`, `bin/project/wrapper` is called to create Drupal's `settings.php` file, and `bin/rootcanal` is called to build the Drupal root at `www`.
 
 ### Managing Dependencies
 
@@ -105,10 +105,10 @@ NOTE: In the `Vagrantfile`, the `env.dist` is copied to `.env`. It is this file 
 
 **Manage with**
 
-* ``build/install.sh``
-* ``build/update.sh``
-* ``build/common.sh``
-* ``build/scripts``
+* ``bin/project/install.sh``
+* ``bin/project/update.sh``
+* ``bin/project/common.sh``
+* ``bin/project/scripts``
 
 **Customize by**
 

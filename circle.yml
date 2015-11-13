@@ -23,7 +23,7 @@ dependencies:
 
   post:
     - source env.dist
-    - bin/build/install.sh
+    - bin/project/install.sh
     - phantomjs --webdriver=8643:
         background: true
 
