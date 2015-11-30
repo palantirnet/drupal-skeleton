@@ -27,9 +27,6 @@ dependencies:
     - phantomjs --webdriver=8643:
         background: true
 
-  cache_directories:
-    - vendor
-
 test:
   override:
     - sitespeed.io -u http://skeleton.local --budget cnf/sitespeed/budget.json -b chrome -n 3 -r $CIRCLE_ARTIFACTS/sitespeed --suppressDomainFolder --outputFolderName test
