@@ -33,6 +33,6 @@ Vagrant.configure("2") do |config|
 
   /opt/phantomjs --webdriver=8643 &> /dev/null &
   su vagrant -c 'cd #{path} && composer install;
-  cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && bin/build/install.sh'
+  cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && bin/project/install.sh'
 SCRIPT
 end

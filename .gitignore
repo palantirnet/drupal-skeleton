@@ -5,8 +5,7 @@ www
 vendor
 .env
 bin/*
-!bin/build
-!bin/wrapper
+!bin/project
 
 # Ignore database artifacts
 *.sql*

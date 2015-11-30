@@ -44,13 +44,13 @@ For production, `bin/rootcanal --prod` copies modules, themes, etc. into `www`, 
 
 ### Installing and reinstalling Drupal
 
-Run `composer install --prefer-dist && build/install.sh`
+Run `composer install --prefer-dist && bin/project/install.sh`
 
 ### Adding modules
 
 * Download the module with `composer require drupal/bad_judgement`
 * Add the module as a dependency in `skeleton.info`
-* To enable the module, run `build/update.sh` (or `cd www; drush en bad_judgement`)
+* To enable the module, run `bin/project/update.sh` (or `cd www; drush en bad_judgement`)
 * Commit the changes to `composer.json`, `composer.lock`, and `skeleton.info`
 
 ### Patching modules
