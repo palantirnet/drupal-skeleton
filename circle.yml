@@ -22,6 +22,8 @@ dependencies:
     - composer install --prefer-dist
 
   post:
+    # Note: this is a work around with pear.php.net being down which the drush
+    # install relies on.
     - source <(curl -s https://gist.githubusercontent.com/arthur24b6/2b682e7b213edcbc6d3f/raw/b5273d7ec1d184d69f27759d212492baae8e4d72/get-drush.sh)
     - source env.dist
     - bin/project/install.sh
