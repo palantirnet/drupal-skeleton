@@ -25,11 +25,11 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "bin/wrapper",
+            "bin/project/wrapper",
             "bin/rootcanal"
         ],
         "post-update-cmd": [
-            "bin/wrapper",
+            "bin/project/wrapper",
             "bin/rootcanal"
         ]
     },

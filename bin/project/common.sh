@@ -2,10 +2,10 @@
 
 set -e
 path=$(dirname "$0")
-base=$(cd $path/.. && pwd)
-drush="$base/bin/drush.php $drush_flags -y -r $base/www"
+base=$(cd $path/../.. && pwd)
+drush="$base/bin/drush $drush_flags -y -r $base/www"
 
-if [[ -f .env ]]; then 
+if [[ -f .env ]]; then
   source .env
 else
   echo "No env file found. Please create one. You can use env.dist as an example."
