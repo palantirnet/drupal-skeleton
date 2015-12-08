@@ -46,6 +46,6 @@ Vagrant.configure("2") do |config|
 
   # Install the site.
   su vagrant -c 'cd #{path} && composer install;
-  cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && build/install.sh'
+  cd #{path} && [[ -f .env ]] && source .env || cp env.dist .env && source env.dist && bin/install.sh'
 SCRIPT
 end

@@ -25,18 +25,17 @@ dependencies:
 
   post:
     - source env.dist
-    - build/install.sh
+    - bin/install.sh
     - phantomjs --webdriver=8643:
         background: true
 
   cache_directories:
     - vendor
-    - bin
     - node_modules
 
 test:
   override:
     - sitespeed.io -u http://skeleton.local --budget cnf/sitespeed/budget.json -b chrome -n 3 -r $CIRCLE_ARTIFACTS/sitespeed --suppressDomainFolder --outputFolderName test
-    - bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
+    - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
     # For Drupal simple tests, the following should be a starting point:
     # bin/drush en simpletest -y && bin/drush test-run TESTNAME --xml=$CIRCLE_TEST_REPORTS/simpletest
