@@ -24,11 +24,11 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "build/settings-compile.sh",
+            "vendor/bin/settings_compile cnf/config.yml cnf/settings.php",
             "vendor/bin/rootcanal"
         ],
         "post-update-cmd": [
-            "build/settings-compile.sh",
+            "vendor/bin/settings_compile cnf/config.yml cnf/settings.php",
             "vendor/bin/rootcanal"
         ]
     },

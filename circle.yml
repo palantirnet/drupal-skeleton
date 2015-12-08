@@ -19,7 +19,9 @@ dependencies:
     - npm install -g sitespeed.io
 
   override:
-    - composer install --prefer-dist
+    - composer install --prefer-dist --no-scripts
+    - vendor/bin/settings_compile cnf/config.circle.yml cnf/settings.php
+    - vendor/bin/rootcanal
 
   post:
     - source env.dist
