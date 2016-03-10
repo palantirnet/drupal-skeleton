@@ -16,6 +16,10 @@
         {
             "type": "composer",
             "url": "https://packagist.drupal-composer.org"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:palantirnet/the-build.git"
         }
     ],
     "require": {
