@@ -1,0 +1,19 @@
+# Ignore Drupal settings and files
+settings.php
+!conf/drupal/settings.php
+conf/drupal/files
+web/sites
+
+# Ignore virtual environment and artifacts
+.vagrant/
+/artifacts/
+
+# Ignore Drupal contrib downloaded by Composer
+drush/contrib
+web/core
+web/modules/contrib
+web/themes/contrib/
+web/profiles/contrib/
+
+# Ignore regular Composer dependencies
+/vendor/
