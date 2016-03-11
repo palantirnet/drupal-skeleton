@@ -1,0 +1,8 @@
+machine:
+  php:
+    version: 5.5.21
+
+dependencies:
+  pre:
+    # Generate a GitHub token per project and add it to the CircleCI environment variables using the web UI.
+    - composer config --global github-oauth.github.com $GITHUB_TOKEN
