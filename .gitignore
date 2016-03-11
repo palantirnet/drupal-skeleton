@@ -1,3 +1,8 @@
+# This file should contain only rules that are specific to this project. For
+# ignoring OS and IDE metadata files, please configure a global gitignore on
+# in your development environment:
+# https://github.com/palantirnet/development_documentation/blob/master/guidelines/git/gitignore.md
+
 # Ignore Drupal settings and files
 settings.php
 !conf/drupal/settings.php
