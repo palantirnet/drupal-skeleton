@@ -9,32 +9,34 @@
             "email": "info@palantir.net"
         }
     ],
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "preferred-install": "dist",
     "repositories": [
         {
             "type": "composer",
-            "url": "https://packagist.drupal-composer.org"
+            "url": "https://palantirnet.github.io/the-build/packages.json"
         },
         {
-            "type": "vcs",
-            "url": "git@github.com:palantirnet/the-build.git"
+            "type": "composer",
+            "url": "https://packagist.drupal-composer.org"
         }
     ],
     "require": {
         "composer/installers": "^1.0",
-        "cweagans/composer-patches": "^1.0",
-        "drupal/config_installer": "~8.1.2",
-        "drupal/console": "^0.10",
-        "drupal/core": "^8.0",
         "drupal-composer/drupal-scaffold": "^1.0",
-        "drush/drush": "^8.0"
+        "drupal/core": "^8.0",
+        "drush/drush": "^8.0",
+        "palantirnet/the-build": "dev-master"
     },
     "require-dev": {
         "behat/mink": "^1.7",
-        "behat/mink-goutte-driver": "^1.2",
-        "phpunit/phpunit": "^4.8"
+        "behat/mink-goutte-driver": "^1.2"
+    },
+    "suggest": {
+        "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib.",
+        "drupal/config_installer": "Try ~8.1.2. Drupal install profile to install a site from exported configuration.",
+        "drupal/console": "Try ^0.10. Scaffolding and debugging tools for Drupal 8 development."
     },
     "conflict": {
         "drupal/drupal": "*"
