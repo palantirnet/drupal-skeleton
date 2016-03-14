@@ -7,8 +7,13 @@ A template for Drupal 8 projects.
 1. Run `composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --repository=https://palantirnet.github.io/the-build/packages.json`.
  * Say 'yes' to removing the existing VCS files.
 1. `cd` in to your new PROJECTNAME directory
-1. Run `composer drupal-scaffold`
-1. To add vagrant, run `vendor/bin/phing -f vendor/palantirnet/the-vagrant/tasks/vagrant.xml -Dprojectname=PROJECTNAME -Dcopy=n`
+1. To add vagrant, run `vendor/bin/phing -f vendor/palantirnet/the-vagrant/tasks/vagrant.xml`
+1. To add the build, run `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml`
+
+Now you should have a fleshy skeleton. Your environment will spring to life with `vagrant up` and your Drupal will be ready to run with `vendor/bin/phing`.
+
+To finish up:
+
 1. Run `git init`
 1. Add everything to your new git repository, commit, and push to GitHub
 
