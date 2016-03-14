@@ -10,7 +10,7 @@ A template for Drupal 8 projects.
 1. To add vagrant, run `vendor/bin/phing -f vendor/palantirnet/the-vagrant/tasks/vagrant.xml`
 1. To add the build, run `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml`
 
-Now you should have a fleshy skeleton. Your environment will spring to life with `vagrant up` and your Drupal will be ready to run with `vendor/bin/phing`.
+Now you should have a fleshy skeleton. Your environment will spring to life with `vagrant up` and your Drupal will be ready to run with `vendor/bin/phing build drupal-install -Dbuild.env=vagrant`.
 
 To finish up:
 
