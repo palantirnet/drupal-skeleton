@@ -6,3 +6,14 @@ dependencies:
   pre:
     # Generate a GitHub token per project and add it to the CircleCI environment variables using the web UI.
     - composer config --global github-oauth.github.com $GITHUB_TOKEN
+
+  post:
+    - vendor/bin/phing build
+    - vendor/bin/phing install-drupal
+
+  cache_directories:
+    - vendor
+
+test:
+  override:
+    - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
