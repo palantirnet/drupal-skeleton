@@ -44,7 +44,7 @@
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-        "post-root-package-install": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        "post-create-project-cmd": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     },
     "extra": {
         "installer-paths": {
