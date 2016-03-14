@@ -17,10 +17,11 @@ To finish up:
 1. Run `git init`
 1. Add everything to your new git repository, commit, and push to GitHub
 
-## Configuration
+## Other stuff
 
 * You can remove or re-install the vagrant config any time, if you change your mind about customizing the Ansible provisioning for your project.
 * You can add build configuration for more environments with `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml configure` (or just by copying the `conf/build.*.properties file`)
+* Try `vendor/bin/drush -c conf/drushrc.php status` (sorry, that's long)
 
 ## Known issues
 
