@@ -73,3 +73,10 @@ Well, there's no behat yet. If there were, you could run all of the tests with:
 ```
 vendor/bin/behat
 ```
+
+## Troubleshooting
+
+If, on browsing to `http://drupal-skeleton.local`, you get the following error:
+> mcor.local’s server DNS address could not be found.
+
+Then `vagrant up` may have failed half way through. When this happens, the `vagrant-hostmanager` plugin does not add the hostname to `/etc/hosts`. Try halting and re-upping the machine: `vagrant halt && vagrant up`. Reload is not sufficient to trigger updating the hosts file.
