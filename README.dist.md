@@ -5,6 +5,7 @@
 
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
 * [vagrant](http://downloads.vagrantup.com/) >= 1.8
+* [ansible](https://github.com/ansible/ansible) `brew install ansible`
 * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
 * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
 
@@ -12,14 +13,16 @@ If you have been running a previous version of Vagrant you may need to do: `vagr
 
 ## Getting Started
 
-1. From inside the project root, run `vagrant up`
+1. From inside the project root, run:
+ * `composer install`
+ * `vagrant up`
 2. You will be prompted for the administration password on your host machine. Obey.
-3. Visit [skeleton.local](http://skeleton.local) in your browser of choice.
+3. Visit [skeleton.local](http://skeleton.local) in your browser of choice. (You will probably get an error. SSH in and build the site now)
 
 ## How do I work on this?
 
 1. From inside the project root, type `vagrant ssh`
-2. Navigate to `/var/www/sites/skeleton.local`
+2. Navigate to `/var/www/skeleton.local`
 3. Build and install: `vendor/bin/phing build drupal-install -Dbuild.env=vagrant`
 
 This is your project directory; run `composer` commands from here, and use drush with `vendor/bin/drush -c conf/drushrc.php`. Avoid using git from here, but if you must, make sure you configure your name and email for proper attribution, and [configure your global .gitignore](https://github.com/palantirnet/development_documentation/blob/master/guidelines/git/gitignore.md):
