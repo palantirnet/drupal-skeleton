@@ -15,8 +15,10 @@ Step-by-step:
 1. To add the build, run `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml`
 1. Run `git init`
 1. Add your github origin with `git remote add origin git@github.com:palantirnet/your-project.git`
+1. Remove the `README.md` file
+1. Pull the current master branch down with `git pull -u origin master`
 1. Add everything and commit with `git add --all` and `git commit -m "Skeleton commit."`
-1. `git push`
+1. `git push -u origin master`
 
 Now you should have a fleshy skeleton. Your environment will spring to life with `vagrant up` and your Drupal will be ready to run with `vendor/bin/phing build drupal-install -Dbuild.env=vagrant`.
 
