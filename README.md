@@ -26,3 +26,8 @@ Now you should have a fleshy skeleton. Your environment will spring to life with
 * You can remove or re-install the vagrant config any time, if you change your mind about customizing the Ansible provisioning for your project.
 * You can add build configuration for more environments with `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml configure` (or just by copying the `conf/build.*.properties file`)
 * Try `vendor/bin/drush -c conf/drushrc.php status` (sorry, that's long)
+
+## See also
+
+* [the-build](https://github.com/palantirnet/the-build)
+* [the-vagrant](https://github.com/palantirnet/the-vagrant)
