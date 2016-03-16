@@ -8,7 +8,7 @@ Use the `composer create-project` command to create a project based on this repo
 
 Step-by-step:
 
-1. Run `composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/the-build/packages.json`.
+1. Run `composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/the-build`.
 1. `cd` in to your new PROJECTNAME directory
 1. To add vagrant, run `vendor/bin/phing -f vendor/palantirnet/the-vagrant/tasks/vagrant.xml`
 1. To add the build, run `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml`
@@ -26,19 +26,3 @@ Now you should have a fleshy skeleton. Your environment will spring to life with
 * You can remove or re-install the vagrant config any time, if you change your mind about customizing the Ansible provisioning for your project.
 * You can add build configuration for more environments with `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml configure` (or just by copying the `conf/build.*.properties file`)
 * Try `vendor/bin/drush -c conf/drushrc.php status` (sorry, that's long)
-
-## Known issues
-
-If while running `composer create-project` you get the following error:
-
-```
- [Composer\Downloader\TransportException]
-  The "file:/packages.json" file could not be downloaded: failed to open stream: No such file or directory
-```
-
-Then you will need to download the packages.json file manually:
-
-```
-wget https://palantirnet.github.io/the-build/packages.json
-composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --repository=packages.json
-```
