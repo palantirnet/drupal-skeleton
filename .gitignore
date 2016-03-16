@@ -6,8 +6,7 @@
 # Ignore Drupal settings and files
 settings.php
 !conf/drupal/settings.php
-conf/drupal/files
-web/sites
+web/sites/*/files
 
 # Ignore virtual environment and artifacts
 .vagrant/
