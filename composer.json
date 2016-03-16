@@ -25,6 +25,7 @@
     "require": {
         "composer/installers": "^1.0",
         "drupal-composer/drupal-scaffold": "^1.0",
+        "drupal/console": "^0.10.12",
         "drupal/core": "^8.0",
         "drush/drush": "^8.0",
         "palantirnet/the-build": "dev-master",
