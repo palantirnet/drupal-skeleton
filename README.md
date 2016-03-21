@@ -21,6 +21,8 @@ Step-by-step:
 
 Now you should have a fleshy skeleton. Your environment will spring to life with `vagrant up` and your Drupal will be ready to run with `vendor/bin/phing build drupal-install -Dbuild.env=vagrant`.
 
+After installing Drupal, you might want to export the default config with `drush config-export` (in our case using the verbose, project-specific version of this command: `vendor/bin/drush -c conf/drushrc.vagrant.php config-export`). This will create a bunch of YAML files in `conf/drupal/sync`. Check these in to the repository in a separate commit so that your project starts with an explicit default config. This will make it easier for developers to make granular config updates during the first development tickets of the project. See [the d8-lab](https://github.com/palantirnet/d8-lab/blob/master/managing-config.md) for more info about managing config.
+
 ## Other stuff
 
 * You can remove or re-install the vagrant config any time, if you change your mind about customizing the Ansible provisioning for your project.
