@@ -1,19 +1,27 @@
 machine:
+  hosts:
+    drupal-skeleton.local: 127.0.0.1
   php:
     version: 5.5.21
 
 dependencies:
   pre:
+    - cp $HOME/$CIRCLE_PROJECT_REPONAME/conf/apache.circle.conf /etc/apache2/sites-available/default
+    - sed -e "s?%PROJECT_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+    - sudo a2enmod rewrite
+    - echo "sendmail_path=/bin/true" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - echo "memory_limit=256M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
+    - sudo service apache2 restart
     # Generate a GitHub token per project and add it to the CircleCI environment variables using the web UI.
     - composer config --global github-oauth.github.com $GITHUB_TOKEN
 
-  post:
-    - vendor/bin/phing build
-    - vendor/bin/phing install-drupal
-
   cache_directories:
     - vendor
+    - ~/.composer
 
 test:
+  pre:
+    - vendor/bin/phing build drupal-install -Dbuild.env=circle
+
   override:
     - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
