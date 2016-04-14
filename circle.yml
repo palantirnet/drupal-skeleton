@@ -29,7 +29,7 @@ dependencies:
 
 test:
   pre:
-    - vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml -Ddrupal.root=web
+    - vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml -propertyfile vendor/palantirnet/the-build/conf/build.test.properties
     - vendor/bin/phing build install
 
   override:
