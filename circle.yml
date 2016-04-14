@@ -1,8 +1,13 @@
+# This circle.yml is for testing the drupal-skeleton. For project-specific
+# testing, use the circle.yml installed by palantirnet/the-build.
+
 machine:
   hosts:
     drupal-skeleton.local: 127.0.0.1
   php:
-    version: 5.5.21
+    version: 5.6.14
+  environment:
+    PALANTIR_ENVIRONMENT: circle
 
 dependencies:
   pre:
@@ -17,11 +22,15 @@ dependencies:
 
   cache_directories:
     - vendor
-    - ~/.composer
+    - web/core
+    - web/modules/contrib
+    - web/profiles/contrib
+    - $HOME/.composer
 
 test:
   pre:
-    - vendor/bin/phing build drupal-install -Dbuild.env=circle
+    - vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml -Ddrupal.root=web
+    - vendor/bin/phing build install
 
   override:
-    - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS/behat
+    - vendor/bin/phing test
