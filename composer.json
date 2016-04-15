@@ -32,6 +32,7 @@
     "require": {
         "composer/installers": "^1.0",
         "drupal-composer/drupal-scaffold": "^1.0",
+        "drupal/config_installer": "^8.1",
         "drupal/core": "^8.0",
         "palantirnet/the-build": "dev-master"
     },
@@ -43,16 +44,14 @@
         "composer/composer": "@dev",
         "dflydev/embedded-composer-console": "@dev",
         "dflydev/embedded-composer-core": "@dev",
-        "drupal/console": "^0.10.12",
+        "drupal/console": "^0.11.3",
         "drupal/drupal-extension": "^3.1",
         "drush/drush": "^8.0",
         "palantirnet/the-vagrant": "dev-master",
         "sculpin/sculpin": "~2.0"
     },
     "suggest": {
-        "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib.",
-        "drupal/config_installer": "Try ~8.1.2. Drupal install profile to install a site from exported configuration.",
-        "drupal/console": "Try ^0.10. Scaffolding and debugging tools for Drupal 8 development."
+        "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
     },
     "conflict": {
         "drupal/drupal": "*"
