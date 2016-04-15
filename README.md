@@ -8,7 +8,7 @@ Use the `composer create-project` command to create a project based on this repo
 
 Step-by-step:
 
-1. Run `composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/the-build`.
+1. Run `composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/drupal-skeleton`.
 1. `cd` in to your new PROJECTNAME directory
 1. To add vagrant, run `vendor/bin/phing -f vendor/palantirnet/the-vagrant/tasks/vagrant.xml`
 1. To add the build, run `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml`
