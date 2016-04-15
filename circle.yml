@@ -36,3 +36,4 @@ test:
 
   override:
     - vendor/bin/phing test
+    - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS
