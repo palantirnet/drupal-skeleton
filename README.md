@@ -28,6 +28,13 @@ After installing Drupal, you might want to export the default config with `drush
 * You can remove or re-install the vagrant config any time, if you change your mind about customizing the Ansible provisioning for your project.
 * You can add build configuration for more environments with `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml configure` (or just by copying the `conf/build.*.properties file`)
 * Try `vendor/bin/drush -c conf/drushrc.php status` (sorry, that's long)
+* If the PHP date.timezone is not set on your *host* machine, when you run `composer create-project`, there will be a big red message at the end of the output, `ERROR: date_default_timezone_get(): It is not safe to rely on the system's [...] in phar:///usr/local/bin/composer/src/Composer/Util/Silencer.php:67`. To avoid this error, set the php date.timezone in `/etc/php.ini`:
+```
+[Date]
+; Defines the default timezone used by the date functions
+; http://php.net/date.timezone
+date.timezone = "America/Chicago"
+```
 
 ## See also
 
