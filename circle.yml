@@ -27,7 +27,7 @@ dependencies:
   cache_directories:
     - vendor
     - web
-    - $HOME/.composer
+    - ~/.composer
 
 test:
   pre:
@@ -36,3 +36,4 @@ test:
 
   override:
     - vendor/bin/phing test
+    - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS
