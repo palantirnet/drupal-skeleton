@@ -14,8 +14,12 @@
     "preferred-install": "dist",
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://palantirnet.github.io/the-build/packages.json"
+            "type": "vcs",
+            "url": "git@github.com:palantirnet/the-build.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:palantirnet/the-vagrant.git"
         },
         {
             "type": "composer",
