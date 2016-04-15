@@ -1,0 +1,15 @@
+{
+    "packages": {
+        "palantirnet/drupal-skeleton": {
+            "dev-drupal8": {
+                "name": "palantirnet/drupal-skeleton",
+                "version": "dev-drupal8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/palantirnet/drupal-skeleton",
+                    "reference": "drupal8"
+                }
+            }
+        }
+    }
+}
