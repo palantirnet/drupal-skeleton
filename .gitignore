@@ -5,7 +5,9 @@
 
 # Ignore Drupal settings and files
 settings.php
+services.yml
 !conf/drupal/settings.php
+!conf/drupal/services.yml
 web/sites/*/files
 
 # Ignore virtual environment and artifacts
@@ -21,3 +23,16 @@ web/profiles/contrib/
 
 # Ignore regular Composer dependencies
 /vendor/
+
+# Ignore npm dependencies
+node_modules/
+npm-debug.log
+
+# Ignore generated CSS
+*.sass-cache/
+styleguide/*.sass-cache/
+styleguide/source/code/css/*.css
+
+# Ignore sculpin output
+styleguide/output_dev/
+styleguide/output_prod/
