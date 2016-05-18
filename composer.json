@@ -48,7 +48,8 @@
         "drupal/drupal-extension": "^3.1",
         "drush/drush": "^8.0",
         "palantirnet/the-vagrant": "dev-master",
-        "sculpin/sculpin": "~2.0"
+        "sculpin/sculpin": "~2.0",
+        "sculpin/sculpin-theme-composer-plugin": "dev-master as 1.0.0"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
