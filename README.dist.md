@@ -4,7 +4,7 @@
 ## Requirements
 
 * VMWare, or [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
-* [vagrant](http://downloads.vagrantup.com/) >= 1.8
+* [vagrant](https://www.vagrantup.com/) >= 1.8
 * [ansible](https://github.com/ansible/ansible) `brew install ansible`
 * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
 * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
