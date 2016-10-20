@@ -32,7 +32,7 @@
     "require": {
         "composer/installers": "^1.0",
         "drupal-composer/drupal-scaffold": "^1.0",
-        "drupal/config_installer": "^8.1",
+        "drupal/config_installer": "^1.0",
         "drupal/core": "^8.0",
         "palantirnet/the-build": "dev-master"
     },
