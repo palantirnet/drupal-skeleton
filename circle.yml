@@ -31,7 +31,23 @@ dependencies:
 
 test:
   pre:
-    - vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml -propertyfile vendor/palantirnet/the-build/conf/build.test.properties
+    - >
+        vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml
+        -Dbuild.artifact_mode=symlink
+        -Dbuild.test_output=/dev/null
+        -Ddrupal.site_name=drupal-skeleton
+        -Ddrupal.profile=standard
+        -Ddrupal.modules_enable=''
+        -Ddrupal.database.database=circle_test
+        -Ddrupal.database.username=ubuntu
+        -Ddrupal.database.password=''
+        -Ddrupal.database.host=127.0.0.1
+        -Ddrupal.settings.file_public_path=sites/default/files
+        -Ddrupal.settings.file_private_path=
+        -Ddrupal.twig.debug=false
+        -Ddrupal.uri=http://drupal-skeleton.local
+        -Ddrupal.hash_salt=temporary
+        -Ddrupal.root=web
     - vendor/bin/phing build install migrate
 
   override:
