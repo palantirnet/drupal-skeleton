@@ -53,9 +53,6 @@
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
     },
-    "conflict": {
-        "drupal/drupal": "*"
-    },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "post-create-project-cmd": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
