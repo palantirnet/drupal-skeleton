@@ -31,7 +31,8 @@
     ],
     "require": {
         "composer/installers": "^1.0",
-        "drupal/drupal": "^7.0",
+        "derhasi/composer-preserve-paths": "0.1.*",
+        "drupal/drupal": "7.*",
         "palantirnet/the-build": "dev-master"
     },
     "require-dev": {
@@ -52,13 +53,25 @@
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
     },
+    "conflict": {
+      "drupal/core": "8.*"
+    },
     "extra": {
         "installer-paths": {
-            "web": ["type:drupal-core"],
-            "web/sites/all/modules/contrib/{$name}": ["type:drupal-module"],
-            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "web/sites/all/themes/contrib/{$name}": ["type:drupal-theme"],
+            "web/": ["type:drupal-core"],
+            "web/sites/all/libraries/{$name}/": ["type:drupal-library"],
+            "web/sites/all/modules/contrib/{$name}/": ["type:drupal-module"],
+            "web/profiles/contrib/{$name}/": ["type:drupal-profile"],
+            "web/sites/all/themes/contrib/{$name}/": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
-        }
+        },
+        "preserve-paths": [
+          "web/sites/all/modules/contrib",
+          "web/sites/all/themes/contrib",
+          "web/sites/all/libraries",
+          "drush/contrib",
+          "web/sites/default/settings.php",
+          "web/sites/default/files"
+        ]
     }    
 }
