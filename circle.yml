@@ -22,7 +22,6 @@ dependencies:
 
   override:
     - composer install
-    - composer drupal-scaffold
 
   cache_directories:
     - vendor
