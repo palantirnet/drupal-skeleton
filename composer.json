@@ -26,13 +26,13 @@
         },
         {
             "type": "composer",
-            "url": "https://packagist.drupal-composer.org"
+            "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
         "composer/installers": "^1.0",
         "drupal-composer/drupal-scaffold": "^1.0",
-        "drupal/config_installer": "^8.1",
+        "drupal/config_installer": "^1.0",
         "drupal/core": "^8.0",
         "palantirnet/the-build": "dev-master"
     },
