@@ -11,8 +11,10 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "preferred-install": "dist",
     "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
         "sort-packages": "true"
     },
     "repositories": [
@@ -34,7 +36,7 @@
         "drupal-composer/drupal-scaffold": "^1.0",
         "drupal/config_installer": "^1.0",
         "drupal/core": "^8.0",
-        "palantirnet/the-build": "dev-master"
+        "palantirnet/the-build": "^1.0"
     },
     "require-dev": {
         "behat/behat": "^3.1",
@@ -42,14 +44,10 @@
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
         "composer/composer": "@dev",
-        "dflydev/embedded-composer-console": "@dev",
-        "dflydev/embedded-composer-core": "@dev",
         "drupal/console": "^0.11.3",
         "drupal/drupal-extension": "^3.1",
         "drush/drush": "^8.0",
-        "palantirnet/the-vagrant": "dev-master",
-        "sculpin/sculpin": "~2.0",
-        "sculpin/sculpin-theme-composer-plugin": "dev-master as 1.0.0"
+        "palantirnet/the-vagrant": "^0.5"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
