@@ -26,11 +26,6 @@ This is a template for Drupal 8 projects using the `composer create-project` com
     ```
     composer update --lock
     ```
-1. Add our Vagrant development environment:
-
-  ```
-  vendor/bin/the-vagrant-installer
-  ```
 1. Add our build scripts:
 
   ```
