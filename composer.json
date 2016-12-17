@@ -23,10 +23,6 @@
             "url": "git@github.com:palantirnet/the-build.git"
         },
         {
-            "type": "vcs",
-            "url": "git@github.com:palantirnet/the-vagrant.git"
-        },
-        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
