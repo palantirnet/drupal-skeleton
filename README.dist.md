@@ -3,13 +3,16 @@
 
 ## Requirements
 
-* VMWare, or [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
+* PHP >= 5.6
+* [Composer](https://getcomposer.org/)
+* [VMware](http://www.vmware.com/products/personal-desktop-virtualization.html) >= 8.0 or [VirtualBox](https://www.virtualbox.org/) >= 5.0
+* [ansible](https://github.com/ansible/ansible) >= 2.0
 * [vagrant](https://www.vagrantup.com/) >= 1.8
-* [ansible](https://github.com/ansible/ansible) `brew install ansible`
-* [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
-* [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
+* Vagrant plugins:
+  * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
+  * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network)
 
-If you have been running a previous version of Vagrant you may need to do: `vagrant plugin update` to ensure that you can install the plugins.
+This environment is supported under Mac OS X >= 10.10. This stack quite possibly runs under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup development documentation](https://github.com/palantirnet/development_documentation/blob/master/development/mac-setup.md).
 
 ## Getting Started
 
