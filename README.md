@@ -1,42 +1,104 @@
 # Drupal Skeleton
 
-A template for Drupal 8 projects.
+This is a template for Drupal 8 projects using the `composer create-project` command.
 
 ## Starting a project
 
-Use the `composer create-project` command to create a project based on this repository, then use the install scripts from `the-vagrant` and `the-build` to add our vagrant configuration and build scripts--if you want them! Check the whole pile into your new project repository.
+1. Use composer to create a new project based on this skeleton:
 
-Step-by-step:
+  ```
+  composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/drupal-skeleton
+  ```
+1. Go into the project:
 
-1. Run `composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/drupal-skeleton`.
-1. `cd` in to your new PROJECTNAME directory
-1. To add vagrant, run `vendor/bin/phing -f vendor/palantirnet/the-vagrant/tasks/vagrant.xml`
-1. To add the build, run `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml`
-1. Run `git init`
-1. Add your github origin with `git remote add origin git@github.com:palantirnet/your-project.git`
-1. Remove the `README.md` file
-1. Pull the current master branch down with `git pull -u origin master`
-1. Add everything and commit with `git add --all` and `git commit -m "Skeleton commit."`
-1. `git push -u origin master`
+  ```
+  cd PROJECTNAME
+  ```
+1. Update the `README`:
+  * Remove the `README.md`
+  * Rename the `README.dist.md` to `README.md`
+  * Edit as you like
+1. Update the `composer.json`:
+  * Change the `name` from `palantirnet/drupal-skeleton` to `palantirnet/PROJECTNAME`
+  * Update the `description` with a brief description of your project.
+  * Update the lock file so composer doesn't complain:
 
-Now you should have a fleshy skeleton. Your environment will spring to life with `vagrant up` and your Drupal will be ready to run with `vendor/bin/phing build drupal-install -Dbuild.env=vagrant`.
+    ```
+    composer update --lock
+    ```
+1. Add our Vagrant development environment:
 
-After installing Drupal, you might want to export the default config with `drush config-export` (in our case using the verbose, project-specific version of this command: `vendor/bin/drush -c conf/drushrc.vagrant.php config-export`). This will create a bunch of YAML files in `conf/drupal/sync`. Check these in to the repository in a separate commit so that your project starts with an explicit default config. This will make it easier for developers to make granular config updates during the first development tickets of the project. See [the d8-lab](https://github.com/palantirnet/d8-lab/blob/master/managing-config.md) for more info about managing config.
+  ```
+  vendor/bin/the-vagrant-installer
+  ```
+1. Add our build scripts:
 
-## Other stuff
+  ```
+  vendor/bin/the-build-installer
+  ```
+1. Initialize git and commit your work to the `develop` branch:
 
-* You can remove or re-install the vagrant config any time, if you change your mind about customizing the Ansible provisioning for your project.
-* You can add build configuration for more environments with `vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml configure` (or just by copying the `conf/build.*.properties file`)
-* Try `vendor/bin/drush -c conf/drushrc.php status` (sorry, that's long)
-* If the PHP date.timezone is not set on your *host* machine, when you run `composer create-project`, there will be a big red message at the end of the output, `ERROR: date_default_timezone_get(): It is not safe to rely on the system's [...] in phar:///usr/local/bin/composer/src/Composer/Util/Silencer.php:67`. To avoid this error, set the php date.timezone in `/etc/php.ini`:
-```
-[Date]
-; Defines the default timezone used by the date functions
-; http://php.net/date.timezone
-date.timezone = "America/Chicago"
-```
+  ```
+  git init
+  git checkout -b develop
+  git commit --allow-empty -m "Initial commit."
+  git add --all
+  git commit -m "Add the skeleton."
+  ```
+1. Push your work up to an empty repository on GitHub
 
-## See also
+  ```
+  git remote add origin git@github.com:palantirnet/PROJECTNAME.git
+  git push -u origin develop
+  ```
 
-* [the-build](https://github.com/palantirnet/the-build)
-* [the-vagrant](https://github.com/palantirnet/the-vagrant)
+Now you should be ready to follow the instructions in YOUR `README.md` to start up the project. You'll probably want to do the initial Drupal installation at this point to generate a set of Drupal config files.
+
+1. Start up your Vagrant VM:
+
+  ```
+  vagrant up
+  vagrant ssh
+  ```
+1. Install Drupal:
+
+  ```
+  vendor/bin/phing build install
+  ```
+1. Log into Drupal in your browser and do some basic config customizations:
+
+  * Set the site timezone
+  * Disable per-user timezones
+  * Disable user account creation
+  * Remove unnecessary content types
+  * Set the admin email address (your VM will trap all emails)
+  * Turn the Cron interval down to "never"
+  * Uninstall unnecessary modules (e.g. Search, History, Comment)
+1. Export your config:
+
+  ```
+  drush cex -y
+  ```
+1. Update the install profile in your default build properties (`conf/build.default.properties`):
+
+  ```
+  drupal.install_profile=config_installer
+  ```
+1. You should have a ton of new `*.yml` files in `conf/drupal/config`. Add them, and this config change, to git:
+
+  ```
+  git add conf/
+  git ci -m "Initial Drupal configuration."
+  git push
+  ```
+1. Reinstall your site and verify that your config is ready to go:
+
+  ```
+  vendor/bin/phing build install
+  ```
+
+## More information
+
+* Site build and install process: [the-build](https://github.com/palantirnet/the-build)
+* Development environment setup: [the-vagrant](https://github.com/palantirnet/the-vagrant)
+* Managing config: [the d8-lab](https://github.com/palantirnet/d8-lab/blob/master/managing-config.md)
