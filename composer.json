@@ -42,16 +42,11 @@
         "behat/mink": "^1.7",
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
-        "composer/composer": "@dev",
-        "dflydev/embedded-composer-console": "@dev",
-        "dflydev/embedded-composer-core": "@dev",
         "drupal/console": "^0.11.3",
         "drupal/drupal-extension": "^3.1",
         "drush/drush": "^8.0",
         "palantirnet/the-build": "^1.0",
-        "palantirnet/the-vagrant": "^1.0",
-        "sculpin/sculpin": "~2.0",
-        "sculpin/sculpin-theme-composer-plugin": "dev-master as 1.0.0"
+        "palantirnet/the-vagrant": "^1.0"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
