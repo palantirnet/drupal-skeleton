@@ -9,6 +9,12 @@ machine:
   environment:
     PALANTIR_ENVIRONMENT: circle
 
+general:
+  branches:
+    ignore:
+      - gh-pages
+      - /.*(readme|documentation).*/
+
 dependencies:
   pre:
     - cp $HOME/$CIRCLE_PROJECT_REPONAME/conf/apache.circle.conf /etc/apache2/sites-available/default
@@ -21,7 +27,7 @@ dependencies:
     - composer config --global github-oauth.github.com $GITHUB_TOKEN
 
   override:
-    - composer install
+    - composer install --no-interaction
     - composer drupal-scaffold
 
   cache_directories:
@@ -51,5 +57,4 @@ test:
     - vendor/bin/phing build install migrate
 
   override:
-    - vendor/bin/phing test
     - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS
