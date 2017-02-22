@@ -1,6 +1,7 @@
 ---
 # This file contains overrides for the default.conf.yml file included with
 # the geerlingguy/drupal-vm.
+project: "drupal-skeleton"
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.

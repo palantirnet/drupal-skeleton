@@ -26,6 +26,9 @@ This is a template for Drupal 8 projects using the `composer create-project` com
     ```
     composer update --lock
     ```
+1. Add the project name to the drupal-vm config
+  * Edit `conf/Vagrant/config.yml`.
+  * Change the `project` from drupal-skeleton` to `PROJECTNAME`. Note: this should be a url friendly shortname. Your environment will be available at PROJECTNAME.local.
 1. Add our build scripts:
 
   ```
