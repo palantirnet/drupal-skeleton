@@ -21,7 +21,7 @@ dependencies:
     - sed -e "s?%PROJECT_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
     - sudo a2enmod rewrite
     - echo "sendmail_path=/bin/true" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - echo "memory_limit=256M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
+    - echo "memory_limit=-1" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
     - sudo service apache2 restart
     # Generate a GitHub token per project and add it to the CircleCI environment variables using the web UI.
     - composer config --global github-oauth.github.com $GITHUB_TOKEN
