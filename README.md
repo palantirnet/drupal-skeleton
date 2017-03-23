@@ -7,7 +7,7 @@ This is a template for Drupal 8 projects using the `composer create-project` com
 1. Use composer to create a new project based on this skeleton:
 
   ```
-  composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction --repository=https://palantirnet.github.io/drupal-skeleton
+  composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction
   ```
 1. Go into the project:
 
