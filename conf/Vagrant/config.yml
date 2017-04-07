@@ -1,0 +1,65 @@
+---
+# This file contains overrides for the default.conf.yml file included with
+# the geerlingguy/drupal-vm.
+project: "drupal-skeleton"
+
+# If you need to run multiple instances of Drupal VM, set a unique hostname,
+# machine name, and IP address for each instance.
+vagrant_hostname: "{{ project }}.local"
+vagrant_machine_name: "{{ project }}"
+vagrant_ip: 0.0.0.0
+
+
+# A list of synced folders, with the keys 'local_path', 'destination', and
+# a 'type' of [nfs|rsync|smb] (leave empty for slow native shares). See
+# http://docs.drupalvm.com/en/latest/extras/syncing-folders/ for more info.
+vagrant_synced_folders:
+  # The first synced folder will be used for the default Drupal installation, if
+  # any of the build_* settings are 'true'. By default the folder is set to
+  # the drupal-vm folder.
+  - local_path: .
+    destination: "/var/www/{{ project }}.local"
+    type: nfs
+    create: true
+
+# Set 'build_makefile' to 'false' and this to 'true' if you are using a
+# composer based site deployment strategy.
+build_composer: true
+drupal_composer_path: false
+drupal_composer_install_dir: "/var/www/{{ project }}.local"
+drupal_composer_dependencies: []
+
+# Set this to 'true' and 'build_makefile', 'build_composer' to 'false' if you
+# are using Composer's create-project as a site deployment strategy.
+build_composer_project: false
+
+# Set this to 'false' if you don't need to install drupal (using the drupal_*
+# settings below), but instead copy down a database (e.g. using drush sql-sync).
+install_site: false
+
+# Required Drupal settings.
+drupal_core_path: "{{ drupal_composer_install_dir }}/web"
+drupal_db_user: drupal
+drupal_db_password: drupal
+drupal_db_name: drupal
+
+# Comment out any extra utilities you don't want to install. If you don't want
+# to install *any* extras, set this value to an empty set, e.g. `[]`.
+installed_extras:
+  - adminer
+  # - blackfire
+  - drupalconsole
+  # - elasticsearch
+  # - java
+  - mailhog
+  - memcached
+  # - newrelic
+  - nodejs
+  - pimpmylog
+  # - redis
+  # - ruby
+  # - selenium
+  - solr
+  - varnish
+  # - xdebug
+  # - xhprof
