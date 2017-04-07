@@ -11,6 +11,7 @@
 * Vagrant plugins:
   * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
   * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network)
+  * [vagrant-triggers](https://github.com/emyl/vagrant-triggers)
 
 This environment is supported under Mac OS X >= 10.10. This stack quite possibly runs under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup development documentation](https://github.com/palantirnet/development_documentation/blob/master/development/mac-setup.md).
 
