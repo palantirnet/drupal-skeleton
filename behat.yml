@@ -9,6 +9,8 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
       filters:
         tags: "~@skipci"
+  gherkin:
+    cache: ~
   extensions:
     Behat\MinkExtension:
       goutte: ~
