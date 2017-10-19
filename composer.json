@@ -19,6 +19,10 @@
     },
     "repositories": [
         {
+            "type": "vcs",
+            "url": "https://github.com/becw/phing-drush-task"
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -37,7 +41,7 @@
         "drupal/console": "^1.0",
         "drupal/drupal-extension": "^3.1",
         "drush/drush": "9.0.0-beta7 as 8.1.15",
-        "palantirnet/the-build": "^1.0",
+        "palantirnet/the-build": "dev-use-drush-9",
         "palantirnet/the-vagrant": "^1.0"
     },
     "suggest": {
