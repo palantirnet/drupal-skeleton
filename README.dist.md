@@ -1,94 +1,105 @@
-# { Your Project Here. }
-## { Some lengthier description of the project. }
+# { Your Project Name }
 
-## Requirements
+This is the development repository for { your project's } Drupal 8 website. It contains the codebase and an environment to run the site for development.
 
-* PHP >= 5.6
-* [Composer](https://getcomposer.org/)
-* [VMware](http://www.vmware.com/products/personal-desktop-virtualization.html) >= 8.0 or [VirtualBox](https://www.virtualbox.org/) >= 5.0
-* [ansible](https://github.com/ansible/ansible) >= 2.0
+## Table of Contents
+
+* [Development Environment](#development-environment)
+* [Getting Started](#getting-started)
+* [How do I work on this?](#how-do-i-work-on-this)
+* [Drupal Development](#drupal-development)
+* [Deployment](#Deployment)
+* [Styleguide Development](#styleguide-development)
+* [Additional Documentation](#additional-documentation)
+
+## Development Environment
+
+The development environment is based on [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant). To run the environment, you will need:
+
+* Mac OS X >= 10.10. _This stack may run under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup doc [internal]](https://github.com/palantirnet/documentation/wiki/Mac-Setup)._
+* [Composer](https://getcomposer.org)
+* VMWare, or [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
+* [ansible](https://github.com/ansible/ansible) `brew install ansible`
 * [vagrant](https://www.vagrantup.com/) >= 1.8
 * Vagrant plugins:
-  * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
-  * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network)
-  * [vagrant-triggers](https://github.com/emyl/vagrant-triggers)
+  * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
+  * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
+  * [vagrant-triggers](https://github.com/emyl/vagrant-triggers) `vagrant plugin install vagrant-triggers`
 
-This environment is supported under Mac OS X >= 10.10. This stack quite possibly runs under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup development documentation](https://github.com/palantirnet/development_documentation/blob/master/development/mac-setup.md).
+If you update Vagrant, you may need to update your vagrant plugins with `vagrant plugin update`.
 
 ## Getting Started
 
+1. Clone the project from github: `git clone https://github.com/palantirnet/your-project.git`
 1. From inside the project root, run:
- * `composer install`
- * `vagrant up`
-1. You will be prompted for the administration password on your host machine. Obey.
-1. SSH in and install the site:
 
   ```
-    vagrant ssh
-    cd /var/www/drupal-skeleton.local
-    vendor/bin/phing build install migrate
+    composer install --ignore-platform-reqs
+    vagrant up
   ```
-
-1. Visit [drupal-skeleton.local](http://drupal-skeleton.local) in your browser of choice.
+3. You will be prompted for the administration password on your host machine
+4. Log in to the virtual machine (the VM): `vagrant ssh`
+5. From within the VM, build and install the Drupal site: `phing build install migrate`
+1. Visit your site at [drupal-skeleton.local](http://drupal-skeleton.local)
 
 ## How do I work on this?
 
-1. From inside the project root, type `vagrant ssh`
-1. Navigate to `/var/www/drupal-skeleton.local`
-1. Build, install, migrate, and test: `vendor/bin/phing build install migrate test`
+You can edit code, update documentation, and run git commands by opening files directly from your host machine.
 
-This is your project directory; run `composer` and `drush` commands from here, and run build tasks with `vendor/bin/phing`. Avoid using git from here, but if you must, make sure you configure your name and email for proper attribution, and [configure your global .gitignore](https://github.com/palantirnet/development_documentation/blob/master/guidelines/git/gitignore.md):
+To run project-related commands other than `vagrant up` and `vagrant ssh`:
+
+* SSH into the VM with `vagrant ssh`
+* You'll be in your project root, at the path `/var/www/uw-stout.local/`
+* You can run `composer`, `drush`, and `phing` commands from here
+
+To work on the styleguide:
+
+* SSH in to the VM with `vagrant ssh`
+* Go to the styleguide directory: `cd styleguide`; you'll be at the path `/var/www/your-project.local/styleguide`
+* You can run butler from here with `npm run butler`, then view the styleguide in your browser at [your-project.local:4000](http://your-project.local:4000)
+
+Avoid committing to git from within your VM, because your commits won't be properly attributed to you. If you must, make sure you [create a global .gitignore [internal]](https://github.com/palantirnet/documentation/wiki/Using-the-gitignore-File) within your VM at `/home/vagrant/.gitignore`, and configure your name and email for proper attribution:
 
 ```
 git config --global user.email 'me@palantir.net'
 git config --global user.name 'My Name'
 ```
 
-## How do I Drupal?
+## Drupal Development
 
-### The Drupal root
+You can refresh/reset your local Drupal site at any time. SSH into your VM and then:
 
-This project uses [Composer Installers](https://github.com/composer/installers), [DrupalScaffold](https://github.com/drupal-composer/drupal-scaffold), and [the-build](https://github.com/palantirnet/the-build) to assemble our Drupal root in `web`. Dig into `web` to find the both contrib Drupal code (installed by composer) and custom Drupal code (included in the git repository).
+1. Download the most current dependencies: `composer install`
+2. Rebuild your local CSS and Drupal settings file: `phing build`
+3. Reinstall Drupal: `phing install`
+4. Run your migrations: `phing migrate`
+5. ... OR run all three phing targets at once: `phing build install migrate`
 
-### Using drush
+Additional information on developing for Drupal within this environment is in [docs/general/drupal_development.md](docs/general/drupal_development.md).
 
-You can run `drush` commands from anywhere within the repository, as long as you are ssh'ed into the vagrant.
+## Deployment
 
-### Installing and reinstalling Drupal
+@todo This section needs to be customized per-project.
 
-Run `composer install && vendor/bin/phing build install migrate`
+## Styleguide Development
 
-### Adding modules
+* Serve the styleguide and watch for changes:
+  * From your VM: `cd styleguide && npm run butler`
+  * Visit [your-site.local:4000](http://your-site.local:4000)
+  * Hit control+c to stop
 
-* Download modules with composer: `composer require drupal/bad_judgement:^8.1`
-* Enable the module: `drush en bad_judgement`
-* Export the config with the module enabled: `drush config-export`
-* Commit the changes to `composer.json`, `composer.lock`, and `conf/drupal/config/core.extension.yml`. The module code itself will be excluded by the project's `.gitignore`.
+Complete Butler usage is documented in [docs/general/styleguide_development.md](docs/general/styleguide_development.md).
 
-### Patching modules
+## Additional Documentation
 
-Sometimes we need to apply patches from the Drupal.org issue queues. These patches should be applied using composer using the [Composer Patches](https://github.com/cweagans/composer-patches) composer plugin.
+Project-specific:
 
-### Configuring Drupal
+* [Technical Approach](docs/technical_approach.md)
 
-Sometimes it is appropriate to configure specific Drupal variables in Drupal's `settings.php` file. Our `settings.php` file is built from a template found at `conf/drupal/settings.php` during the phing build.
+General:
 
-* Add your appropriately named values to `conf/build.default.properties` (like `drupal.my_setting=example`)
-* Update `conf/drupal/settings.php` to use your new variable (like `$conf['my_setting'] = '${drupal.my_setting}';`)
-* Run `vendor/bin/phing build`
-* Test
-* If the variable requires different values in different environments, add those to the appropriate properties files (`conf/build.vagrant.properties`, `conf/build.circle.properties`, `conf/build.acquia.properties`). Note that you may reference environment variables with `drupal.my_setting=${env.DRUPAL_MY_SETTING}`.
-* Finally, commit your changes.
+* [Drupal Development](docs/general/drupal_development.md)
+* [Styleguide Development](docs/general/styleguide_development.md)
 
-## How do I run tests?
-
-### Behat
-
-Run `vendor/bin/phing test` or `vendor/bin/behat features/installation.feature`.
-
-## Troubleshooting
-
-If, on browsing to `http://drupal-skeleton.local`, you get the following error:
-> drupal-skeleton.local’s server DNS address could not be found.
-
-Then `vagrant up` may have failed half way through. When this happens, the `vagrant-hostmanager` plugin does not add the hostname to `/etc/hosts`. Try halting and re-upping the machine: `vagrant halt && vagrant up`. Reload is not sufficient to trigger updating the hosts file.
+----
+Copyright 2017 Palantir.net, Inc.
