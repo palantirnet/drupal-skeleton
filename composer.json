@@ -15,7 +15,7 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": "true"
+        "sort-packages": true
     },
     "repositories": [
         {
