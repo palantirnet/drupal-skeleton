@@ -71,6 +71,9 @@ Enter a short name for your project [example] :
 * Update the `README.md` based on the contents of `README.dist.md`
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
+* Access your database via phpMyAdmin at [http://example.local/phpmyadmin](http://example.local/phpmyadmin) using the username `drupal` and the password `drupal`
+* View email sent by your development site at [http://example.local:8025](http://example.local:8025)
+* View your Solr 4.5 server at [http://example.local:8983/solr](http://example.local:8983/solr)
 * Note that renaming or moving this `example/` directory can break your Vagrant machine
 
 ## Full Project Setup
