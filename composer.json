@@ -12,6 +12,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
+        "platform": {
+            "php": "7.0.8"
+        },
         "preferred-install": {
             "*": "dist"
         },
