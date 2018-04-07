@@ -75,68 +75,82 @@ Enter a short name for your project [example] :
 
 ## Full Project Setup
 
-1. Use composer to create a new project based on this skeleton:
+### Create a project with a custom name
 
-  ```
-  composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction
-  ```
-2. Go into the project:
+Use composer to create a new project based on this skeleton, replacing `PROJECTNAME` with the short name for your project:
 
-  ```
-  cd PROJECTNAME
-  ```
-3. Update the `README`:
+```
+composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction
+```
+
+### Update your documentation
+
+Update the `README`:
+
   * Remove the `README.md`
   * Rename the `README.dist.md` to `README.md`
   * Edit as you like
-4. Update the `composer.json`:
+
+Update the `composer.json`:
+
   * Change the `name` from `palantirnet/drupal-skeleton` to `palantirnet/PROJECTNAME`
   * Update the `description` with a brief description of your project.
   * Update the lock file so composer doesn't complain:
 
-    ```
+  ```
     composer update --lock
-    ```
-5. Add our Vagrant development environment:
-
-  ```
-  vendor/bin/the-vagrant-installer
-  ```
-6. Add our build scripts:
-
-  ```
-  vendor/bin/the-build-installer
-  ```
-7. Initialize git and commit your work to the `develop` branch:
-
-  ```
-  git init
-  git checkout -b develop
-  git commit --allow-empty -m "Initial commit."
-  git add --all
-  git commit -m "Add the skeleton."
-  ```
-8. Push your work up to an empty repository on GitHub
-
-  ```
-  git remote add origin git@github.com:palantirnet/PROJECTNAME.git
-  git push -u origin develop
   ```
 
-Now you should be ready to follow the instructions in YOUR `README.md` to start up the project. You'll probably want to do the initial Drupal installation at this point to generate a set of Drupal config files.
+### Commit your work to git
 
-9. Start up your Vagrant VM:
+Initialize a git repository and commit your work to the `develop` branch:
 
-  ```
-  vagrant up
-  vagrant ssh
-  ```
-10. Install Drupal:
+```
+git init
+git checkout -b develop
+git commit --allow-empty -m "Initial commit."
+git add --all
+git commit -m "Add the skeleton."
+```
 
-  ```
-  vendor/bin/phing build install
-  ```
-11. Log into Drupal in your browser and do some basic config customizations:
+Create an empty repository on [GitHub](https://github.com/) for your work. Then, push your work up to the repository:
+
+```
+git remote add origin git@github.com:palantirnet/PROJECTNAME.git
+git push -u origin develop
+```
+
+### Manage your Vagrant VM
+
+* Start or wake up your Vagrant VM: `vagrant up`
+* Log in: `vagrant ssh`
+* Log out (just like you would from any other ssh session): `exit`
+* Shut down the VM: `vagrant halt`
+* Check whether your VM is up or not: `vagrant status`
+* More information about this Vagrant setup is available at [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
+* See also the [official Vagrant documentation](https://www.vagrantup.com/docs/index.html)
+
+### Install Drupal from the command line
+
+When using [drush](https://www.drush.org/) or [phing](https://www.phing.info/) to manage your Drupal site, you will need to log into the vagrant box (`vagrant ssh`).
+
+You can use the phing scripts provided by `palantirnet/the-build`:
+
+```
+vendor/bin/phing build install
+```
+
+Or, you can use drush directly:
+
+```
+drush site-install
+```
+
+### Manage your configuration in code
+
+Drupal 8 supports exporting all of your configuration. On top of this core process, we use the [config_installer profile](https://www.drupal.org/project/config_installer) to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process.
+
+1. Log into Drupal in your browser and do some basic config customizations:
 
   * Set the site timezone
   * Disable per-user timezones
@@ -145,24 +159,24 @@ Now you should be ready to follow the instructions in YOUR `README.md` to start 
   * Set the admin email address (your VM will trap all emails)
   * Turn the Cron interval down to "never"
   * Uninstall unnecessary modules (e.g. Search, History, Comment)
-12. Export your config:
+2. Export your config:
 
   ```
   drush cex -y
   ```
-13. Update the install profile in your default build properties (`conf/build.default.properties`):
+3. Update the install profile in your default build properties (`conf/build.default.properties`):
 
   ```
   drupal.install_profile=config_installer
   ```
-14. You should have a ton of new `*.yml` files in `conf/drupal/config`. Add them, and this config change, to git:
+4. You should have a ton of new `*.yml` files in `conf/drupal/config`. Add them, and this config change, to git:
 
   ```
   git add conf/
   git ci -m "Initial Drupal configuration."
   git push
   ```
-15. Reinstall your site and verify that your config is ready to go:
+5. Reinstall your site and verify that your config is ready to go:
 
   ```
   vendor/bin/phing build install
@@ -170,6 +184,8 @@ Now you should be ready to follow the instructions in YOUR `README.md` to start 
 
 ## More information
 
-* Site build and install process: [the-build](https://github.com/palantirnet/the-build)
-* Development environment setup: [the-vagrant](https://github.com/palantirnet/the-vagrant)
-* Managing config: [the d8-lab](https://github.com/palantirnet/d8-lab/blob/master/managing-config.md)
+* Site build and install process: [palantirnet/the-build](https://github.com/palantirnet/the-build)
+* Development environment setup: [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
+
+----
+Copyright 2016, 2017, 2018 Palantir.net, Inc.
