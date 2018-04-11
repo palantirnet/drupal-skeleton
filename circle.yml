@@ -23,8 +23,6 @@ dependencies:
     - echo "memory_limit=256M" > "/opt/circleci/php/$(phpenv version-name)/etc/conf.d/memory.ini"
     # Disable XDebug
     - rm "/opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini"
-    # Start the PHP development server
-    - nohup php -S localhost:8000 -t web/ > "${CIRCLE_ARTIFACTS}/phpd.log" 2>&1 &
 
   override:
     - composer install --no-interaction
@@ -34,6 +32,8 @@ dependencies:
 
 test:
   pre:
+    # Start the PHP development server
+    - nohup php -S localhost:8000 -t web/ > "${CIRCLE_ARTIFACTS}/phpd.log" 2>&1 &
     - >
         vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml
         -Dbuild.artifact_mode=symlink
