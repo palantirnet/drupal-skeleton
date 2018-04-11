@@ -1,0 +1,27 @@
+# This circle.yml is for testing the drupal-skeleton. For project-specific
+# testing, use the circle.yml installed by palantirnet/the-build.
+
+version: 2
+jobs:
+  build:
+    working_directory: ~/drupal-skeleton
+    docker:
+      - image: circleci/php:7.1-node-browsers
+      - image: tkuchiki/delayed-mysql
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: drupal
+    steps:
+      - checkout
+      - add_ssh_keys
+      - run:
+          name: Composer install
+          command: composer install --no-interaction
+      - run:
+          name: Wait for DB
+          # preinstalled in circleci/* docker image
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: MySQL version
+          command: mysql --version
