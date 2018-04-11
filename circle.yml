@@ -5,7 +5,7 @@ machine:
   hosts:
     drupal-skeleton.local: 127.0.0.1
   php:
-    version: 5.6.22
+    version: 7.1.9
   environment:
     PALANTIR_ENVIRONMENT: circle
 
@@ -17,22 +17,14 @@ general:
 
 dependencies:
   pre:
-    # Workaround for broken symlink at /usr/lib/apache2/modules/libphp5.so
-    - sudo unlink /usr/lib/apache2/modules/libphp5.so
-    - sudo ln -s /opt/circleci/php/5.6.22/usr/lib/apache2/modules/libphp5.so /usr/lib/apache2/modules/libphp5.so
-    # Disable XDebug
-    - rm "/opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini"
-    # Enable the Apache rewrite module
-    - sudo a2enmod rewrite
-    # Set up the project webroot
-    - sudo cp $HOME/$CIRCLE_PROJECT_REPONAME/conf/apache.circle.conf /etc/apache2/sites-available/000-default.conf
-    - sudo sed -e "s?%PROJECT_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     # Configure PHP
     - echo "sendmail_path=/bin/true" >> "/opt/circleci/php/$(phpenv version-name)/etc/php.ini"
     - echo "date.timezone=America/Chicago" >> "/opt/circleci/php/$(phpenv version-name)/etc/php.ini"
     - echo "memory_limit=256M" > "/opt/circleci/php/$(phpenv version-name)/etc/conf.d/memory.ini"
-    # Finally, restart Apache
-    - sudo service apache2 restart
+    # Disable XDebug
+    - rm "/opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini"
+    # Start the PHP development server
+    - nohup php -S localhost:8000 -t web/ > "${CIRCLE_ARTIFACTS}/phpd.log" 2>&1 &
 
   override:
     - composer install --no-interaction
@@ -59,7 +51,9 @@ test:
         -Ddrupal.uri=http://drupal-skeleton.local
         -Ddrupal.hash_salt=temporary
         -Ddrupal.root=web
-    - vendor/bin/phing build install migrate
+    - vendor/bin/phing build
+    - vendor/bin/phing install
+    - vendor/bin/phing migrate
 
   override:
-    - vendor/bin/behat --strict --format=junit --out=$CIRCLE_TEST_REPORTS
+    - vendor/bin/behat --profile=circleci --suite=default --strict --format=junit --out=$CIRCLE_TEST_REPORTS
