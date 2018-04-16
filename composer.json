@@ -30,7 +30,7 @@
         "composer/installers": "^1.0",
         "drupal-composer/drupal-scaffold": "^2.3",
         "drupal/coder": "^8.0",
-        "drupal/config_installer": "^1.5",
+        "drupal/config_installer": "^1.7",
         "drupal/core": "^8.5"
     },
     "require-dev": {
@@ -39,8 +39,8 @@
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
         "drupal/drupal-extension": "^3.1",
-        "palantirnet/the-build": "^1.5",
-        "palantirnet/the-vagrant": "^2.0"
+        "palantirnet/the-build": "^1.7",
+        "palantirnet/the-vagrant": "^2.0.1"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
