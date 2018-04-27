@@ -12,15 +12,15 @@ You should have the development dependencies installed on your Mac before you be
 
 The development dependencies are:
 
+* PHP 7
+  * Check your PHP version from the command line using `php --version`
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
 * [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+  * We recommend installing with [homebrew](https://brew.sh/): `brew install ansible`
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant plugins:
-  * [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager)
-  * [auto_network](https://github.com/oscar-stack/vagrant-auto_network)
-  * [triggers](https://github.com/emyl/vagrant-triggers)
+* Vagrant plugins: [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager), [auto_network](https://github.com/oscar-stack/vagrant-auto_network), and [triggers](https://github.com/emyl/vagrant-triggers)
   * Install all three with this command: `vagrant plugin install vagrant-hostmanager vagrant-auto_network vagrant-triggers`
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
