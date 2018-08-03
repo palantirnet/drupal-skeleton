@@ -20,8 +20,8 @@ The development dependencies are:
   * We recommend installing with [homebrew](https://brew.sh/): `brew install ansible`
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant plugins: [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager), [auto_network](https://github.com/oscar-stack/vagrant-auto_network), and [triggers](https://github.com/emyl/vagrant-triggers)
-  * Install all three with this command: `vagrant plugin install vagrant-hostmanager vagrant-auto_network vagrant-triggers`
+* Vagrant plugins: [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager) and [auto_network](https://github.com/oscar-stack/vagrant-auto_network)
+  * Install both with this command: `vagrant plugin install vagrant-hostmanager vagrant-auto_network`
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
