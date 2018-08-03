@@ -18,13 +18,12 @@ The development environment is based on [palantirnet/the-vagrant](https://github
 
 * Mac OS X >= 10.10. _This stack may run under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup doc [internal]](https://github.com/palantirnet/documentation/wiki/Mac-Setup)._
 * [Composer](https://getcomposer.org)
-* VMWare, or [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
+* [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
 * [ansible](https://github.com/ansible/ansible) `brew install ansible`
-* [vagrant](https://www.vagrantup.com/) >= 1.8
+* [vagrant](https://www.vagrantup.com/) >= 2.1.0
 * Vagrant plugins:
   * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
   * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
-  * [vagrant-triggers](https://github.com/emyl/vagrant-triggers) `vagrant plugin install vagrant-triggers`
 
 If you update Vagrant, you may need to update your vagrant plugins with `vagrant plugin update`.
 
@@ -34,7 +33,6 @@ If you update Vagrant, you may need to update your vagrant plugins with `vagrant
 1. From inside the project root, run:
 
   ```
-    composer install --ignore-platform-reqs
     vagrant up
   ```
 3. You will be prompted for the administration password on your host machine

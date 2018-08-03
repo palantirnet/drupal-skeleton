@@ -13,7 +13,7 @@
     "prefer-stable": true,
     "config": {
         "platform": {
-            "php": "7.0.8"
+            "php": "7.2"
         },
         "preferred-install": {
             "*": "dist"
@@ -28,29 +28,25 @@
     ],
     "require": {
         "composer/installers": "^1.0",
-        "drupal-composer/drupal-scaffold": "^2.3",
-        "drupal/coder": "^8.0",
-        "drupal/config_installer": "^1.7",
-        "drupal/core": "^8.5"
+        "drupal-composer/drupal-scaffold": "^2.5.0",
+        "drupal/config_installer": "^1.8",
+        "drupal/core": "^8.0@stable"
     },
     "require-dev": {
         "behat/behat": "^3.1",
         "behat/mink": "^1.7",
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
+        "drupal/coder": "^8.0",
         "drupal/drupal-extension": "^3.1",
         "palantirnet/the-build": "^1.7",
-        "palantirnet/the-vagrant": "^2.0.1"
+        "palantirnet/the-vagrant": "^2.2"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib."
     },
     "conflict": {
         "drupal/drupal": "*"
-    },
-    "scripts": {
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-        "post-create-project-cmd": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     },
     "extra": {
         "installer-paths": {
@@ -59,6 +55,14 @@
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
+        },
+        "drupal-scaffold": {
+            "excludes": [
+                ".htaccess"
+            ],
+            "initial": {
+                ".htaccess": ".htaccess"
+            }
         }
     }    
 }
