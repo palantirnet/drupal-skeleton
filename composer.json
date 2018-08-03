@@ -28,7 +28,7 @@
     ],
     "require": {
         "composer/installers": "^1.0",
-        "drupal-composer/drupal-scaffold": "^2.3",
+        "drupal-composer/drupal-scaffold": "^2.5.0",
         "drupal/coder": "^8.0",
         "drupal/config_installer": "^1.7",
         "drupal/core": "^8.5"
@@ -47,10 +47,6 @@
     },
     "conflict": {
         "drupal/drupal": "*"
-    },
-    "scripts": {
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-        "post-create-project-cmd": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     },
     "extra": {
         "installer-paths": {
