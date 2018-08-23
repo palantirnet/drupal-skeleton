@@ -64,5 +64,15 @@
                 ".htaccess": ".htaccess"
             }
         }
-    }    
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@init-styleguide"
+        ],
+        "init-styleguide": [
+            "[[ ! -d styleguide ]] && git clone git@github.com:palantirnet/palantir-lab.git styleguide || true",
+            "rm -rf styleguide/.git/",
+            "@composer install --working-dir=styleguide --ignore-platform-reqs --no-interaction"
+        ]
+    }
 }
