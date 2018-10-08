@@ -106,12 +106,6 @@ jobs:
               -Ddrupal.root=web
               -Dinstall_now=y
       - run:
-          name: Build Drupal's settings.php
-          command: vendor/bin/phing build
-      - run:
-          name: Install Drupal
-          command: vendor/bin/phing install
-      - run:
           name: Run Behat tests
           command: |
               nohup php -S ${CIRCLE_PROJECT_REPONAME}.local:8000 -t $(pwd)/web/ > /tmp/artifacts/phpd.log 2>&1 &
