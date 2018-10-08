@@ -91,6 +91,7 @@ jobs:
               vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml
               -Dbuild.artifact_mode=symlink
               -Dbuild.test_output=/dev/null
+              -Dbuild.host=other
               -Ddrupal.site_name=drupal-skeleton
               -Ddrupal.profile=standard
               -Ddrupal.modules_enable=''
