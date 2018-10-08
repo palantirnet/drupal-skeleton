@@ -100,7 +100,6 @@ jobs:
               -Ddrupal.database.password=''
               -Ddrupal.database.host=127.0.0.1
               -Ddrupal.settings.file_public_path=sites/default/files
-              -Ddrupal.settings.file_private_path=
               -Ddrupal.twig.debug=false
               -Ddrupal.uri=http://${CIRCLE_PROJECT_REPONAME}.local:8000
               -Ddrupal.hash_salt=temporary
