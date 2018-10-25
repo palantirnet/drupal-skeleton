@@ -39,7 +39,7 @@
         "behat/mink-goutte-driver": "^1.2",
         "drupal/coder": "^8.0",
         "drupal/drupal-extension": "^3.1",
-        "palantirnet/the-build": "^1.7",
+        "palantirnet/the-build": "^1.8",
         "palantirnet/the-vagrant": "^2.2"
     },
     "suggest": {
