@@ -36,3 +36,9 @@ styleguide/source/code/css/*.css
 # Ignore sculpin output
 styleguide/output_dev/
 styleguide/output_prod/
+
+# Capture styleguide lock files
+!styleguide/composer.lock
+!styleguide/package-lock.json
+!styleguide/yarn.lock
+
