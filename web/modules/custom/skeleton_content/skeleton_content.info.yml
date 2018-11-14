@@ -1,0 +1,19 @@
+name: Skeleton Default Content
+type: module
+description: Default content for the skeleton.
+core: 8.x
+package: Custom
+dependencies:
+  - default_content
+
+default_content:
+  node:
+    - 3ba3272b-43c2-44ed-9c86-e66d9eb5e017
+    - 731e92c3-5573-4606-9bd2-c757958f0dca
+  taxonomy_term:
+    - 18c3ce5b-31d7-4564-8125-70eb10c39e7e
+    - c5537626-0622-4985-8dab-5ba33c89dcc1
+  menu_link_content:
+    - a3b97e02-19bf-4362-b2b4-5be211b5b1a3
+  file:
+    - 953241e3-ab8d-488d-a990-7b67d07c4870
