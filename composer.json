@@ -30,6 +30,7 @@
         "composer/installers": "^1.0",
         "drupal-composer/drupal-scaffold": "^2.5.0",
         "drupal/config_installer": "^1.8",
+        "drupal/config_split": "^1.4",
         "drupal/core": "^8.0@stable"
     },
     "require-dev": {
