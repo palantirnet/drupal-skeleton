@@ -8,8 +8,10 @@ From outside the VM, you can find the files for:
 * Custom modules at `web/modules/custom/`
 * Drupal contrib dependencies, managed by composer, at `web/modules/contrib/`
 * Library dependencies, managed by composer, at `vendor/`
-* Drupal config YAML files at `conf/drupal/config/`
-* Template files for Drupal `settings.php` at `conf/drupal/settings.php` and `conf/drupal/settings.acquia.php`
+* Drupal config YAML files at:
+    * `config/sites/default` for config which is shared across all environments
+    * `config/config_split/<environment>` for environment-specific config (see "Configure Drupal" below)
+* Template files for Drupal `settings.php` at `conf/drupal/settings.php` and `conf/drupal/settings.<hosting-platform>.php`
 * Behat tests at `features/`
 
 From within the VM:
@@ -45,7 +47,45 @@ Patches from the Drupal.org issue queues should be applied using composer using 
 
 ## Configure Drupal
 
-Drupal config YAML files live at `conf/drupal/config/`. Import the default config with `drush config-import`; export your changes from Drupal with `drush config-export`.
+### Config Split
+
+This project uses [config_split](https://www.drupal.org/project/config_split) to set different configuration for different environments. For example, by default, devel is enabled for the local development environment.
+ 
+Existing splits are defined by a YML file at `config/sites/default/config_split.config_split.<environment>.yml`, and the environment-specific configuration files exist inside the environment split directory (`config/config_split/<environment>`). 
+
+#### Exporting shared configuration for all environments
+
+1. Make any changes in the Drupal UI or via drush as usual
+1. Use drush to export the shared configuration to `config/sites/default`
+
+#### Exporting environment-specific config
+
+1. If you're exporting configuration for an environment other than development, you'll need to enable the split for that environment locally.  
+    1. See your `settings.php` file around line #30, replace "development" with the environment your configuring (either "staging" or "production").
+    1. Run `drush cr` then `drush cim -y` to get a clean environment.
+    1. You should now notice that your local development modules are disabled, and any other environment-specific modules (i.e. purge) are now enabled.
+    1. Visit `/admin/config/development/configuration/config-split` to see that your environment's split is active.
+1. Make any changes you'd like in the Drupal UI, as usual.
+1. _Preview_ your development only configuration changes by running `drush cex` (but don't hit 'y').
+1. Visit the `/admin/config/development/configuration/config-split` for the environment you're configuring.
+1. Add _either_ the whole module or specific config files that you'd like to export specifically for this environment in the ["Blacklist"](https://www.drupal.org/docs/8/modules/configuration-split/blacklist). (Be sure not to overwrite other options in the list.) Then save the form.
+    * The term "Blacklist" is a little confusing here, but think of it as "blacklisting" config from the global directory (and "whitelisting" it into the specific environment).
+    * The "Greylist" is used to target a configuration object having a different value than that for the shared configuration. (i.e. Error logging level set to show everything locally, but show nothing everywhere else.)
+    * For more details on Config Split, [read the docs](https://www.drupal.org/docs/8/modules/configuration-split).
+1. Run `drush cex -y` to export the environment-specific config.
+1. Carefully review the changes in git before pushing. Be sure not to commit any changes you weren't expecting.
+1. If your config should apply to multiple environments (i.e. "staging" and "production", you'll need to repeat this process for those environments
+1. Change your `settings.php` back to "development" when finished
+
+#### Importing development-only config
+
+* Building the site from scratch
+    1. Once you have build your site from your current branch's configuration, run `drush cim -y` to import the development-only configuration
+* Building from production data
+    1. Once you have built your site, run `drush cim -y` to import the shared configuration from your current branch
+    1. Run `drush cim -y` a second time to import the development-only configuration 
+
+### Setting specific config variables
 
 Some specific config variables are managed on a per-environment basis using `settings.php` templating, which is part of the `phing build` step. See:
 
