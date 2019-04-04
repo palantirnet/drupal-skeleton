@@ -94,10 +94,16 @@ Update the `README`:
   * Rename the `README.dist.md` to `README.md`
   * Edit as you like
 
+Update the `LICENSE.txt`:
+
+  * Keep the current license if you're planning to use the MIT license
+  * Remove or replace this file for any other license
+
 Update the `composer.json`:
 
   * Change the `name` from `palantirnet/drupal-skeleton` to `palantirnet/PROJECTNAME`
   * Update the `description` with a brief description of your project.
+  * Update the `license` property based on how your work will be licensed
   * Update the lock file so composer doesn't complain:
 
   ```
