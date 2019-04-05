@@ -1,5 +1,5 @@
-# This circle.yml is for testing the drupal-skeleton. For project-specific
-# testing, use the circle.yml installed by palantirnet/the-build.
+# This CircleCI configuration is for testing the drupal-skeleton. For project-specific
+# testing, use the configuration installed by palantirnet/the-build.
 
 version: 2
 jobs:
@@ -7,14 +7,17 @@ jobs:
     working_directory: ~/drupal-skeleton
     docker:
       - image: circleci/php:7.1-node-browsers
-      - image: tkuchiki/delayed-mysql
+      - image: circleci/mysql:5.7-ram
+        command: --max_allowed_packet=16M
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: circle_test
 
     environment:
-      - PALANTIR_ENVIRONMENT: circle
+      - PALANTIR_ENVIRONMENT: circleci
+      - DRUPAL_ROOT: web
+      - NODE_VERSION: 8
 
     steps:
       - run:
@@ -25,13 +28,9 @@ jobs:
           command: sudo docker-php-ext-install pdo_mysql gd
       - run:
           name: Configure PHP
-          command: echo "sendmail_path=/bin/true" | sudo tee -a "/usr/local/etc/php/php.ini"
-      - run:
-          name: PHP version
-          command: php -r 'phpinfo(INFO_GENERAL | INFO_CREDITS | INFO_CONFIGURATION | INFO_MODULES);'
-      - run:
-          name: Composer version
-          command: composer --version
+          command: |
+            echo "sendmail_path=/bin/true" | sudo tee -a "/usr/local/etc/php/php.ini"
+            echo "memory_limit=-1" | sudo tee -a "/usr/local/etc/php/php.ini"
       - run:
           name: Create artifacts directory
           command: mkdir /tmp/artifacts
@@ -39,24 +38,28 @@ jobs:
           name: Configure URL in /etc/hosts
           command: echo 127.0.0.1 ${CIRCLE_PROJECT_REPONAME}.local | sudo tee -a /etc/hosts
 
-      # Composer package cache
-      - restore_cache:
-          keys:
-            - composer-v1-
       # Source cache
       - restore_cache:
           keys:
             - source-v1-{{ .Branch }}
             - source-v1-
-      # Composer dependency cache
-      - restore_cache:
-          keys:
-            - dependencies-v1-{{ .Branch }}-
 
       - checkout
+
+      # Source cache - update when branch changes
+      - save_cache:
+          key: source-v1-{{ .Branch }}
+          paths:
+            - ".git"
+
+      # Composer package cache
+      - restore_cache:
+          keys:
+            - composer-v1-
+
       - run:
-          name: Composer install / update
-          command: composer update --no-interaction --prefer-dist
+          name: Composer install
+          command: composer install --no-interaction --prefer-dist
 
       # Composer package cache - update when the contents of the Composer cache directory
       # change
@@ -65,57 +68,39 @@ jobs:
           key: composer-v1-{{ checksum "/tmp/composer-cache.txt" }}
           paths:
               - ~/.composer
-      # Source cache - update when branch changes
-      - save_cache:
-          key: source-v1-{{ .Branch }}
-          paths:
-            - ".git"
-      # Composer dependency cache - update for every commit, because when this cache gets
-      # polluted, builds will repeatedly fail. For this project,
-      # the entire web/ directory is set up by the composer install process.
-      - save_cache:
-          key: dependencies-v1-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - composer.lock
-            - vendor
-            - web
-            - drush
+
+      - run:
+          name: Install the-build in the project
+          command: printf 'http://drupal-skeleton.local\nother\nn' | vendor/bin/the-build-installer
 
       - run:
           name: Wait for DB
           # Dockerize is preinstalled in circleci/* docker image
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-      - run:
-          name: Install and configure the-build
-          command: >
-              vendor/bin/phing -f vendor/palantirnet/the-build/tasks/install.xml
-              -Dbuild.artifact_mode=symlink
-              -Dbuild.test_output=/dev/null
-              -Ddrupal.site_name=drupal-skeleton
-              -Ddrupal.profile=standard
-              -Ddrupal.modules_enable=''
-              -Ddrupal.database.database=circle_test
-              -Ddrupal.database.username=root
-              -Ddrupal.database.password=''
-              -Ddrupal.database.host=127.0.0.1
-              -Ddrupal.settings.file_public_path=sites/default/files
-              -Ddrupal.settings.file_private_path=
-              -Ddrupal.twig.debug=false
-              -Ddrupal.uri=http://${CIRCLE_PROJECT_REPONAME}.local:8000
-              -Ddrupal.hash_salt=temporary
-              -Ddrupal.root=web
+
       - run:
           name: Build Drupal's settings.php
           command: vendor/bin/phing build
       - run:
           name: Install Drupal
-          command: vendor/bin/phing install
+          command: printf 'y' | vendor/bin/phing install -Ddrupal.validate_clean_config.bypass=yes -Ddrupal.sites.default.profile=standard
       - run:
           name: Run Behat tests
           command: |
               nohup php -S ${CIRCLE_PROJECT_REPONAME}.local:8000 -t $(pwd)/web/ > /tmp/artifacts/phpd.log 2>&1 &
-              vendor/bin/behat --profile=circle --suite=default --strict --format=junit --out=/tmp/artifacts
+              vendor/bin/behat --profile=circleci --suite=default --strict --format=junit --out=/tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
       - store_test_results:
           path: /tmp/artifacts
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - /.*(readme|documentation).*/
