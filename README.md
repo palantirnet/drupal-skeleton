@@ -45,9 +45,11 @@ Enter a short name for your project [example] :
   vendor/bin/the-vagrant-installer
   ```
 
-3. Also from the project directory, run the script from `palantirnet/the-build` to set up the default Drupal variables:
+3. SSH into the VM and run the script from `palantirnet/the-build` to set up the default Drupal variables:
 
   ```
+  vagrant up
+  vagrant ssh
   vendor/bin/the-build-installer
   ```
 
