@@ -45,27 +45,22 @@ Enter a short name for your project [example] :
   vendor/bin/the-vagrant-installer
   ```
 
-3. SSH into the VM and run the script from `palantirnet/the-build` to set up the default Drupal variables:
+3. From your host machine, run the script from `palantirnet/the-build` to set up the default Drupal variables:
+
+  ```
+  vendor/bin/the-build-installer
+  ```
+
+4. Use the phing script installed by `palantirnet/the-build` to create the `settings.php` file for Drupal from within the VM.
 
   ```
   vagrant up
   vagrant ssh
-  vendor/bin/the-build-installer
-  ```
-
-4. Use the phing script installed by `palantirnet/the-build` to create the `settings.php` file for Drupal
-
-  ```
   vendor/bin/phing build
   ```
-5. Start the Vagrant environment:
-
-  ```
-  vagrant up
-  ```
-6. In your web browser, visit [http://example.local](http://example.local) -- if you type in this URL, you will need to include the `http://` portion for your browser find the site.
-7. You should see the Drupal installer screen here. Follow the instructions to complete the installation.
-8. _Optional:_ Log in to the Vagrant environment with `vagrant ssh`. You can run Drush commands from here, like `drush status`.
+5. In your web browser, visit [http://example.local](http://example.local) -- if you type in this URL, you will need to include the `http://` portion for your browser find the site.
+6. You should see the Drupal installer screen here. Follow the instructions to complete the installation.
+7. _Optional:_ Log in to the Vagrant environment with `vagrant ssh`. You can run Drush commands from here, like `drush status`.
 
 ### Extra Credit
 
