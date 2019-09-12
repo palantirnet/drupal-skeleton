@@ -4,7 +4,7 @@ This is a template for starting Drupal 8 projects using the `composer create-pro
 
 ## Quick start
 
-This "quick start" section will show you how to set up a local server accessible at `http://example.local` with Drupal ready to install.
+This "quick start" section will show you how to set up a local server accessible at `http://example.ddev.site` with Drupal ready to install.
 
 ### Preface
 
@@ -16,12 +16,15 @@ The development dependencies are:
   * Check your PHP version from the command line using `php --version`
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
-* [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-  * We recommend installing with [homebrew](https://brew.sh/): `brew install ansible`
-* [Vagrant](https://www.vagrantup.com/downloads.html)
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant plugins: [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager) and [auto_network](https://github.com/oscar-stack/vagrant-auto_network)
-  * Install both with this command: `vagrant plugin install vagrant-hostmanager vagrant-auto_network`
+
+### **DDEV**
+
+* [Docker](https://ddev.readthedocs.io/en/stable/users/docker_installation/)
+  * We recommend installing with [homebrew](https://brew.sh/): `brew cask install docker`
+* [DDEV](https://ddev.readthedocs.io/en/stable/#installation)
+  * We recommend installing with [homebrew](https://brew.sh/): `brew tap drud/ddev && brew install ddev`
+* [NFS](https://ddev.readthedocs.io/en/stable/users/performance/#macos-nfs-setup)
+  * [Download & run this script](https://raw.githubusercontent.com/drud/ddev/master/scripts/macos_ddev_nfs_setup.sh)
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
@@ -64,7 +67,9 @@ Enter a short name for your project [example] :
 
 ### Extra Credit
 
-* Log into the vagrant box (`vagrant ssh`) and export the Drupal configuration (`drush config-export`)
+* Running drush commands (`ddev . drush status`)
+* Importing a new database (`ddev import-db --src=<database_file.tar.gz>`)
+* Log into docker image (`ddev ssh`) and export the Drupal configuration (`drush config-export`)
 * Update the `README.md` based on the contents of `README.dist.md`
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
