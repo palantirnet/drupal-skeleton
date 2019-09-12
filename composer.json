@@ -12,7 +12,7 @@
     "prefer-stable": true,
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.3"
         },
         "preferred-install": {
             "*": "dist"
@@ -40,8 +40,7 @@
         "behat/mink-goutte-driver": "^1.2",
         "drupal/coder": "~8.2.12",
         "drupal/drupal-extension": "^3.1",
-        "palantirnet/the-build": "^2.0",
-        "palantirnet/the-vagrant": "^2.3"
+        "palantirnet/the-build": "^2.0"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib.",
