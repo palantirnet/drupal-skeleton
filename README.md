@@ -59,6 +59,17 @@ Enter a short name for your project [example] :
 6. You should see the Drupal installer screen here. Follow the instructions to complete the installation.
 7. _Optional:_ You can run Drush commands, like `ddev . drush status`.
 
+### Troubleshooting
+
+#### NFS error
+Because both Vagrant and DDEV are using NFS, if your project was running with Vagrant before:
+* Edit `/etc/exports` file
+* Comment out the Vagrant line
+* Add `/Users/<username> -alldirs -mapall=501:20 localhost`
+* Restart NFS service `sudo nfsd restart`
+* Test that DDEV can mount NFS `ddev debug nfsmount`
+* Run `ddev restart`
+
 ### Extra Credit
 
 * Running drush commands (`ddev . drush status`)
