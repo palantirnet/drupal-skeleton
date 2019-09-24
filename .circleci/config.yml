@@ -22,7 +22,7 @@ jobs:
     steps:
       - run:
           name: Install packages
-          command: sudo apt-get install -y libpng-dev mysql-client
+          command: sudo apt-get install -y libpng-dev default-mysql-client
       - run:
           name: Install PHP extensions
           command: sudo docker-php-ext-install pdo_mysql gd
