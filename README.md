@@ -4,7 +4,7 @@ This is a template for starting Drupal 8 projects using the `composer create-pro
 
 ## Quick start
 
-This "quick start" section will show you how to set up a local server accessible at `http://example.local` with Drupal ready to install.
+This "quick start" section will show you how to set up a local server accessible at `http://example.ddev.site` with Drupal ready to install.
 
 ### Preface
 
@@ -16,12 +16,15 @@ The development dependencies are:
   * Check your PHP version from the command line using `php --version`
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
-* [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-  * We recommend installing with [homebrew](https://brew.sh/): `brew install ansible`
-* [Vagrant](https://www.vagrantup.com/downloads.html)
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant plugins: [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager) and [auto_network](https://github.com/oscar-stack/vagrant-auto_network)
-  * Install both with this command: `vagrant plugin install vagrant-hostmanager vagrant-auto_network`
+
+### **DDEV**
+
+* [Docker](https://ddev.readthedocs.io/en/stable/users/docker_installation/)
+  * We recommend installing with [homebrew](https://brew.sh/): `brew cask install docker`
+* [DDEV](https://ddev.readthedocs.io/en/stable/#installation)
+  * We recommend installing with [homebrew](https://brew.sh/): `brew tap drud/ddev && brew install ddev`
+* [NFS](https://ddev.readthedocs.io/en/stable/users/performance/#macos-nfs-setup)
+  * [Download & run this script](https://raw.githubusercontent.com/drud/ddev/master/scripts/macos_ddev_nfs_setup.sh)
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
@@ -38,12 +41,6 @@ Enter a short name for your project [example] :
   ```
   composer create-project palantirnet/drupal-skeleton example dev-drupal8 --no-interaction
   ```
-2. Go into your new project directory and run the script from `palantirnet/the-vagrant` to set up a Vagrant environment:
-
-  ```
-  cd example
-  vendor/bin/the-vagrant-installer
-  ```
 
 3. From your host machine, run the script from `palantirnet/the-build` to set up the default Drupal variables:
 
@@ -54,17 +51,30 @@ Enter a short name for your project [example] :
 4. Use the phing script installed by `palantirnet/the-build` to create the `settings.php` file for Drupal from within the VM.
 
   ```
-  vagrant up
-  vagrant ssh
+  ddev config --nfs-mount-enabled=true
+  ddev start
   vendor/bin/phing build
   ```
-5. In your web browser, visit [http://example.local](http://example.local) -- if you type in this URL, you will need to include the `http://` portion for your browser find the site.
+5. In your web browser, visit [https://example.ddev.site](https://example.ddev.site) -- if you type in this URL, you will need to include the `http://` portion for your browser find the site.
 6. You should see the Drupal installer screen here. Follow the instructions to complete the installation.
-7. _Optional:_ Log in to the Vagrant environment with `vagrant ssh`. You can run Drush commands from here, like `drush status`.
+7. _Optional:_ You can run Drush commands, like `ddev . drush status`.
+
+### Troubleshooting
+
+#### NFS error
+Because both Vagrant and DDEV are using NFS, if your project was running with Vagrant before:
+* Edit `/etc/exports` file
+* Comment out the Vagrant line
+* Add `/Users/<username> -alldirs -mapall=501:20 localhost`
+* Restart NFS service `sudo nfsd restart`
+* Test that DDEV can mount NFS `ddev debug nfsmount`
+* Run `ddev restart`
 
 ### Extra Credit
 
-* Log into the vagrant box (`vagrant ssh`) and export the Drupal configuration (`drush config-export`)
+* Running drush commands (`ddev . drush status`)
+* Importing a new database (`ddev import-db --src=<database_file.tar.gz>`)
+* Log into docker image (`ddev ssh`) and export the Drupal configuration (`drush config-export`)
 * Update the `README.md` based on the contents of `README.dist.md`
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
