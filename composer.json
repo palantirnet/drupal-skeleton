@@ -72,7 +72,7 @@
             "file-mapping": {
                 "[web-root]/.htaccess": {
                     "mode": "replace",
-                    "path": "assets/scaffold/files/htaccess",
+                    "path": "web/core/assets/scaffold/files/htaccess",
                     "overwrite": false
                 }
             }
