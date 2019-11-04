@@ -42,3 +42,5 @@ styleguide/output_prod/
 !styleguide/package-lock.json
 !styleguide/yarn.lock
 
+.editorconfig
+.gitattributes

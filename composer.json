@@ -27,10 +27,10 @@
     ],
     "require": {
         "composer/installers": "^1.0",
-        "drupal-composer/drupal-scaffold": "^2.5.0",
+        "drupal/core-composer-scaffold": "^8.8",
         "drupal/config_installer": "^1.8",
         "drupal/config_split": "^1.4",
-        "drupal/core": "^8.0@stable",
+        "drupal/core-recommended": "^8.7.0",
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "require-dev": {
@@ -39,6 +39,7 @@
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
         "drupal/coder": "~8.2.12",
+        "drupal/core-dev": "^8.7.0",
         "drupal/drupal-extension": "^3.1",
         "palantirnet/the-build": "^2.0",
         "palantirnet/the-vagrant": "^2.3"
@@ -62,11 +63,18 @@
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
         "drupal-scaffold": {
-            "excludes": [
-                ".htaccess"
+            "allowed-packages": [
+                "drupal/core"
             ],
-            "initial": {
-                ".htaccess": ".htaccess"
+            "locations": {
+                "web-root": "web/"
+            },
+            "file-mapping": {
+                "[web-root]/.htaccess": {
+                    "mode": "replace",
+                    "path": "assets/scaffold/files/htaccess",
+                    "overwrite": false
+                }
             }
         }
     }
