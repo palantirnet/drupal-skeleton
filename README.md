@@ -87,8 +87,7 @@ Update the `README`:
 
 Update the `LICENSE.txt`:
 
-  * Keep the current license if you're planning to use the MIT license
-  * Remove or replace this file for any other license
+  * Remove or replace this file with the appropriate license for your project. (The existing license applies to the Drupal Skeleton template only.)
 
 Update the `composer.json`:
 
