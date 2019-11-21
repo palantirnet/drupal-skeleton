@@ -44,23 +44,17 @@ Enter a short name for your project [example] :
   cd example
   vendor/bin/the-vagrant-installer
   ```
-
-3. From your host machine, run the script from `palantirnet/the-build` to set up the default Drupal variables:
-
-  ```
-  vendor/bin/the-build-installer
-  ```
-
-4. Use the phing script installed by `palantirnet/the-build` to create the `settings.php` file for Drupal from within the VM.
+  
+3. From inside the VM, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
 
   ```
   vagrant up
   vagrant ssh
-  vendor/bin/phing build
+  vendor/bin/the-build-installer
   ```
+
 5. In your web browser, visit [http://example.local](http://example.local) -- if you type in this URL, you will need to include the `http://` portion for your browser find the site.
-6. You should see the Drupal installer screen here. Follow the instructions to complete the installation.
-7. _Optional:_ Log in to the Vagrant environment with `vagrant ssh`. You can run Drush commands from here, like `drush status`.
+6. _Optional:_ While you are logged into the Vagrant environment, you can run Drush commands like `drush status`.
 
 ### Extra Credit
 
@@ -93,8 +87,7 @@ Update the `README`:
 
 Update the `LICENSE.txt`:
 
-  * Keep the current license if you're planning to use the MIT license
-  * Remove or replace this file for any other license
+  * Remove or replace this file with the appropriate license for your project. (The existing license applies to the Drupal Skeleton template only.)
 
 Update the `composer.json`:
 
@@ -105,6 +98,22 @@ Update the `composer.json`:
 
   ```
     composer update --lock
+  ```
+### Run the installers
+
+Go into your new project directory and run the script from `palantirnet/the-vagrant` to set up a Vagrant environment:
+
+  ```
+  cd PROJECTNAME
+  vendor/bin/the-vagrant-installer
+  ```
+
+From inside the VM, run the script from `palantirnet/the-build` to set up the default Drupal variables:
+
+  ```
+  vagrant up
+  vagrant ssh
+  vendor/bin/the-build-installer
   ```
 
 ### Commit your work to git
