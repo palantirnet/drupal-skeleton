@@ -38,7 +38,7 @@ If you update Vagrant, you may need to update your vagrant plugins with `vagrant
 3. You will be prompted for the administration password on your host machine
 4. Log in to the virtual machine (the VM): `vagrant ssh`
 5. From within the VM, build and install the Drupal site: `phing build install migrate`
-1. Visit your site at [drupal-skeleton.local](http://drupal-skeleton.local)
+1. Visit your site at [your-project.local](http://your-project.local)
 
 ## How do I work on this?
 
@@ -47,7 +47,7 @@ You can edit code, update documentation, and run git commands by opening files d
 To run project-related commands other than `vagrant up` and `vagrant ssh`:
 
 * SSH into the VM with `vagrant ssh`
-* You'll be in your project root, at the path `/var/www/uw-stout.local/`
+* You'll be in your project root, at the path `/var/www/your-project.local/`
 * You can run `composer`, `drush`, and `phing` commands from here
 
 To work on the styleguide:
@@ -83,7 +83,7 @@ Additional information on developing for Drupal within this environment is in [d
 
 * Serve the styleguide and watch for changes:
   * From your VM: `cd styleguide && npm run butler`
-  * Visit [your-site.local:4000](http://your-site.local:4000)
+  * Visit [your-project.local:4000](http://your-project.local:4000)
   * Hit control+c to stop
 
 Complete Butler usage is documented in [docs/general/styleguide_development.md](docs/general/styleguide_development.md).
