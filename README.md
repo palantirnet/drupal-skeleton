@@ -145,6 +145,40 @@ git push -u origin develop
 * More information about this Vagrant setup is available at [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
 * See also the [official Vagrant documentation](https://www.vagrantup.com/docs/index.html)
 
+### Replace "the-vagrant" with [something else]
+
+If you'd like to use this skeleton with [ddev](https://www.ddev.com/), [drupalbox](https://www.drupalvm.com/), [lando](https://docs.lando.dev/config/drupal8.html), or anything else, you can:
+
+1. `composer remove --dev palantirnet/the-vagrant`
+2. `rm Vagrantfile`
+3. Install your development environment of choice
+4. Review and update your `.the-build/build.yml`:
+  * Site URI
+  * Database credentials
+5. Update your aliases in `drush/` if your site URI has changed
+6. _Update your project's README_
+
+See also: [Customizing your environment with the-vagrant](https://github.com/palantirnet/the-vagrant#customizing-your-environment)
+
+### Replace "the-build" with [something else]
+
+If you're allergic to phing and Benadryl isn't helping, you can also remove the-build:
+
+1. `composer remove --dev palantirnet/the-build`
+2. `rm -r .the-build`
+3. `rm build.xml`
+4. This will remove drush, coder, and phpmd -- if you want those dependencies, you'll need to add them back to your project:
+
+    ```
+    composer require --dev drush/drush drupal/coder phpmd/phpmd
+    ```
+
+5. Review your `web/sites/default/settings.*.php` files (the-build managed these for you)
+6. Install your build tooling of choice... or nothing at all...
+7. _Update your project's README_
+
+See also: [Documentation on using the-build](https://github.com/palantirnet/the-build#using-the-build)
+
 ### Install Drupal from the command line
 
 When using [drush](https://www.drush.org/) or [phing](https://www.phing.info/) to manage your Drupal site, you will need to log into the vagrant box (`vagrant ssh`).
