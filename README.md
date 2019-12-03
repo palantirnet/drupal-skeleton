@@ -36,7 +36,7 @@ Enter a short name for your project [example] :
 1. Create a new project called "example" based on this template:
 
   ```
-  composer create-project palantirnet/drupal-skeleton example dev-drupal8 --no-interaction
+  composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
   ```
 2. Go into your new project directory and run the script from `palantirnet/the-vagrant` to set up a Vagrant environment:
 
@@ -74,7 +74,7 @@ Enter a short name for your project [example] :
 Use composer to create a new project based on this skeleton, replacing `PROJECTNAME` with the short name for your project:
 
 ```
-composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal8 --no-interaction
+composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-develop --no-interaction
 ```
 
 ### Update your documentation
