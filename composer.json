@@ -16,18 +16,18 @@
     ],
     "require": {
         "composer/installers": "^1.2",
+        "drupal/coder": "^8.3.6",
         "drupal/config_installer": "^1.8",
         "drupal/config_split": "^1.4",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/core-project-message": "^8.8",
         "drupal/core-recommended": "^8.8",
-	"drupal/coder": "^8.3.6",
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "require-dev": {
         "drupal/core-dev": "^8.8",
         "drupal/drupal-extension": "^3.1",
-        "palantirnet/the-build": "^2.0",
+        "palantirnet/the-build": "dev-8.8-fine-tuning",
         "palantirnet/the-vagrant": "^2.3"
     },
     "suggest": {
@@ -78,7 +78,6 @@
             "web/themes/custom/{$name}": ["type:drupal-custom-theme"]
         },
         "drupal-core-project-message": {
-            "include-keys": ["homepage", "support"],
             "post-create-project-cmd-message": [
                 "<bg=blue;fg=white>                                                         </>",
                 "<bg=blue;fg=white>  Congratulations, you’ve installed the Drupal codebase  </>",
