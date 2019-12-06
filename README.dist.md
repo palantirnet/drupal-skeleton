@@ -37,7 +37,7 @@ If you update Vagrant, you may need to update your vagrant plugins with `vagrant
   ```
 3. You will be prompted for the administration password on your host machine
 4. Log in to the virtual machine (the VM): `vagrant ssh`
-5. From within the VM, build and install the Drupal site: `phing build install migrate`
+5. From within the VM, build and install the Drupal site: `phing install migrate`
 1. Visit your site at [your-project.local](http://your-project.local)
 
 ## How do I work on this?
@@ -69,9 +69,9 @@ You can refresh/reset your local Drupal site at any time. SSH into your VM and t
 
 1. Download the most current dependencies: `composer install`
 2. Rebuild your local CSS and Drupal settings file: `phing build`
-3. Reinstall Drupal: `phing install`
+3. Reinstall Drupal: `phing install` (this will run `build` implicitly)
 4. Run your migrations: `phing migrate`
-5. ... OR run all three phing targets at once: `phing build install migrate`
+5. ... OR run all three phing targets at once: `phing install migrate` (again, `install` runs `build` for you)
 
 Additional information on developing for Drupal within this environment is in [docs/general/drupal_development.md](docs/general/drupal_development.md).
 
@@ -100,4 +100,4 @@ General:
 * [Styleguide Development](docs/general/styleguide_development.md)
 
 ----
-Copyright 2017 Palantir.net, Inc.
+Copyright 2017, 2019 Palantir.net, Inc.
