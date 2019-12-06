@@ -16,7 +16,7 @@ This is the development repository for { your project's } Drupal 8 website. It c
 
 The development environment is based on [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant). To run the environment, you will need:
 
-* Mac OS X >= 10.10. _This stack may run under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup doc [internal]](https://github.com/palantirnet/documentation/wiki/Mac-Setup)._
+* Mac OS X >= 10.13. _This stack may run under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup doc [internal]](https://github.com/palantirnet/documentation/wiki/Mac-Setup)._
 * [Composer](https://getcomposer.org)
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
 * [ansible](https://github.com/ansible/ansible) `brew install ansible`
@@ -37,7 +37,7 @@ If you update Vagrant, you may need to update your vagrant plugins with `vagrant
   ```
 3. You will be prompted for the administration password on your host machine
 4. Log in to the virtual machine (the VM): `vagrant ssh`
-5. From within the VM, build and install the Drupal site: `phing build install migrate`
+5. From within the VM, build and install the Drupal site: `phing install migrate`
 1. Visit your site at [your-project.local](http://your-project.local)
 
 ## How do I work on this?
@@ -56,22 +56,15 @@ To work on the styleguide:
 * Go to the styleguide directory: `cd styleguide`; you'll be at the path `/var/www/your-project.local/styleguide`
 * You can run butler from here with `npm run butler`, then view the styleguide in your browser at [your-project.local:4000](http://your-project.local:4000)
 
-Avoid committing to git from within your VM, because your commits won't be properly attributed to you. If you must, make sure you [create a global .gitignore [internal]](https://github.com/palantirnet/documentation/wiki/Using-the-gitignore-File) within your VM at `/home/vagrant/.gitignore`, and configure your name and email for proper attribution:
-
-```
-git config --global user.email 'me@palantir.net'
-git config --global user.name 'My Name'
-```
-
 ## Drupal Development
 
 You can refresh/reset your local Drupal site at any time. SSH into your VM and then:
 
 1. Download the most current dependencies: `composer install`
 2. Rebuild your local CSS and Drupal settings file: `phing build`
-3. Reinstall Drupal: `phing install`
+3. Reinstall Drupal: `phing install` (this will run `build` implicitly)
 4. Run your migrations: `phing migrate`
-5. ... OR run all three phing targets at once: `phing build install migrate`
+5. ... OR run all three phing targets at once: `phing install migrate` (again, `install` runs `build` for you)
 
 Additional information on developing for Drupal within this environment is in [docs/general/drupal_development.md](docs/general/drupal_development.md).
 
@@ -100,4 +93,4 @@ General:
 * [Styleguide Development](docs/general/styleguide_development.md)
 
 ----
-Copyright 2017 Palantir.net, Inc.
+Copyright 2017, 2019 Palantir.net, Inc.
