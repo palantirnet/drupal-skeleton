@@ -56,13 +56,6 @@ To work on the styleguide:
 * Go to the styleguide directory: `cd styleguide`; you'll be at the path `/var/www/your-project.local/styleguide`
 * You can run butler from here with `npm run butler`, then view the styleguide in your browser at [your-project.local:4000](http://your-project.local:4000)
 
-Avoid committing to git from within your VM, because your commits won't be properly attributed to you. If you must, make sure you [create a global .gitignore [internal]](https://github.com/palantirnet/documentation/wiki/Using-the-gitignore-File) within your VM at `/home/vagrant/.gitignore`, and configure your name and email for proper attribution:
-
-```
-git config --global user.email 'me@palantir.net'
-git config --global user.name 'My Name'
-```
-
 ## Drupal Development
 
 You can refresh/reset your local Drupal site at any time. SSH into your VM and then:
