@@ -58,7 +58,6 @@ Enter a short name for your project [example] :
 
 ### Extra Credit
 
-* Log into the vagrant box (`vagrant ssh`) and export the Drupal configuration (`drush config-export`)
 * Update the `README.md` based on the contents of `README.dist.md`
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
@@ -99,6 +98,7 @@ Update the `composer.json`:
   ```
     composer update --lock
   ```
+
 ### Run the installers
 
 Go into your new project directory and run the script from `palantirnet/the-vagrant` to set up a Vagrant environment:
@@ -108,7 +108,7 @@ Go into your new project directory and run the script from `palantirnet/the-vagr
   vendor/bin/the-vagrant-installer
   ```
 
-From inside the VM, run the script from `palantirnet/the-build` to set up the default Drupal variables:
+From inside the VM, run the script from `palantirnet/the-build` to set up a base Drupal installation:
 
   ```
   vagrant up
@@ -149,21 +149,23 @@ git push -u origin develop
 
 When using [drush](https://www.drush.org/) or [phing](https://www.phing.info/) to manage your Drupal site, you will need to log into the vagrant box (`vagrant ssh`).
 
-You can use the phing scripts provided by `palantirnet/the-build`:
+If you've run `vendor/bin/the-build-installer` from within the VM, Drupal will be installed and the initial config exported to `config/sites/default/`.
+
+You can use the phing scripts provided by `palantirnet/the-build` to reinstall the site from config at any time:
 
 ```
-vendor/bin/phing build install
+vendor/bin/phing install
 ```
 
 Or, you can use drush directly:
 
 ```
-drush site-install
+drush site-install --existing-config
 ```
 
 ### Manage your configuration in code
 
-Drupal 8 supports exporting all of your configuration. On top of this core process, we use the [config_installer profile](https://www.drupal.org/project/config_installer) to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process.
+In Drupal 8 development, all (or most) Drupal configuration should be exported and treated as part of the codebase. On top of this core process, we use the [config_installer profile](https://www.drupal.org/project/config_installer) to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process. We also use [config_split](https://www.drupal.org/project/config_split) to manage environment-specific configuration.
 
 1. Log into Drupal in your browser and do some basic config customizations:
 
@@ -179,22 +181,18 @@ Drupal 8 supports exporting all of your configuration. On top of this core proce
   ```
   drush cex -y
   ```
-3. Update the install profile in your default build properties (`conf/build.default.properties`):
+
+3. You should have a ton of new `*.yml` files in `config/sites/default/`. Add them, and this config change, to git:
 
   ```
-  drupal.install_profile=config_installer
-  ```
-4. You should have a ton of new `*.yml` files in `conf/drupal/config`. Add them, and this config change, to git:
-
-  ```
-  git add conf/
+  git add config/
   git ci -m "Initial Drupal configuration."
   git push
   ```
 5. Reinstall your site and verify that your config is ready to go:
 
   ```
-  vendor/bin/phing build install
+  vendor/bin/phing install
   ```
 
 ## More information
@@ -203,4 +201,4 @@ Drupal 8 supports exporting all of your configuration. On top of this core proce
 * Development environment setup: [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
 
 ----
-Copyright 2016, 2017, 2018 Palantir.net, Inc.
+Copyright 2016, 2017, 2018, 2019 Palantir.net, Inc.
