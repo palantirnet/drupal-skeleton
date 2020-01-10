@@ -1,0 +1,13 @@
+parameters:
+    ascii:
+        failed: vendor/phpro/grumphp/resources/ascii/grumphp-grumpy.txt
+        succeeded: vendor/phpro/grumphp/resources/ascii/grumphp-happy.txt
+    git_dir: .
+    bin_dir: vendor/bin
+    tasks:
+        phplint:
+            triggered_by: [php,module,inc,install,test,profile,theme]
+        yamllint: ~
+        phpcs:
+            standard: Drupal
+            triggered_by: [php,module,inc,install,test,profile,theme,css,info]
