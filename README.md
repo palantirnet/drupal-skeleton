@@ -84,6 +84,10 @@ Update the `README`:
   * Rename the `README.dist.md` to `README.md`
   * Edit as you like
 
+Project-specific documentation at [docs/technical_approach.md](docs/technical_approach.md)
+
+  * Add `deployment.md` for deployment instructions  
+
 Update the `LICENSE.txt`:
 
   * Remove or replace this file with the appropriate license for your project. (The existing license applies to the Drupal Skeleton template only.)
@@ -201,4 +205,4 @@ In Drupal 8 development, all (or most) Drupal configuration should be exported a
 * Development environment setup: [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
 
 ----
-Copyright 2016, 2017, 2018, 2019 Palantir.net, Inc.
+Copyright 2016 - 2020 Palantir.net, Inc.

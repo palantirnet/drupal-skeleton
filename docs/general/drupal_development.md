@@ -106,4 +106,4 @@ This project uses Behat to test Drupal; it also provides some PHP linting tools.
 * The PHP code review: `phing code-review`
 
 ----
-Copyright 2017 Palantir.net, Inc.
+Copyright 2020 Palantir.net, Inc.
