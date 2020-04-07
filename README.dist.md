@@ -8,8 +8,8 @@ This is the development repository for { your project's } Drupal 8 website. It c
 * [Getting Started](#getting-started)
 * [How do I work on this?](#how-do-i-work-on-this)
 * [Drupal Development](#drupal-development)
-* [Deployment](#Deployment)
 * [Styleguide Development](#styleguide-development)
+* [Deployment](#Deployment)
 * [Additional Documentation](#additional-documentation)
 
 ## Development Environment
@@ -50,11 +50,10 @@ To run project-related commands other than `vagrant up` and `vagrant ssh`:
 * You'll be in your project root, at the path `/var/www/your-project.local/`
 * You can run `composer`, `drush`, and `phing` commands from here
 
-To work on the styleguide:
+To work on the styleguide (Palantir Lab):
 
-* SSH in to the VM with `vagrant ssh`
-* Go to the styleguide directory: `cd styleguide`; you'll be at the path `/var/www/your-project.local/styleguide`
-* You can run butler from here with `npm run butler`, then view the styleguide in your browser at [your-project.local:4000](http://your-project.local:4000)
+* Go to the styleguide directory: `cd styleguide`; you'll be at the path `/your-project/styleguide`
+* You can run `yarn install` & `yarn serve` from here, then view the styleguide in your browser at [your-project.local:3000](http://your-project.local:3000)
 
 ## Drupal Development
 
@@ -68,18 +67,18 @@ You can refresh/reset your local Drupal site at any time. SSH into your VM and t
 
 Additional information on developing for Drupal within this environment is in [docs/general/drupal_development.md](docs/general/drupal_development.md).
 
+## Styleguide Development (for Palantir Lab)
+
+* `cd styleguide` on your host machine
+* `yarn install`
+* `yarn serve`
+* control+c to stop
+
+For additional documentation, refer to [styleguide/README.md](styleguide/README.md) and [styleguide/docs/*](styleguide/docs/*).
+
 ## Deployment
 
 @todo This section needs to be customized per-project.
-
-## Styleguide Development
-
-* Serve the styleguide and watch for changes:
-  * From your VM: `cd styleguide && npm run butler`
-  * Visit [your-project.local:4000](http://your-project.local:4000)
-  * Hit control+c to stop
-
-Complete Butler usage is documented in [docs/general/styleguide_development.md](docs/general/styleguide_development.md).
 
 ## Additional Documentation
 
@@ -90,7 +89,5 @@ Project-specific:
 General:
 
 * [Drupal Development](docs/general/drupal_development.md)
-* [Styleguide Development](docs/general/styleguide_development.md)
-
 ----
-Copyright 2017, 2019 Palantir.net, Inc.
+Copyright 2020 Palantir.net, Inc.
