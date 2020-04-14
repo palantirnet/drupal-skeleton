@@ -45,7 +45,11 @@ jobs:
       # is available to run within our VM.
       - run:
           name: Install drupal-check
-          command: composer global require mglaman/drupal-check
+          command: |
+            curl -O -L https://github.com/mglaman/drupal-check/releases/download/1.0.9/drupal-check.phar
+            mkdir --parents ~/bin
+            mv drupal-check.phar ~/bin/drupal-check
+            chmod +x ~/bin/drupal-check
 
       # Source cache
       - restore_cache:
