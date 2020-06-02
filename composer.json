@@ -17,7 +17,6 @@
     "require": {
         "composer/installers": "^1.2",
         "drupal/config_installer": "^1.8",
-        "drupal/config_ignore": "^2.2",
         "drupal/config_split": "^1.4",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/core-recommended": "^8.8",
@@ -33,6 +32,7 @@
         "cweagans/composer-patches": "Try ^1.0. Apply patches to packages, especially Drupal.org contrib.",
         "drupal/admin_toolbar": "Transforms the default Drupal Toolbar into a drop-down menu.",
         "drupal/environment_indicator": "Adds a configurable color bar to each one of your environments to help identify which environment you are currently working in.",
+        "drupal/config_ignore": "Exclude configuration to be exported to the configuration set.",
         "drupal/stage_file_proxy": "A solution for getting production files on a development server on demand (add to your development config_split).",
         "drupal/twig_xdebug": "Enables use of Xdebug breakpoints with Twig templates (add to your development config_split)."
     },
