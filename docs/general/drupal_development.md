@@ -11,7 +11,7 @@ From outside the VM, you can find the files for:
 * Drupal config YAML files at:
     * `config/sites/default` for config which is shared across all environments
     * `config/config_split/<environment>` for environment-specific config (see "Configure Drupal" below)
-* Template files for Drupal `settings.php` at `conf/drupal/settings.php` and `conf/drupal/settings.<hosting-platform>.php`
+* Template files for Drupal `settings.php` at `.the-build/drupal/settings.php` and `.the-build/drupal/settings.<hosting-platform>.php`
 * Behat tests at `features/`
 
 From within the VM:
@@ -61,7 +61,7 @@ Existing splits are defined by a YML file at `config/sites/default/config_split.
 #### Exporting environment-specific config
 
 1. If you're exporting configuration for an environment other than development, you'll need to enable the split for that environment locally.  
-    1. See your `settings.php` file around line #30, replace "development" with the environment your configuring (either "staging" or "production").
+    1. See your `settings.build.php` file around line #33, replace "development" with the environment you're configuring (either "staging" or "production").
     1. Run `drush cr` then `drush cim -y` to get a clean environment.
     1. You should now notice that your local development modules are disabled, and any other environment-specific modules (i.e. purge) are now enabled.
     1. Visit `/admin/config/development/configuration/config-split` to see that your environment's split is active.
@@ -75,7 +75,7 @@ Existing splits are defined by a YML file at `config/sites/default/config_split.
 1. Run `drush cex -y` to export the environment-specific config.
 1. Carefully review the changes in git before pushing. Be sure not to commit any changes you weren't expecting.
 1. If your config should apply to multiple environments (i.e. "staging" and "production", you'll need to repeat this process for those environments
-1. Change your `settings.php` back to "development" when finished
+1. Change your `settings.build.php` back to "development" when finished
 
 #### Importing development-only config
 
@@ -87,13 +87,13 @@ Existing splits are defined by a YML file at `config/sites/default/config_split.
 
 ### Setting specific config variables
 
-Some specific config variables are managed on a per-environment basis using `settings.php` templating, which is part of the `phing build` step. See:
+Some specific config variables are managed on a per-environment basis using `settings.build.php` templating, which is part of the `phing build` step. See:
 
-* `conf/drupal/settings.php`: The template used for the VM and CircleCI environments
-* `conf/drupal/settings.acquia.php`: The template used for the Acquia environment
-* `conf/build.default.properties`: Properties used by `phing` targets
-* `conf/build.circle.properties`: Property overrides used when running `phing` commands on CircleCI
-* `conf/build.acquia.properties`: Property overrides used when running the `phing` command to deploy to Acquia
+* `.the-build/drupal/settings.build.php`: The template used for the VM and CircleCI environments
+* `.the-build/drupal/settings.build-acquia.php`: The template used for the Acquia environment
+* `.the-build/build.yml`: Properties used by `phing` targets
+* `.the-build/build.circle.yml`: Property overrides used when running `phing` commands on CircleCI
+* `.the-build/build.acquia.yml`: Property overrides used when running the `phing` command to deploy to Acquia
 
 When you make changes to these files, you will generally need to run `phing build` in order to see your changes.
 
