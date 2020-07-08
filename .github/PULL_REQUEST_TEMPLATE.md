@@ -1,31 +1,22 @@
-## JIRA Ticket(s)
+User story: [ABC-XX: Story name](https://palantir.atlassian.net/browse/ABC-XX)
 
-- See ticket [ABC-XX: Ticket Title](https://palantir.atlassian.net/browse/ABC-XX).
+### Description
 
-## Description
+_A description of the changes. Consider including images/gifs to demonstrate behaviors (e.g. using [Skitch](https://evernote.com/skitch/) or [GIPHY Capture](https://giphy.com/apps/giphycapture))._
 
-_A description of the changes in this PR._
-
-## Testing instructions
+### Testing instructions
 
 1. _Add your testing instructions here, for example..._
-1. `vendor/bin/phing build install migrate`
+1. `phing install migrate`
 
-## Relevant Screenshots/gifs:
+### Open questions
 
-Use something like [Skitch](https://evernote.com/skitch/) or [GIPHY Capture](https://giphy.com/apps/giphycapture) to capture images/gifs to demonstrate behaviors.
+_Delete this section if there are no open questions._
 
-## Remaining tasks
+* What questions are blocking this work?
+
+### Remaining tasks
 
 _Delete this section if there are no remaining tasks._
 
 - [ ] Update the README
-
-## Additional Notes:
-
-_Anything more to add?_
-
-
----
-
-[Pull Request Guidelines](https://github.com/palantirnet/development_documentation/blob/master/guidelines/pr_review.md)
