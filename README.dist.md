@@ -1,6 +1,6 @@
 # { Your Project Name }
 
-This is the development repository for { your project's } Drupal 8 website. It contains the codebase and an environment to run the site for development.
+This is the development repository for { your project's } Drupal website. It contains the codebase and an environment to run the site for development.
 
 ## Table of Contents
 
@@ -50,7 +50,7 @@ To run project-related commands other than `vagrant up` and `vagrant ssh`:
 * You'll be in your project root, at the path `/var/www/your-project.local/`
 * You can run `composer`, `drush`, and `phing` commands from here
 
-To work on the styleguide (Palantir Lab):
+To work on the styleguide:
 
 * Go to the styleguide directory: `cd styleguide`; you'll be at the path `/your-project/styleguide`
 * You can run `yarn install` & `yarn serve` from here, then view the styleguide in your browser at [your-project.local:3000](http://your-project.local:3000)
@@ -67,7 +67,7 @@ You can refresh/reset your local Drupal site at any time. SSH into your VM and t
 
 Additional information on developing for Drupal within this environment is in [docs/general/drupal_development.md](docs/general/drupal_development.md).
 
-## Styleguide Development (for Palantir Lab)
+## Styleguide Development
 
 * `cd styleguide` on your host machine
 * `yarn install`
@@ -89,5 +89,6 @@ Project-specific:
 General:
 
 * [Drupal Development](docs/general/drupal_development.md)
+
 ----
 Copyright 2020 Palantir.net, Inc.
