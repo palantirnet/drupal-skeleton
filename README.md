@@ -1,6 +1,6 @@
 # Drupal Skeleton
 
-This is a template for starting Drupal 8 projects using the `composer create-project` command.
+This is a template for starting Drupal projects using the `composer create-project` command.
 
 ## Quick start
 
@@ -12,7 +12,7 @@ You should have the development dependencies installed on your Mac before you be
 
 The development dependencies are:
 
-* PHP 7
+* PHP 7.3+
   * Check your PHP version from the command line using `php --version`
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
