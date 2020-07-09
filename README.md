@@ -68,6 +68,14 @@ Enter a short name for your project [example] :
 
 ## Full Project Setup
 
+### Use Drupal 8 instead of Drupal 9
+
+In general, you'll want to start new projects on Drupal 9 (as of June 2020). However, if you need to create a Drupal 8 testing environment, or use modules that aren't yet compatible with Drupal 9, you can still use a version of this skeleton that supports Drupal 8:
+
+```
+composer create-project palantirnet/drupal-skeleton example dev-drupal8 --no-interaction
+```
+
 ### Create a project with a custom name
 
 Use composer to create a new project based on this skeleton, replacing `PROJECTNAME` with the short name for your project:
