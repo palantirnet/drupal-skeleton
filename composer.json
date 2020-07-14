@@ -75,5 +75,15 @@
             "web/modules/custom/{$name}": ["type:drupal-custom-module"],
             "web/themes/custom/{$name}": ["type:drupal-custom-theme"]
         }
+    },
+    "scripts": {
+        "pre-install-cmd": [
+            "ls web/sites/default &>/dev/null && chmod +w web/sites/default || true",
+            "ls docroot/sites/default &>/dev/null && chmod +w docroot/sites/default || true"
+        ],
+        "pre-update-cmd": [
+            "ls web/sites/default &>/dev/null && chmod +w web/sites/default || true",
+            "ls docroot/sites/default &>/dev/null && chmod +w docroot/sites/default || true"
+        ]
     }
 }
