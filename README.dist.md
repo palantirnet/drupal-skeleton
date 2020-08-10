@@ -33,6 +33,7 @@ If you update Vagrant, you may need to update your vagrant plugins with `vagrant
 1. From inside the project root, run:
 
   ```
+    composer install
     vagrant up
   ```
 3. You will be prompted for the administration password on your host machine
