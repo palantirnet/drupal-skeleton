@@ -1,0 +1,38 @@
+# DDev configuration
+# @see https://ddev.readthedocs.io/en/latest/users/extend/config_yaml/
+
+# Update to match your project name.
+name: drupal-skeleton
+
+# Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
+docroot: web
+
+# Add any multisite subdomains to this array. Adding "example" will make this environment
+# available at "example.ddev.site".
+additional_hostnames: []
+
+# Add extra fully qualified domains here. This is most useful for transitioning from a
+# vagrant environment to a ddev environment.
+additional_fqdns: ["drupal-skeleton.local"]
+
+# The PHP version should match the project's hosting environment.
+php_version: "7.3"
+
+# It may make sense to turn this off once the project is set up.
+disable_settings_management: false
+
+# Turn XDebug on and off for your own environment using `ddev xdebug on` and
+# `ddev xdebug off`
+xdebug_enabled: false
+
+# NFS speeds up the ddev environment and makes file changes sync more consistently.
+# @see https://ddev.readthedocs.io/en/latest/users/performance/#using-nfs-to-mount-the-project-into-the-web-container
+nfs_mount_enabled: false
+
+type: drupal9
+webserver_type: nginx-fpm
+router_http_port: "80"
+router_https_port: "443"
+mariadb_version: "10.3"
+provider: default
+use_dns_when_possible: true
