@@ -76,11 +76,11 @@ jobs:
 
       # Composer package cache - update when the contents of the Composer cache directory
       # change
-      - run: ls -1R ~/.composer/cache/ > /tmp/composer-cache.txt
+      - run: ls -1R ~/.cache/composer/ > /tmp/composer-cache.txt
       - save_cache:
           key: composer-v1-{{ checksum "/tmp/composer-cache.txt" }}
           paths:
-              - ~/.composer
+              - ~/.cache/composer
 
       - run:
           name: Install the-build in the project
