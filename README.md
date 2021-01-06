@@ -17,11 +17,10 @@ The development dependencies are:
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
 * [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-  * We recommend installing with [homebrew](https://brew.sh/): `brew install ansible`
-* [Vagrant](https://www.vagrantup.com/downloads.html)
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant plugins: [hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager) and [auto_network](https://github.com/oscar-stack/vagrant-auto_network)
-  * Install both with this command: `vagrant plugin install vagrant-hostmanager vagrant-auto_network`
+* [Docker](https://www.docker.com/)
+  * This can be installed with [homebrew](https://brew.sh/): `brew install docker`
+* [DDev Local](https://ddev.com/ddev-local/)
+  * This can be installed with [homebrew](https://brew.sh/): `brew install ddev`
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
@@ -38,33 +37,37 @@ Enter a short name for your project [example] :
   ```
   composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
   ```
-2. Go into your new project directory and run the script from `palantirnet/the-vagrant` to set up a Vagrant environment:
+2. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
 
   ```
-  cd example
-  vendor/bin/the-vagrant-installer
+  # Update to match your project name. Using "drupal-skeleton" would make the site
+  # accessible at 'drupal-skeleton.ddev.site'.
+  name: drupal-skeleton
+
+  # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
+  docroot: web
   ```
   
-3. From inside the VM, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
+3. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
 
   ```
-  vagrant up
-  vagrant ssh
+  ddev start
+  ddev ssh
   vendor/bin/the-build-installer
   ```
 
-5. In your web browser, visit [http://example.local](http://example.local) -- if you type in this URL, you will need to include the `http://` portion for your browser find the site.
-6. _Optional:_ While you are logged into the Vagrant environment, you can run Drush commands like `drush status`.
+5. In your web browser, visit [http://example.ddev.site](http://example.ddev.site)
+6. _Optional:_ While you are logged into the ddev environment, you can run Drush commands like `drush status`.
 
 ### Extra Credit
 
 * Update the `README.md` based on the contents of `README.dist.md`
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
-* Access your database via phpMyAdmin at [http://example.local/phpmyadmin](http://example.local/phpmyadmin) using the username `drupal` and the password `drupal`
-* View email sent by your development site at [http://example.local:8025](http://example.local:8025)
-* View your Solr 4.5 server at [http://example.local:8983/solr](http://example.local:8983/solr)
-* Note that renaming or moving this `example/` directory can break your Vagrant machine
+* Access your database via phpMyAdmin at [https://example.ddev.site:8037](https://example.ddev.site:8037) using the username `drupal` and the password `drupal`
+* View email sent by your development site at [https://example.ddev.site:8026](https://example.ddev.site:8026)
+* View your Solr server at [https://example.ddev.site:8983](https://example.ddev.site:8983)
+* Note that renaming or moving the `example/` project directory can break your ddev setup
 
 ## Full Project Setup
 
@@ -111,20 +114,17 @@ Update the `composer.json`:
     composer update --lock
   ```
 
+### Configure your ddev development environment
+
+Go into your new project directory and update the ddev configuration in `.ddev/config.yml`.
+
 ### Run the installers
 
-Go into your new project directory and run the script from `palantirnet/the-vagrant` to set up a Vagrant environment:
+From inside ddev, run the script from `palantirnet/the-build` to set up a base Drupal installation:
 
   ```
-  cd PROJECTNAME
-  vendor/bin/the-vagrant-installer
-  ```
-
-From inside the VM, run the script from `palantirnet/the-build` to set up a base Drupal installation:
-
-  ```
-  vagrant up
-  vagrant ssh
+  ddev start
+  ddev ssh
   vendor/bin/the-build-installer
   ```
 
@@ -147,30 +147,14 @@ git remote add origin git@github.com:palantirnet/PROJECTNAME.git
 git push -u origin develop
 ```
 
-### Manage your Vagrant VM
+### Manage your ddev environment
 
-* Start or wake up your Vagrant VM: `vagrant up`
-* Log in: `vagrant ssh`
+* Start ddev: `ddev start`
+* Log in: `ddev ssh`
 * Log out (just like you would from any other ssh session): `exit`
-* Shut down the VM: `vagrant halt`
-* Check whether your VM is up or not: `vagrant status`
-* More information about this Vagrant setup is available at [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
-* See also the [official Vagrant documentation](https://www.vagrantup.com/docs/index.html)
-
-### Replace "the-vagrant" with [something else]
-
-If you'd like to use this skeleton with [ddev](https://www.ddev.com/), [drupalbox](https://www.drupalvm.com/), [lando](https://docs.lando.dev/config/drupal8.html), or anything else, you can:
-
-1. `composer remove --dev palantirnet/the-vagrant`
-2. `rm Vagrantfile`
-3. Install your development environment of choice
-4. Review and update your `.the-build/build.yml`:
-  * Site URI
-  * Database credentials
-5. Update your aliases in `drush/` if your site URI has changed
-6. _Update your project's README_
-
-See also: [Customizing your environment with the-vagrant](https://github.com/palantirnet/the-vagrant#customizing-your-environment)
+* Shut down ddev: `ddev stop`
+* Find information about your ddev environment: `ddev describe`
+* See also the [ddev documentation](https://ddev.readthedocs.io/en/stable/)
 
 ### Replace "the-build" with [something else]
 
@@ -193,9 +177,9 @@ See also: [Documentation on using the-build](https://github.com/palantirnet/the-
 
 ### Install Drupal from the command line
 
-When using [drush](https://www.drush.org/) or [phing](https://www.phing.info/) to manage your Drupal site, you will need to log into the vagrant box (`vagrant ssh`).
+When using [drush](https://www.drush.org/) or [phing](https://www.phing.info/) to manage your Drupal site, you will need to log into the ddev environment (`ddev ssh`).
 
-If you've run `vendor/bin/the-build-installer` from within the VM, Drupal will be installed and the initial config exported to `config/sites/default/`.
+If you've run `vendor/bin/the-build-installer` from within ddev, Drupal will be installed and the initial config exported to `config/sites/default/`.
 
 You can use the phing scripts provided by `palantirnet/the-build` to reinstall the site from config at any time:
 
@@ -219,7 +203,7 @@ In Drupal 8 development, all (or most) Drupal configuration should be exported a
   * Disable per-user timezones
   * Disable user account creation
   * Remove unnecessary content types
-  * Set the admin email address (your VM will trap all emails)
+  * Set the admin email address (your development environment will trap all emails)
   * Turn the Cron interval down to "never"
   * Uninstall unnecessary modules (e.g. Search, History, Comment)
 2. Export your config:
@@ -244,7 +228,6 @@ In Drupal 8 development, all (or most) Drupal configuration should be exported a
 ## More information
 
 * Site build and install process: [palantirnet/the-build](https://github.com/palantirnet/the-build)
-* Development environment setup: [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant)
 
 ----
-Copyright 2016 - 2020 Palantir.net, Inc.
+Copyright 2016 - 2021 Palantir.net, Inc.
