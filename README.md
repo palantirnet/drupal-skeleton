@@ -16,11 +16,9 @@ The development dependencies are:
   * Check your PHP version from the command line using `php --version`
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
-* [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-* [Docker](https://www.docker.com/)
-  * This can be installed with [homebrew](https://brew.sh/): `brew install docker`
 * [DDev Local](https://ddev.com/ddev-local/)
-  * This can be installed with [homebrew](https://brew.sh/): `brew install ddev`
+  * ddev is based on [Docker](https://www.docker.com/)
+  * Both ddev and Docker can be installed with [homebrew](https://brew.sh/): `brew install ddev`
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 

@@ -14,18 +14,12 @@ This is the development repository for { your project's } Drupal website. It con
 
 ## Development Environment
 
-The development environment is based on [palantirnet/the-vagrant](https://github.com/palantirnet/the-vagrant). To run the environment, you will need:
+This project uses [ddev](https://ddev.com/ddev-local/) for its development environment. To run the environment, you will need:
 
-* Mac OS X >= 10.13. _This stack may run under other host operating systems, but is not regularly tested. For details on installing these dependencies on your Mac, see our [Mac setup doc [internal]](https://github.com/palantirnet/documentation/wiki/Mac-Setup)._
-* [Composer](https://getcomposer.org)
-* [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 5.0
-* [ansible](https://github.com/ansible/ansible) `brew install ansible`
-* [vagrant](https://www.vagrantup.com/) >= 2.1.0
-* Vagrant plugins:
-  * [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
-  * [vagrant-auto_network](https://github.com/oscar-stack/vagrant-auto_network) `vagrant plugin install vagrant-auto_network`
-
-If you update Vagrant, you may need to update your vagrant plugins with `vagrant plugin update`.
+* [Composer](https://getcomposer.org/download/)
+* [DDev Local](https://ddev.com/ddev-local/)
+  * ddev is based on [Docker](https://www.docker.com/)
+  * Both ddev and Docker can be installed with [homebrew](https://brew.sh/): `brew install ddev`
 
 ## Getting Started
 
@@ -34,21 +28,21 @@ If you update Vagrant, you may need to update your vagrant plugins with `vagrant
 
   ```
     composer install
-    vagrant up
+    ddev start
   ```
-3. You will be prompted for the administration password on your host machine
-4. Log in to the virtual machine (the VM): `vagrant ssh`
-5. From within the VM, build and install the Drupal site: `phing install migrate`
-1. Visit your site at [your-project.local](http://your-project.local)
+3. Log in to the ddev environment: `ddev ssh`
+4. From within ddev, build and install the Drupal site: `vendor/bin/phing install migrate`
+5. Visit your site at [your-project.ddev.site](http://your-project.ddev.site)
 
 ## How do I work on this?
 
-You can edit code, update documentation, and run git commands by opening files directly from your host machine.
+You can edit code, update documentation, and run git commands by opening files directly from your machine.
 
-To run project-related commands other than `vagrant up` and `vagrant ssh`:
+To run site management commands like `drush status` or `phing install`:
 
-* SSH into the VM with `vagrant ssh`
-* You'll be in your project root, at the path `/var/www/your-project.local/`
+* Start the development environment with `ddev start`
+* SSH into the development environment with `ddev ssh`
+* You'll be in your project root, at the path `/var/www/html/`
 * You can run `composer`, `drush`, and `phing` commands from here
 
 To work on the styleguide:
@@ -58,7 +52,7 @@ To work on the styleguide:
 
 ## Drupal Development
 
-You can refresh/reset your local Drupal site at any time. SSH into your VM and then:
+You can refresh/reset your local Drupal site at any time. SSH into your ddev environment and then:
 
 1. Download the most current dependencies: `composer install`
 2. Rebuild your local CSS and Drupal settings file: `phing build`
@@ -92,4 +86,4 @@ General:
 * [Drupal Development](docs/general/drupal_development.md)
 
 ----
-Copyright 2020 Palantir.net, Inc.
+Copyright 2021 Palantir.net, Inc.
