@@ -17,9 +17,10 @@ This is the development repository for { your project's } Drupal website. It con
 This project uses [ddev](https://ddev.com/ddev-local/) for its development environment. To run the environment, you will need:
 
 * [Composer](https://getcomposer.org/download/)
+* [Docker](https://www.docker.com/)
+  * Docker can be installed with [homebrew](https://brew.sh/): `brew install docker --cask`
 * [DDev Local](https://ddev.com/ddev-local/)
-  * ddev is based on [Docker](https://www.docker.com/)
-  * Both ddev and Docker can be installed with [homebrew](https://brew.sh/): `brew install ddev`
+  * ddev can be installed with [homebrew](https://brew.sh/): `brew install ddev`
 
 ## Getting Started
 
