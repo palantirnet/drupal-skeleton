@@ -30,6 +30,14 @@ xdebug_enabled: false
 # @see https://ddev.readthedocs.io/en/latest/users/performance/#using-nfs-to-mount-the-project-into-the-web-container
 nfs_mount_enabled: false
 
+hooks:
+  post-start:
+  # Set up a database. By default, ddev provides a database called 'db', but when working
+  # with multisites it's helpful to match the database name to the multisite name.
+  - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL
+      ON default.* to 'db'@'%';"
+    service: db
+
 type: drupal9
 webserver_type: nginx-fpm
 router_http_port: "80"
