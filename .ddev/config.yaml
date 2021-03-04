@@ -17,9 +17,9 @@ additional_hostnames: []
 additional_fqdns: []
 
 # The PHP version should match the project's hosting environment.
-php_version: "7.3"
+php_version: "7.4"
 
-# It may make sense to turn this off once the project is set up.
+# TODO: Disable settings management on a per-project basis once the project is set up.
 disable_settings_management: false
 
 # Turn XDebug on and off for your own environment using `ddev xdebug on` and
