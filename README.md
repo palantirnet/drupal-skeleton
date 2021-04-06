@@ -66,6 +66,12 @@ Enter a short name for your project [example] :
 * Access your database via phpMyAdmin at [https://example.ddev.site:8037](https://example.ddev.site:8037) using the username `drupal` and the password `drupal`
 * View email sent by your development site at [https://example.ddev.site:8026](https://example.ddev.site:8026)
 * View your Solr server at [https://example.ddev.site:8983](https://example.ddev.site:8983)
+* Connect to your Solr server in Drupal with the `search_api_solr` module:
+  * HTTP Protocol: `http`
+  * Solr host: `solr`
+  * Solr port: `8983`
+  * Solr path: `/`
+  * Solr core: `dev`
 * Note that renaming or moving the `example/` project directory can break your ddev setup
 
 ## Full Project Setup
