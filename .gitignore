@@ -9,6 +9,7 @@ docroot/sites/*/files
 
 # Ignore local Drupal configuration
 settings.local.php
+settings.ddev.php
 
 # Ignore artifacts
 /artifacts/
@@ -40,3 +41,5 @@ styleguide/source/code/css/*.css
 !styleguide/composer.lock
 !styleguide/package-lock.json
 !styleguide/yarn.lock
+/.editorconfig
+/.gitattributes

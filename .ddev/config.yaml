@@ -19,10 +19,6 @@ webserver_type: apache-fpm
 # TODO: Make sure this PHP version matches the project's hosting environment.
 php_version: "7.4"
 
-# TODO: Disable settings management in your project once the settings.php structure is
-# set up.
-disable_settings_management: false
-
 # Add any multisite subdomains to this array. Adding "example" will make this environment
 # available at "example.ddev.site".
 additional_hostnames: []
@@ -41,6 +37,9 @@ xdebug_enabled: false
 #  post-start:
 #  - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL ON default.* to 'db'@'%';"
 #    service: db
+
+# This allows ddev to manage its own settings.ddev.php file.
+disable_settings_management: false
 
 type: drupal9
 router_http_port: "80"
