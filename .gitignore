@@ -7,6 +7,9 @@
 web/sites/*/files
 docroot/sites/*/files
 
+# Ignore local Drupal configuration
+settings.local.php
+
 # Ignore artifacts
 /artifacts/
 
