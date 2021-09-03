@@ -81,17 +81,28 @@ if (file_exists(__DIR__ . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 
 
 // Acquia
 if (getenv('AH_SITE_GROUP') && file_exists(__DIR__ . '/settings.acquia.php')) {
-  include __DIR__ . '/settings.acquia.php';
+  include __DIR__ . '/settings.acquia-custom.php';
 }
 
 // Pantheon
 if (getenv('PANTHEON_ENVIRONMENT') && file_exists(__DIR__ . '/settings.acquia.php')) {
-  include __DIR__ . '/settings.pantheon.php';
+  include __DIR__ . '/settings.pantheon-custom.php';
+
+  // If using Pantheon, you must also download settings.pantheon.php from Pantheon's
+  // Drupal 8 template repository:
+  //   https://raw.githubusercontent.com/pantheon-systems/drops-8/default/sites/default/settings.pantheon.php
+  include __DIR__ . 'settings.pantheon.php';
 }
 
 // Platform.sh
 if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.acquia.php')) {
-  include __DIR__ . '/settings.acquia.php';
+  include __DIR__ . '/settings.platform-custom.php';
+
+  // If using Platform.sh, you must also download settings.platform.php from Platform's
+  // Drupal 8 template repository:
+  //   https://raw.githubusercontent.com/platformsh/template-drupal8/master/web/sites/default/settings.platformsh.php
+    include __DIR__ . 'settings.platform.php';
+
 }
 
 /**
