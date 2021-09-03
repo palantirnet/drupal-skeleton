@@ -1,21 +1,21 @@
 # This file should contain only rules that are specific to this project. For
 # ignoring OS and IDE metadata files, please configure a global gitignore on
-# in your development environment:
-# https://github.com/palantirnet/development_documentation/blob/master/guidelines/git/gitignore.md
+# your local machine.
+# @see https://github.com/sb2nov/mac-setup/blob/master/Git/gitignore.md
 
-# Ignore Drupal settings and files
-settings.php
-services.yml
-!conf/drupal/settings.php
-!conf/drupal/services.yml
+# Ignore Drupal files
 web/sites/*/files
+docroot/sites/*/files
 
-# Ignore virtual environment and artifacts
-.vagrant/
+# Ignore artifacts
 /artifacts/
 
 # Ignore Drupal contrib downloaded by Composer
 drush/contrib
+docroot/core
+docroot/modules/contrib
+docroot/themes/contrib/
+docroot/profiles/contrib/
 web/core
 web/modules/contrib
 web/themes/contrib/
@@ -33,14 +33,7 @@ npm-debug.log
 styleguide/*.sass-cache/
 styleguide/source/code/css/*.css
 
-# Ignore sculpin output
-styleguide/output_dev/
-styleguide/output_prod/
-
 # Capture styleguide lock files
 !styleguide/composer.lock
 !styleguide/package-lock.json
 !styleguide/yarn.lock
-
-.editorconfig
-.gitattributes
