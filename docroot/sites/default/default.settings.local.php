@@ -50,3 +50,6 @@ $settings['skip_permissions_hardening'] = TRUE;
 // environments, change "development" to either "staging" or "production", then run:
 //   drush cr && drush cim -y
 $config['config_split.config_split.development']['status'] = TRUE;
+
+// Hide Acquia Connector messages.
+$config['acquia_connector.settings']['hide_signup_messages'] = TRUE;
