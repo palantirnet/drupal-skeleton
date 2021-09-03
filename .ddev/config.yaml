@@ -32,11 +32,10 @@ nfs_mount_enabled: false
 
 hooks:
   post-start:
-  # Set up a database. By default, ddev provides a database called 'db', but when working
-  # with multisites it's helpful to match the database name to the multisite name.
-  - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL
-      ON default.* to 'db'@'%';"
-    service: db
+  # By default, ddev provides a database called 'db'. If you need additional databases,
+  # uncomment these two lines and change "default" to your database name.
+  #- exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL ON default.* to 'db'@'%';"
+  #  service: db
 
 type: drupal9
 webserver_type: nginx-fpm
