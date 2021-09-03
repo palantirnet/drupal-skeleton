@@ -1,12 +1,27 @@
 # DDev configuration
 # @see https://ddev.readthedocs.io/en/latest/users/extend/config_yaml/
 
-# Update to match your project name. Using "drupal-skeleton" would make the site
-# accessible at 'drupal-skeleton.ddev.site'.
+# TODO: Update the name to match your project. This determines the local url; this default
+# url is 'drupal-skeleton.ddev.site'.
 name: drupal-skeleton
 
-# Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
-docroot: web
+# TODO: If the project uses Acquia hosting, use these settings.
+docroot: docroot
+mysql_version: "5.7"
+webserver_type: apache-fpm
+
+# TODO: If the project uses Pantheon or Platform.sh hosting, remove the Acquia settings
+# and use these settings instead.
+#docroot: web
+#webserver_type: nginx-fpm
+#mariadb_version: "10.3"
+
+# TODO: Make sure this PHP version matches the project's hosting environment.
+php_version: "7.4"
+
+# TODO: Disable settings management in your project once the settings.php structure is
+# set up.
+disable_settings_management: false
 
 # Add any multisite subdomains to this array. Adding "example" will make this environment
 # available at "example.ddev.site".
@@ -16,32 +31,19 @@ additional_hostnames: []
 # environment to a ddev environment.
 additional_fqdns: []
 
-# The PHP version should match the project's hosting environment.
-php_version: "7.4"
-
-# TODO: Disable settings management in your project once the settings.php structure is
-# set up.
-disable_settings_management: false
-
 # Turn XDebug on and off for your own environment using `ddev xdebug on` and
 # `ddev xdebug off`
 xdebug_enabled: false
 
-# NFS speeds up the ddev environment and makes file changes sync more consistently.
-# @see https://ddev.readthedocs.io/en/latest/users/performance/#using-nfs-to-mount-the-project-into-the-web-container
-nfs_mount_enabled: false
-
-hooks:
-  post-start:
-  # By default, ddev provides a database called 'db'. If you need additional databases,
-  # uncomment these two lines and change "default" to your database name.
-  #- exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL ON default.* to 'db'@'%';"
-  #  service: db
+# By default, ddev provides a database called 'db'. If you need additional databases,
+# uncomment this section and change "default" to your database name.
+#hooks:
+#  post-start:
+#  - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL ON default.* to 'db'@'%';"
+#    service: db
 
 type: drupal9
-webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
-mariadb_version: "10.3"
 provider: default
 use_dns_when_possible: true
