@@ -101,8 +101,9 @@ if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.acquia.ph
   // If using Platform.sh, you must also download settings.platform.php from Platform's
   // Drupal 8 template repository:
   //   https://raw.githubusercontent.com/platformsh/template-drupal8/master/web/sites/default/settings.platformsh.php
+  // You'll also need to add Platform.sh's config reader PHP library to your dependencies:
+  //   composer require platformsh/config-reader:^2.1
     include __DIR__ . 'settings.platform.php';
-
 }
 
 /**
