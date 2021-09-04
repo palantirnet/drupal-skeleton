@@ -28,12 +28,12 @@ $settings['file_private_path'] = '';
 /**
  * Location of the site configuration files.
  */
-$settings['config_sync_directory'] = DRUPAL_ROOT . '../config/default/';
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/default/';
 
 /**
  * Salt for one-time login links, cancel links, form tokens, etc.
  */
-$settings['hash_salt'] = file_get_contents(DRUPAL_ROOT . '../config/salt.txt');
+$settings['hash_salt'] = file_get_contents(DRUPAL_ROOT . '/../config/salt.txt');
 
 /**
  * Access control for update.php script.
