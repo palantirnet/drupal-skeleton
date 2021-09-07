@@ -32,6 +32,9 @@ additional_fqdns: []
 xdebug_enabled: false
 
 hooks:
+  pre-start:
+    # Check the ddev version number; version 1.17 or newer is preferred.
+    - exec-host: if ! ddev --version | grep -E 'v1\.(1[7-9]|2\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.17 OR NEWER."; exit 1; fi
   post-start:
     # TODO: Change Node.js from version 10 to the version specified by your styleguide.
     - exec: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
