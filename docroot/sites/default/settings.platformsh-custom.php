@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Drupal settings file template for use on Platform.sh environments.
+ * Project-specific settings for Platform.sh hosting environments.
  */
 
 // Use the temporary directory set up in .platform.app.yaml

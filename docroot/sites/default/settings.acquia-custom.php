@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Drupal settings file template for use on Acquia environments.
+ * Project-specific settings for Acquia hosting environments.
  */
 
 // Allow accessing the dev and stage environments using the default Acquia urls.

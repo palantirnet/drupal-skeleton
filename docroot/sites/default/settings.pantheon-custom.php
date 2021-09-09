@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Drupal settings file template for use on Pantheon environments.
+ * Project-specific settings for Pantheon hosting environments.
  */
 
 // Enable/disable config_split configurations.

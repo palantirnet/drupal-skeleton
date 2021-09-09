@@ -26,11 +26,6 @@ $settings['trusted_host_patterns'] = [];
 $settings['file_private_path'] = '';
 
 /**
- * Location of the site configuration files.
- */
-$settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/default/';
-
-/**
  * Salt for one-time login links, cancel links, form tokens, etc.
  */
 $settings['hash_salt'] = file_get_contents(DRUPAL_ROOT . '/../config/salt.txt');
@@ -82,19 +77,28 @@ if (file_exists(__DIR__ . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 
 // Acquia
 if (getenv('AH_SITE_GROUP') && file_exists(__DIR__ . '/settings.acquia.php')) {
   include __DIR__ . '/settings.acquia-custom.php';
+  include __DIR__ . '/settings.acquia.php';
 }
 
 // Pantheon
-if (getenv('PANTHEON_ENVIRONMENT') && file_exists(__DIR__ . '/settings.acquia.php')) {
+if (getenv('PANTHEON_ENVIRONMENT') && file_exists(__DIR__ . '/settings.pantheon.php')) {
   include __DIR__ . '/settings.pantheon-custom.php';
   include __DIR__ . 'settings.pantheon.php';
 }
 
 // Platform.sh
-if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.acquia.php')) {
+if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.platform.php')) {
   include __DIR__ . '/settings.platform-custom.php';
   include __DIR__ . 'settings.platform.php';
 }
+
+/**
+ * Location of the site configuration files.
+ *
+ * This is set last because some hosts (Acquia) override this in their host-specific
+ * configuration code.
+ */
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/default/';
 
 /**
  * Load local development override configuration, if available.
