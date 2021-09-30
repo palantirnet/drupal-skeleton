@@ -72,6 +72,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 // Automatically generated include for settings managed by ddev.
 if (file_exists(__DIR__ . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 'true') {
   include __DIR__ . '/settings.ddev.php';
+  include __DIR__ . '/settings.ddev-overrides.php';
 }
 
 // Acquia
