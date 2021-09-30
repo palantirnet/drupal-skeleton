@@ -53,4 +53,4 @@ $config['acquia_connector.settings']['hide_signup_messages'] = TRUE;
 // TODO: Use this section if the project uses Solr.
 // 1. Configure a search server called 'local_search_server'
 // 2. Update this line to assign your index to the local server.
-# $settings['search_api.index.YOUR_INDEX']['server'] = 'local_search_server';
+# $config['search_api.index.YOUR_INDEX']['server'] = 'local_search_server';
