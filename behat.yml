@@ -22,7 +22,7 @@ default:
       blackbox: ~
       api_driver: 'drupal'
       drupal:
-        drupal_root: 'web'
+        drupal_root: 'docroot'
       text:
         username_field: 'name'
         password_field: 'pass'

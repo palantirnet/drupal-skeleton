@@ -1,0 +1,54 @@
+# DDev configuration
+# @see https://ddev.readthedocs.io/en/latest/users/extend/config_yaml/
+
+# TODO: Update the name to match your project. This determines the local url; this default
+# url is 'drupal-skeleton.ddev.site'.
+name: drupal-skeleton
+
+# TODO: If the project uses Acquia hosting, use these settings.
+docroot: docroot
+mysql_version: "5.7"
+webserver_type: apache-fpm
+
+# TODO: If the project uses Pantheon or Platform.sh hosting, remove the Acquia settings
+# and use these settings instead.
+#docroot: web
+#webserver_type: nginx-fpm
+#mariadb_version: "10.3"
+
+# TODO: Make sure this PHP version matches the project's hosting environment.
+php_version: "7.4"
+
+# Add any multisite subdomains to this array. Adding "example" will make this environment
+# available at "example.ddev.site".
+additional_hostnames: []
+
+# Add extra fully qualified domains here. This is useful for transitioning from a vagrant
+# environment to a ddev environment.
+additional_fqdns: []
+
+# Turn XDebug on and off for your own environment using `ddev xdebug on` and
+# `ddev xdebug off`
+xdebug_enabled: false
+
+hooks:
+  pre-start:
+    # Check the ddev version number; version 1.17 or newer is preferred.
+    - exec-host: if ! ddev --version | grep -E 'v1\.(1[7-9]|2\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.17 OR NEWER."; exit 1; fi
+  post-start:
+    # Install the Node.js version specified in the project's .nvmrc file.
+    # TODO: If your project does not use Node.js, you can remove this line.
+    - exec: source "$NVM_DIR/nvm.sh" && nvm install --default
+    # By default, ddev provides a database called 'db'. If you need additional databases,
+    # uncomment this section and change "default" to your database name.
+#    - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL ON default.* to 'db'@'%';"
+#      service: db
+
+# This allows ddev to manage its own settings.ddev.php file.
+disable_settings_management: false
+
+type: drupal9
+router_http_port: "80"
+router_https_port: "443"
+provider: default
+use_dns_when_possible: true
