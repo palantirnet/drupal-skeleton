@@ -75,6 +75,11 @@ if (file_exists(__DIR__ . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 
   include __DIR__ . '/settings.ddev-overrides.php';
 }
 
+// Circle CI
+if (file_exists(__DIR__ . '/settings.circleci.php') && getenv('CIRCLECI') == 'true') {
+  include __DIR__ . '/settings.circleci.php';
+}
+
 // Acquia
 if (getenv('AH_SITE_GROUP') && file_exists(__DIR__ . '/settings.acquia.php')) {
   include __DIR__ . '/settings.acquia-custom.php';

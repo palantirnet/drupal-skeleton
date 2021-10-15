@@ -5,7 +5,7 @@
  * Shared developer settings.
  */
 
-// Allow any host name locally.
+// Allow any host name.
 $settings['trusted_host_patterns'] = ['.*'];
 
 // Don't use Symfony's APCLoader. ddev includes APCu, and Composer's APCu loader has
