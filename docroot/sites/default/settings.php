@@ -70,13 +70,13 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 
 
 // Automatically generated include for settings managed by ddev.
-if (file_exists(__DIR__ . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 'true') {
+if (getenv('IS_DDEV_PROJECT') == 'true' && file_exists(__DIR__ . '/settings.ddev.php')) {
   include __DIR__ . '/settings.ddev.php';
   include __DIR__ . '/settings.ddev-overrides.php';
 }
 
 // Circle CI
-if (file_exists(__DIR__ . '/settings.circleci.php') && getenv('CIRCLECI') == 'true') {
+if (getenv('CIRCLECI') == 'true' && file_exists(__DIR__ . '/settings.circleci.php')) {
   include __DIR__ . '/settings.circleci.php';
 }
 
