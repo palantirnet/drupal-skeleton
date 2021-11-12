@@ -104,7 +104,7 @@ if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.platform.
  * This is set last because some hosts (Acquia) override this in their host-specific
  * configuration code.
  */
-$settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/default/';
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/sites/default/';
 
 /**
  * Load local development override configuration, if available.
