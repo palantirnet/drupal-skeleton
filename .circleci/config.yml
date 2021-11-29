@@ -22,7 +22,7 @@ jobs:
     steps:
       - run:
           name: Install packages
-          command: sudo apt-get install -y libpng-dev default-mysql-client
+          command: sudo apt-get update && sudo apt-get install -y default-mysql-client
       - run:
           name: Configure PHP
           command: |
