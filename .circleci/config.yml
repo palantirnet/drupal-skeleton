@@ -6,7 +6,7 @@ jobs:
   build:
     working_directory: ~/drupal-skeleton
     docker:
-      - image: circleci/php:7.3-node-browsers
+      - image: cimg/php:7.4-browsers
       - image: circleci/mysql:5.7-ram
         command: --max_allowed_packet=16M
         environment:
@@ -24,13 +24,9 @@ jobs:
           name: Install packages
           command: sudo apt-get install -y libpng-dev default-mysql-client
       - run:
-          name: Install PHP extensions
-          command: sudo docker-php-ext-install pdo_mysql gd
-      - run:
           name: Configure PHP
           command: |
-            echo "sendmail_path=/bin/true" | sudo tee -a "/usr/local/etc/php/php.ini"
-            echo "memory_limit=-1" | sudo tee -a "/usr/local/etc/php/php.ini"
+            echo "sendmail_path=/bin/true" | sudo tee -a "/etc/php.d/circleci.ini"
       - run:
           name: Create artifacts directory
           command: mkdir /tmp/artifacts
