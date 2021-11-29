@@ -80,7 +80,7 @@ jobs:
 
       - run:
           name: Install the-build in the project
-          command: printf 'drupal-skeleton\nhttp://drupal-skeleton.local\nother\nn' | vendor/bin/the-build-installer
+          command: printf 'drupal-skeleton\nhttp://drupal-skeleton.local\nacquia\nn' | vendor/bin/the-build-installer
 
       - run:
           name: Wait for DB
