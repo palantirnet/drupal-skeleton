@@ -38,19 +38,6 @@ jobs:
           name: Configure URL in /etc/hosts
           command: echo 127.0.0.1 ${CIRCLE_PROJECT_REPONAME}.local | sudo tee -a /etc/hosts
 
-      # Note: phing and drupal-check have mutually exclusive requirements.
-      # It'd be better to add drupal-check as a dependency of the drupal project
-      # rather than as part of the virtual environment, but this will have to do
-      # for now. Also note, drupal-check is added as part of the-vagrant so it
-      # is available to run within our VM.
-      - run:
-          name: Install drupal-check
-          command: |
-            curl -O -L https://github.com/mglaman/drupal-check/releases/download/1.0.9/drupal-check.phar
-            mkdir --parents ~/bin
-            mv drupal-check.phar ~/bin/drupal-check
-            chmod +x ~/bin/drupal-check
-
       # Source cache
       - restore_cache:
           keys:
