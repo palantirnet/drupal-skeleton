@@ -77,6 +77,10 @@
             "docroot/modules/custom/{$name}": ["type:drupal-custom-module"],
             "docroot/themes/custom/{$name}": ["type:drupal-custom-theme"]
         },
-        "enable-patching": true
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        }
     }
 }
