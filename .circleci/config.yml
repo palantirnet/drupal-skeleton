@@ -1,13 +1,13 @@
 # This CircleCI configuration is for testing the drupal-skeleton. For project-specific
 # testing, use the configuration installed by palantirnet/the-build.
 
-version: 2
+version: 2.1
 jobs:
   build:
     working_directory: ~/drupal-skeleton
     docker:
       - image: cimg/php:7.4-browsers
-      - image: circleci/mysql:5.7-ram
+      - image: cimg/mysql:5.7
         command: --max_allowed_packet=16M
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
