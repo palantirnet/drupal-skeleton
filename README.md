@@ -12,7 +12,7 @@ You should have the development dependencies installed on your Mac before you be
 
 The development dependencies are:
 
-* PHP 7.3+
+* PHP 7.4+
   * Check your PHP version from the command line using `php --version`
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
@@ -75,14 +75,6 @@ Enter a short name for your project [example] :
 * Note that renaming or moving the `example/` project directory can break your ddev setup
 
 ## Full Project Setup
-
-### Use Drupal 8 instead of Drupal 9
-
-In general, you'll want to start new projects on Drupal 9 (as of June 2020). However, if you need to create a Drupal 8 testing environment, or use modules that aren't yet compatible with Drupal 9, you can still use a version of this skeleton that supports Drupal 8:
-
-```
-composer create-project palantirnet/drupal-skeleton example dev-drupal8 --no-interaction
-```
 
 ### Create a project with a custom name
 
