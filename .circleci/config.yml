@@ -33,6 +33,9 @@ jobs:
       - run:
           name: Configure URL in /etc/hosts
           command: echo 127.0.0.1 ${CIRCLE_PROJECT_REPONAME}.local | sudo tee -a /etc/hosts
+      - run:
+          name: Update to latest version of Composer
+          command: sudo composer self-update
 
       # Note: phing and drupal-check have mutually exclusive requirements.
       # It'd be better to add drupal-check as a dependency of the drupal project
