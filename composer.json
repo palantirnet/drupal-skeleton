@@ -19,7 +19,7 @@
         }
     },
     "require": {
-        "composer/installers": "^1.9",
+        "composer/installers": "^2.0",
         "drupal/admin_toolbar": "^3.0",
         "drupal/config_split": "^1.7",
         "drupal/core-composer-scaffold": "^10",
