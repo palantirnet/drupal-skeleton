@@ -29,7 +29,7 @@
         "drupal/workbench_tabs": "^1.5"
     },
     "require-dev": {
-        "drupal/core-dev": "^9",
+        "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^4.1.0",
         "palantirnet/the-build": "^4@alpha"
     },
