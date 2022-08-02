@@ -8,7 +8,7 @@
             "email": "info@palantir.net"
         }
     ],
-    "repositories": [
+    "repositories": {
         "lenient": {
             "type": "composer",
             "url": "https://packages.drupal.org/lenient"
@@ -17,7 +17,7 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    ],
+    },
     "require": {
         "composer/installers": "^1.9",
         "drupal/admin_toolbar": "^3.0",
