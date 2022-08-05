@@ -48,7 +48,8 @@
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "mglaman/composer-drupal-lenient": true,
-            "phing/phing-composer-configurator": true
+            "phing/phing-composer-configurator": true,
+            "phpstan/extension-installer": true
         },
         "platform": {
             "php": "8.1"
