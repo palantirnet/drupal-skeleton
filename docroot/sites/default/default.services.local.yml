@@ -1,0 +1,17 @@
+# @file
+# Local development services.
+#
+# Copy this file to 'local.services.yml' and customize for your development needs.
+
+services:
+  cache.backend.null:
+    class: Drupal\Core\Cache\NullBackendFactory
+parameters:
+  # The debug cacheability header can get very long and cause HTTP 500 errors. If this
+  # happens on your site, change this to false.
+  http.response.debug_cacheability_headers: true
+  twig.config:
+    debug: true
+    auto_reload: true
+    # This is important if you're using interactive debugging with Twig templates.
+    cache: true
