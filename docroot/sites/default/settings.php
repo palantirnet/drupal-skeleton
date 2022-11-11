@@ -89,7 +89,7 @@ if (getenv('AH_SITE_GROUP') && file_exists(__DIR__ . '/settings.acquia.php')) {
 // Pantheon
 if (getenv('PANTHEON_ENVIRONMENT') && file_exists(__DIR__ . '/settings.pantheon.php')) {
   include __DIR__ . '/settings.pantheon-custom.php';
-  include __DIR__ . 'settings.pantheon.php';
+  include __DIR__ . '/settings.pantheon.php';
 }
 
 // Platform.sh
