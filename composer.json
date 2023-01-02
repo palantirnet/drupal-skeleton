@@ -25,6 +25,7 @@
         "drupal/workbench_tabs": "^1"
     },
     "require-dev": {
+        "behat/mink-goutte-driver": "^2.0",
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
         "palantirnet/the-build": "dev-drupal-10-utility-module"
