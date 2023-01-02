@@ -6,7 +6,6 @@ This is the development repository for { your project's } Drupal website. It con
 
 * [Development Environment](#development-environment)
 * [Getting Started](#getting-started)
-* [How do I work on this?](#how-do-i-work-on-this)
 * [Drupal Development](#drupal-development)
 * [Styleguide Development](#styleguide-development)
 * [Deployment](#Deployment)
@@ -18,38 +17,26 @@ This project uses [ddev](https://ddev.com/ddev-local/) for its development envir
 
 * [Composer](https://getcomposer.org/download/)
 * [Docker](https://www.docker.com/)
-  * Docker can be installed with [homebrew](https://brew.sh/): `brew install docker --cask`
 * [DDev Local](https://ddev.com/ddev-local/)
-  * ddev can be installed with [homebrew](https://brew.sh/): `brew install ddev`
+
+Docker and DDev can be installed with [homebrew](https://brew.sh/):
+
+```
+brew install docker --cask
+brew install ddev
+```
 
 ## Getting Started
 
 1. Clone the project from github: `git clone https://github.com/palantirnet/your-project.git`
-1. From inside the project root, run:
+2. From inside the project root, run:
 
   ```
     composer install
     ddev start
   ```
-3. Log in to the ddev environment: `ddev ssh`
-4. From within ddev, build and install the Drupal site: `vendor/bin/phing install migrate`
-5. Visit your site at [your-project.ddev.site](http://your-project.ddev.site)
-
-## How do I work on this?
-
-You can edit code, update documentation, and run git commands by opening files directly from your machine.
-
-To run site management commands like `drush status` or `phing install`:
-
-* Start the development environment with `ddev start`
-* SSH into the development environment with `ddev ssh`
-* You'll be in your project root, at the path `/var/www/html/`
-* You can run `composer`, `drush`, and `phing` commands from here
-
-To work on the styleguide:
-
-* Go to the styleguide directory: `cd styleguide`; you'll be at the path `/your-project/styleguide`
-* You can run `yarn install` & `yarn serve` from here, then view the styleguide in your browser at [your-project.local:3000](http://your-project.local:3000)
+3. Install the Drupal site: `vendor/bin/phing install` (this can be run inside or outside of ddev)
+4. Visit your site at [your-project.ddev.site](http://your-project.ddev.site)
 
 ## Drupal Development
 
@@ -61,9 +48,18 @@ You can refresh/reset your local Drupal site at any time. SSH into your ddev env
 4. Run your migrations: `phing migrate`
 5. ... OR run all three phing targets at once: `phing install migrate` (again, `install` runs `build` for you)
 
+* Shared development environment settings are committed to git in `docroot/sites/default/settings.ddev-overrides.php`
+* To customize local development settings, copy:
+  * `docroot/sites/default/default.settings.local.php` to `settings.local.php`
+  * `docroot/sites/default/default.services.local.yml` to `services.local.yml`
+* Config is exported to the `config/` directory; `config_split` module is used to manage environment-specific config
+* The `artifacts/` directory can be used to store files and database dumps that should not be checked in to git
+
 Additional information on developing for Drupal within this environment is in [docs/general/drupal_development.md](docs/general/drupal_development.md).
 
 ## Styleguide Development
+
+@todo This section needs to be customized per-project.
 
 * `cd styleguide` on your host machine
 * `yarn install`
@@ -87,4 +83,4 @@ General:
 * [Drupal Development](docs/general/drupal_development.md)
 
 ----
-Copyright 2021 Palantir.net, Inc.
+Copyright 2022 Palantir.net, Inc.
