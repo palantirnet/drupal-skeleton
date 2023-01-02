@@ -8,25 +8,26 @@
             "email": "info@palantir.net"
         }
     ],
-    "repositories": {
-        "lenient": {
-            "type": "composer",
-            "url": "https://packages.drupal.org/lenient"
-        },
-        "drupal": {
+    "repositories": [
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    },
+    ],
     "require": {
         "composer/installers": "^2.0",
+        "drupal/admin_toolbar": "^3",
+        "drupal/config_split": "^1",
         "drupal/core-composer-scaffold": "^10",
         "drupal/core-recommended": "^10",
-        "mglaman/composer-drupal-lenient": "^1.0"
+        "drupal/devel": "^5",
+        "drupal/workbench": "^1",
+        "drupal/workbench_tabs": "^1"
     },
     "require-dev": {
         "drupal/core-dev": "^10",
-        "palantirnet/the-build": "dev-drupal-10"
+        "drupal/drupal-extension": "^5",
+        "palantirnet/the-build": "^4@beta"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
@@ -39,7 +40,7 @@
     "conflict": {
         "drupal/drupal": "*"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
         "allow-plugins": {
@@ -47,8 +48,6 @@
             "drupal/core-composer-scaffold": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "mglaman/composer-drupal-lenient": true,
-            "phing/phing-composer-configurator": true,
             "phpstan/extension-installer": true
         },
         "platform": {
@@ -89,15 +88,6 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
-        },
-        "drupal-lenient": {
-            "allowed-list": [
-                "drupal/admin_toolbar",
-                "drupal/config_split",
-                "drupal/devel",
-                "drupal/workbench",
-                "drupal/workbench_tabs"
-            ]
         }
     }
 }
