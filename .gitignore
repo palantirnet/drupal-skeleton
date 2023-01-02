@@ -43,3 +43,4 @@ styleguide/source/code/css/*.css
 !styleguide/yarn.lock
 /.editorconfig
 /.gitattributes
+.git/
