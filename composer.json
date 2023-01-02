@@ -27,7 +27,7 @@
     "require-dev": {
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
-        "palantirnet/the-build": "^4@beta"
+        "palantirnet/the-build": "dev-drupal-10-utility-module"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
