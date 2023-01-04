@@ -7,9 +7,10 @@
  * Copy this file to 'settings.local.php' and customize for your development needs.
  */
 
-// To simulate other config split environments, uncomment these split lines, then run:
+// To simulate other config split environments, uncomment and edit these lines, then run:
 //   drush cr && drush cim -y
 # $config['config_split.config_split.development']['status'] = FALSE;
+# $config['config_split.config_split.test']['status'] = FALSE;
 # $config['config_split.config_split.production']['status'] = TRUE;
 
 // Customizable development services file.
