@@ -1,7 +1,7 @@
 # @file
 # Local development services.
 #
-# Copy this file to 'local.services.yml' and customize for your development needs.
+# Copy this file to 'services.local.yml' and customize for your development needs.
 
 services:
   cache.backend.null:
