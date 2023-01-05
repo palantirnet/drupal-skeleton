@@ -8,6 +8,7 @@ web/sites/*/files
 docroot/sites/*/files
 
 # Ignore local Drupal configuration
+services.local.yml
 settings.local.php
 settings.ddev.php
 
