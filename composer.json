@@ -29,7 +29,7 @@
         "behat/mink-goutte-driver": "^2.0",
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
-        "palantirnet/the-build": "dev-drupal-10-utility-module"
+        "palantirnet/the-build": "^4@beta"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
