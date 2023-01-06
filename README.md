@@ -90,6 +90,11 @@ Use composer to create a new project based on this skeleton, replacing `PROJECTN
 composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-develop --no-interaction
 ```
 
+This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
+```
+composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal9 --no-interaction
+```
+
 ### Update your documentation
 
 Update the `README`:
