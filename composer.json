@@ -23,6 +23,7 @@
         "drupal/devel": "^5",
         "drupal/workbench": "^1",
         "drupal/workbench_tabs": "^1"
+        "drush/drush": "^11"
     },
     "require-dev": {
         "behat/mink-goutte-driver": "^2.0",
