@@ -29,7 +29,7 @@
     "require-dev": {
         "drupal/core-dev": "^9",
         "drupal/drupal-extension": "^4.1.0",
-        "palantirnet/the-build": "^4@alpha"
+        "palantirnet/the-build": "dev-add-config-ignore-module"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
