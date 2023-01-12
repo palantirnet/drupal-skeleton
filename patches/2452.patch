@@ -1,0 +1,37 @@
+From 51201ea4e35f9c20539e9bae60cf26340949c727 Mon Sep 17 00:00:00 2001
+From: Jason Murray <jason.murray@mobomo.com>
+Date: Wed, 29 Jun 2022 16:36:24 -0400
+Subject: [PATCH] Fix hook_requirements implementation in system module
+
+Replaces the call to the extension.list.theme with one to the extension.list.profile service when install profile is not `standard`.
+---
+ core/modules/system/system.install | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/core/modules/system/system.install b/core/modules/system/system.install
+index 7339468a921..914b6cae43f 100644
+--- a/core/modules/system/system.install
++++ b/core/modules/system/system.install
+@@ -45,6 +45,10 @@ function system_requirements($phase) {
+   /** @var \Drupal\Core\Extension\ThemeExtensionList $theme_extension_list */
+   $theme_extension_list = \Drupal::service('extension.list.theme');
+   $theme_extension_list->reset();
++  /** @var \Drupal\Core\Extension\ProfileExtensionList $profile_extension_list */
++  $profile_extension_list = \Drupal::service('extension.list.profile');
++  $profile_extension_list->reset();
++
+   $requirements = [];
+ 
+   // Report Drupal version
+@@ -60,7 +64,7 @@ function system_requirements($phase) {
+     // is not running the default installation profile.
+     $profile = \Drupal::installProfile();
+     if ($profile != 'standard') {
+-      $info = $module_extension_list->getExtensionInfo($profile);
++      $info = $profile_extension_list->getExtensionInfo($profile);
+       $requirements['install_profile'] = [
+         'title' => t('Installation profile'),
+         'value' => t('%profile_name (%profile-%version)', [
+-- 
+GitLab
+

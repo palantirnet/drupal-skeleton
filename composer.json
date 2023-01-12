@@ -90,6 +90,11 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "patches": {
+          "drupal/core": {
+            "3293463: System Requirements errors when profile other than 'standard` used to install": "patches/2452.patch"
+          }
         }
     }
 }
