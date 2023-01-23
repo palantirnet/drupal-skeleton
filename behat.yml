@@ -15,21 +15,11 @@ default:
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Drupal\MinkExtension:
       goutte: ~
-      #selenium2:
-        #wd_host: "http://127.0.0.1:8643/wd/hub"
-      #javascript_session: selenium2
       browser_name: chrome
       chrome:
         api_url: "http://chrome:9222"
       javascript_session: chrome
-
       base_url: http://drupal-skeleton.local
-    FailAid\Extension:
-      screenshot:
-        directory: /var/www/html/features/screenshots/
-        mode: default
-        autoClean: false
-        size: 1440x1280
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: 'drupal'
