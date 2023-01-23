@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2376a6eb4a3aed6fec09c53b4dd0f23b",
+    "content-hash": "2a3551ff9b8725436ab63009cc26ab91",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7681,6 +7681,108 @@
             "time": "2022-02-04T12:51:07+00:00"
         },
         {
+            "name": "dmore/behat-chrome-extension",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/behat-chrome/behat-chrome-extension.git",
+                "reference": "888e91f52b3ffd19afe61cea3d5edebb0a4d43a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/behat-chrome%2Fbehat-chrome-extension/repository/archive.zip?sha=888e91f52b3ffd19afe61cea3d5edebb0a4d43a7",
+                "reference": "888e91f52b3ffd19afe61cea3d5edebb0a4d43a7",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.4",
+                "dmore/chrome-mink-driver": "^2.4.1",
+                "friends-of-behat/mink-extension": "^2.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5 || ^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DMore\\ChromeExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dorian More",
+                    "email": "doriancmore@gmail.com"
+                }
+            ],
+            "description": "Behat extension for controlling Chrome without Selenium",
+            "homepage": "https://gitlab.com/behat-chrome/chrome-mink-driver",
+            "keywords": [
+                "Behat",
+                "chrome",
+                "driver",
+                "headless"
+            ],
+            "support": {
+                "issues": "https://gitlab.com/behat-chrome/behat-chrome-extension/-/issues",
+                "source": "https://gitlab.com/behat-chrome/behat-chrome-extension/-/tree/1.4.0"
+            },
+            "time": "2022-04-10T04:25:11+00:00"
+        },
+        {
+            "name": "dmore/chrome-mink-driver",
+            "version": "2.9.1",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.com:behat-chrome/chrome-mink-driver.git",
+                "reference": "e338a4287759bba4c12a246fa74a6c765a514a5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/behat-chrome%2Fchrome-mink-driver/repository/archive.zip?sha=e338a4287759bba4c12a246fa74a6c765a514a5b",
+                "reference": "e338a4287759bba4c12a246fa74a6c765a514a5b",
+                "shasum": ""
+            },
+            "require": {
+                "behat/mink": "^1.9",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "textalk/websocket": "^1.2.0"
+            },
+            "require-dev": {
+                "mink/driver-testsuite": "dev-master",
+                "phpunit/phpunit": "^8.5.22 || ^9.5.11",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DMore\\ChromeDriver\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dorian More",
+                    "email": "doriancmore@gmail.com"
+                }
+            ],
+            "description": "Mink driver for controlling chrome without selenium",
+            "homepage": "https://gitlab.com/behat-chrome/chrome-mink-driver",
+            "support": {
+                "issues": "https://gitlab.com/behat-chrome/chrome-mink-driver/-/issues"
+            },
+            "time": "2023-01-10T01:37:49+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.5.0",
             "source": {
@@ -10251,6 +10353,112 @@
             "time": "2022-12-09T07:31:23+00:00"
         },
         {
+            "name": "phrity/net-uri",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sirn-se/phrity-net-uri.git",
+                "reference": "c6ecf127e7c99a41ce04d3cdcda7f51108dd96f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sirn-se/phrity-net-uri/zipball/c6ecf127e7c99a41ce04d3cdcda7f51108dd96f7",
+                "reference": "c6ecf127e7c99a41ce04d3cdcda7f51108dd96f7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sören Jensen",
+                    "email": "sirn@sirn.se",
+                    "homepage": "https://phrity.sirn.se"
+                }
+            ],
+            "description": "PSR-7 Uri and PSR-17 UriFactory implementation",
+            "homepage": "https://phrity.sirn.se/net-uri",
+            "keywords": [
+                "psr-17",
+                "psr-7",
+                "uri",
+                "uri factory"
+            ],
+            "support": {
+                "issues": "https://github.com/sirn-se/phrity-net-uri/issues",
+                "source": "https://github.com/sirn-se/phrity-net-uri/tree/1.2.0"
+            },
+            "time": "2022-11-30T07:20:06+00:00"
+        },
+        {
+            "name": "phrity/util-errorhandler",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sirn-se/phrity-util-errorhandler.git",
+                "reference": "dc9ac8fb70d733c48a9d9d1eb50f7022172da6bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sirn-se/phrity-util-errorhandler/zipball/dc9ac8fb70d733c48a9d9d1eb50f7022172da6bc",
+                "reference": "dc9ac8fb70d733c48a9d9d1eb50f7022172da6bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^8.0|^9.0",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sören Jensen",
+                    "email": "sirn@sirn.se",
+                    "homepage": "https://phrity.sirn.se"
+                }
+            ],
+            "description": "Inline error handler; catch and resolve errors for code block.",
+            "homepage": "https://phrity.sirn.se/util-errorhandler",
+            "keywords": [
+                "error",
+                "warning"
+            ],
+            "support": {
+                "issues": "https://github.com/sirn-se/phrity-util-errorhandler/issues",
+                "source": "https://github.com/sirn-se/phrity-util-errorhandler/tree/1.0.1"
+            },
+            "time": "2022-10-27T12:14:42+00:00"
+        },
+        {
             "name": "react/promise",
             "version": "v2.9.0",
             "source": {
@@ -12428,6 +12636,57 @@
                 }
             ],
             "time": "2022-12-23T14:11:11+00:00"
+        },
+        {
+            "name": "textalk/websocket",
+            "version": "1.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Textalk/websocket-php.git",
+                "reference": "67de79745b1a357caf812bfc44e0abf481cee012"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Textalk/websocket-php/zipball/67de79745b1a357caf812bfc44e0abf481cee012",
+                "reference": "67de79745b1a357caf812bfc44e0abf481cee012",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0",
+                "phrity/net-uri": "^1.0",
+                "phrity/util-errorhandler": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/log": "^1.0 | ^2.0 | ^3.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^9.0",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WebSocket\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Fredrik Liljegren"
+                },
+                {
+                    "name": "Sören Jensen"
+                }
+            ],
+            "description": "WebSocket client and server",
+            "support": {
+                "issues": "https://github.com/Textalk/websocket-php/issues",
+                "source": "https://github.com/Textalk/websocket-php/tree/1.6.3"
+            },
+            "time": "2022-11-07T18:59:33+00:00"
         },
         {
             "name": "theseer/tokenizer",

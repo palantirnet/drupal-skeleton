@@ -32,7 +32,6 @@
         "dmore/behat-chrome-extension": "^1.4",
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
-        "genesis/behat-fail-aid": "^3.7",
         "palantirnet/the-build": "^4@beta"
     },
     "suggest": {
