@@ -17,7 +17,7 @@ default:
       goutte: ~
       browser_name: chrome
       chrome:
-        api_url: "http://chrome:9222"
+        api_url: http://chrome:9222
       javascript_session: chrome
       base_url: http://drupal-skeleton.local
     Drupal\DrupalExtension:
@@ -36,3 +36,5 @@ circle:
   extensions:
     Behat\MinkExtension:
       base_url: http://drupal-skeleton.local:8000
+      chrome:
+        api_url: http://drupal-skeleton.local:9222
