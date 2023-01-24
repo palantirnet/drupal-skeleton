@@ -17,7 +17,7 @@ default:
       goutte: ~
       selenium2:
         browser: "chrome"
-        wd_host: "http://127.0.0.1:8643/wd/hub"
+        wd_host: "http://127.0.0.1:9515/wd/hub"
       javascript_session: selenium2
       base_url: http://drupal-skeleton.local
     Drupal\DrupalExtension:
