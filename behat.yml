@@ -36,5 +36,3 @@ circle:
   extensions:
     Behat\MinkExtension:
       base_url: http://drupal-skeleton.local:8000
-      chrome:
-        api_url: http://drupal-skeleton.local:9222

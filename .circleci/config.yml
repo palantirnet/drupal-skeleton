@@ -98,8 +98,10 @@ jobs:
           command: printf 'y' | vendor/bin/phing install -Ddrupal.validate_clean_config.bypass=yes -Ddrupal.sites.default.profile=standard
       - run:
           name: Run Behat tests
-          command: |
-              nohup php -S ${CIRCLE_PROJECT_REPONAME}.local:8000 -t $(pwd)/web/ > /tmp/artifacts/phpd.log 2>&1 &
+          # nohup php -S ${CIRCLE_PROJECT_REPONAME}.local:8000 -t $(pwd)/web/ > /tmp/artifacts/phpd.log 2>&1 &
+          command: |            
+              vendor/bin/drush runserver --default-server=builtin 8080 &>/dev/null &
+              sleep 10
               google-chrome --version
               google-chrome --headless --remote-debugging-port=9222 &>/dev/null &
               vendor/bin/behat --profile=circleci --suite=default --strict --format=junit --out=/tmp/artifacts
