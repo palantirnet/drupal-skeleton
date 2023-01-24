@@ -12,13 +12,12 @@ default:
   gherkin:
     cache: ~
   extensions:
-    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
-    Drupal\MinkExtension:
+    Behat\MinkExtension:
       goutte: ~
-      browser_name: chrome
-      chrome:
-        api_url: http://chrome:9222
-      javascript_session: chrome
+      selenium2:
+        browser: "chrome"
+        wd_host: "http://127.0.0.1:8643/wd/hub"
+      javascript_session: selenium2
       base_url: http://drupal-skeleton.local
     Drupal\DrupalExtension:
       blackbox: ~
