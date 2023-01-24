@@ -12,7 +12,8 @@ default:
   gherkin:
     cache: ~
   extensions:
-    Behat\MinkExtension:
+    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+    Drupal\MinkExtension:
       goutte: ~
       selenium2:
         browser: "chrome"
