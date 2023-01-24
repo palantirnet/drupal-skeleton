@@ -88,9 +88,7 @@ jobs:
       - run:
           name: Wait for DB
           # Dockerize is preinstalled in circleci/* docker image
-          command: |
-            dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-            dockerize -wait tcp://127.0.0.1:8643 -timeout 120s
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
 
       - run:
           name: Build Drupal's settings.php

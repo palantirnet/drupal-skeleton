@@ -36,3 +36,6 @@ circle:
   extensions:
     Behat\MinkExtension:
       base_url: http://drupal-skeleton.local:8000
+      selenium2:
+        wd_host: "http://127.0.0.1:8643/wd/hub"
+      javascript_session: selenium2
