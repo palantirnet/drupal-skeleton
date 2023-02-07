@@ -82,8 +82,8 @@ if (getenv('CIRCLECI') == 'true' && file_exists(__DIR__ . '/settings.circleci.ph
 
 // Acquia
 if (getenv('AH_SITE_GROUP') && file_exists(__DIR__ . '/settings.acquia.php')) {
-  include __DIR__ . '/settings.acquia-custom.php';
   include __DIR__ . '/settings.acquia.php';
+  include __DIR__ . '/settings.acquia-custom.php';
 }
 
 // Pantheon
