@@ -94,8 +94,8 @@ if (getenv('PANTHEON_ENVIRONMENT') && file_exists(__DIR__ . '/settings.pantheon.
 
 // Platform.sh
 if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.platform.php')) {
-  include __DIR__ . '/settings.platform-custom.php';
   include __DIR__ . '/settings.platform.php';
+  include __DIR__ . '/settings.platform-custom.php';
 }
 
 /**
