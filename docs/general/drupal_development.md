@@ -99,11 +99,11 @@ When you make changes to these files, you will generally need to run `phing buil
 
 ### Test Drupal
 
-This project uses Behat to test Drupal; it also provides some PHP linting tools. You can run:
+This project uses Behat to test Drupal; it also provides some PHP and Javascript linting tools. You can run:
 
 * All Behat tests: `behat`
 * One behat test: `behat features/installation.feature`
-* The PHP code review: `phing code-review`
+* The PHP + JS code review: `phing code-review`
 
 ----
 Copyright 2020 Palantir.net, Inc.

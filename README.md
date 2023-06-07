@@ -21,6 +21,11 @@ The development dependencies are:
 * [DDev Local](https://ddev.com/ddev-local/)
   * ddev can be installed with [homebrew](https://brew.sh/): `brew install ddev`
 
+The dependencies for linting custom javascript are:
+
+* [Node](https://nodejs.org/en/) version 16.x.x or greater.
+* [npm](https://www.npmjs.com/get-npm) version 9.x.x or greater.
+
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
 Some of the commands below will prompt you for a response, with the default answer in brackets. For this quick start, hit return to accept each default answer:
@@ -122,6 +127,11 @@ Update the `composer.json`:
     composer update --lock
   ```
 
+Update the `package.json`:
+
+* Change the `name` from `palantirnet/drupal-skeleton` to `palantirnet/PROJECTNAME`
+* Update the `description` with a brief description of your project.
+
 ### Configure your ddev development environment
 
 Go into your new project directory and update the ddev configuration in `.ddev/config.yml`.
@@ -134,6 +144,7 @@ From inside ddev, run the script from `palantirnet/the-build` to set up a base D
   ddev start
   ddev ssh
   vendor/bin/the-build-installer
+  ddev npm install
   ```
 
 ### Commit your work to git
