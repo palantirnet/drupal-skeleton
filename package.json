@@ -1,5 +1,5 @@
 {
-  "name": "palantirnet/drupal-skeleton",
+  "name": "palantirnet--drupal-skeleton",
   "description": "A Drupal 8 project template.",
   "version": "0.0.0",
   "devDependencies": {
