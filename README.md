@@ -37,37 +37,30 @@ Enter a short name for your project [example] :
 ### Steps
 
 1. Create a new project called "example" based on this template:
-
-  ```
-  composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
-  ```
+    ```
+    composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
+    ```
+    This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
+    ```
+    composer create-project palantirnet/drupal-skeleton example dev-drupal9 --no-interaction
+    ```
+1. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
+    ```
+    # Update to match your project name. Using "drupal-skeleton" would make the site
+    # accessible at 'drupal-skeleton.ddev.site'.
+    name: drupal-skeleton
   
-  This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
-  ```
-  composer create-project palantirnet/drupal-skeleton example dev-drupal9 --no-interaction
-  ```
-  
-2. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
-
-  ```
-  # Update to match your project name. Using "drupal-skeleton" would make the site
-  # accessible at 'drupal-skeleton.ddev.site'.
-  name: drupal-skeleton
-
-  # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
-  docroot: web
-  ```
-  
-3. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
-
-  ```
-  ddev start
-  ddev ssh
-  vendor/bin/the-build-installer
-  ```
-
-5. In your web browser, visit [http://example.ddev.site](http://example.ddev.site)
-6. _Optional:_ While you are logged into the ddev environment, you can run Drush commands like `drush status`.
+    # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
+    docroot: web
+    ```
+1. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
+    ```
+    ddev start
+    ddev ssh
+    vendor/bin/the-build-installer
+    ```
+1. In your web browser, visit [http://example.ddev.site](http://example.ddev.site)
+1. _Optional:_ While you are logged into the ddev environment, you can run Drush commands like `drush status`.
 
 ### Extra Credit
 
