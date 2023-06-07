@@ -137,7 +137,6 @@ From inside ddev, run the script from `palantirnet/the-build` to set up a base D
   ddev start
   ddev ssh
   vendor/bin/the-build-installer
-  ddev npm install
   ```
 
 ### Commit your work to git
