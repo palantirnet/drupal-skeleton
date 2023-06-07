@@ -105,5 +105,11 @@ This project uses Behat to test Drupal; it also provides some PHP and Javascript
 * One behat test: `behat features/installation.feature`
 * The PHP + JS code review: `phing code-review`
 
+#### Javascript linting
+
+This project uses [eslint](https://eslint.org/docs/latest/use/) to check custom module js against Drupal js coding standards.
+
+If you'd like to handle your custom module's linting independently, add your module directory to the `/.eslintignore` file and add a command to additionally lint your js to the `code-review` phing target in `build.xml`.
+
 ----
-Copyright 2020 Palantir.net, Inc.
+Copyright 2023 Palantir.net, Inc.

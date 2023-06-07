@@ -23,7 +23,7 @@ The development dependencies are:
 
 The dependencies for linting custom javascript are:
 
-* [Node](https://nodejs.org/en/) version 16.x.x or greater.
+* [Node](https://nodejs.org/en/) version 18.x.x or greater.
 * [npm](https://www.npmjs.com/get-npm) version 9.x.x or greater.
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
