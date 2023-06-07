@@ -3,6 +3,7 @@
   "description": "A Drupal 8 project template.",
   "version": "0.0.0",
   "devDependencies": {
+    "check-dependencies": "1.1.0",
     "eslint": "8.39.0",
     "eslint-plugin-yml": "1.5.0"
   },
