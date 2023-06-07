@@ -129,7 +129,7 @@ Update the `composer.json`:
 
 Update the `package.json`:
 
-* Change the `name` from `palantirnet/drupal-skeleton` to `palantirnet/PROJECTNAME`
+* Change the `name` from `palantirnet--drupal-skeleton` to `palantirnet--PROJECTNAME`
 * Update the `description` with a brief description of your project.
 
 ### Configure your ddev development environment
