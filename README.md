@@ -37,14 +37,19 @@ Enter a short name for your project [example] :
 ### Steps
 
 1. Create a new project called "example" based on this template:
+
     ```
     composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
     ```
+   
     This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
+
     ```
     composer create-project palantirnet/drupal-skeleton example dev-drupal9 --no-interaction
     ```
+   
 1. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
+
     ```
     # Update to match your project name. Using "drupal-skeleton" would make the site
     # accessible at 'drupal-skeleton.ddev.site'.
@@ -53,13 +58,17 @@ Enter a short name for your project [example] :
     # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
     docroot: web
     ```
+   
 1. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
+
     ```
     ddev start
     ddev ssh
     vendor/bin/the-build-installer
     ```
+   
 1. In your web browser, visit [http://example.ddev.site](http://example.ddev.site)
+
 1. _Optional:_ While you are logged into the ddev environment, you can run Drush commands like `drush status`.
 
 ### Extra Credit
@@ -172,17 +181,17 @@ git push -u origin develop
 If you're allergic to phing and Benadryl isn't helping, you can also remove the-build:
 
 1. `composer remove --dev palantirnet/the-build`
-2. `rm -r .the-build`
-3. `rm build.xml`
-4. This will remove drush, coder, and phpmd -- if you want those dependencies, you'll need to add them back to your project:
+1.`rm -r .the-build`
+1. `rm build.xml`
+1. This will remove drush, coder, and phpmd -- if you want those dependencies, you'll need to add them back to your project:
 
     ```
     composer require --dev drush/drush drupal/coder phpmd/phpmd
     ```
 
-5. Review your `web/sites/default/settings.*.php` files (the-build managed these for you)
-6. Install your build tooling of choice... or nothing at all...
-7. _Update your project's README_
+1. Review your `web/sites/default/settings.*.php` files (the-build managed these for you)
+1. Install your build tooling of choice... or nothing at all...
+1. _Update your project's README_
 
 See also: [Documentation on using the-build](https://github.com/palantirnet/the-build#using-the-build)
 
@@ -217,24 +226,24 @@ In Drupal 8 development, all (or most) Drupal configuration should be exported a
   * Set the admin email address (your development environment will trap all emails)
   * Turn the Cron interval down to "never"
   * Uninstall unnecessary modules (e.g. Search, History, Comment)
-2. Export your config:
+1. Export your config:
 
-  ```
-  drush cex -y
-  ```
+    ```
+    drush cex -y
+    ```
 
-3. You should have a ton of new `*.yml` files in `config/sites/default/`. Add them, and this config change, to git:
+1. You should have a ton of new `*.yml` files in `config/sites/default/`. Add them, and this config change, to git:
 
-  ```
-  git add config/
-  git ci -m "Initial Drupal configuration."
-  git push
-  ```
-5. Reinstall your site and verify that your config is ready to go:
+      ```
+      git add config/
+      git ci -m "Initial Drupal configuration."
+      git push
+      ```
+1. Reinstall your site and verify that your config is ready to go:
 
-  ```
-  vendor/bin/phing install
-  ```
+      ```
+      vendor/bin/phing install
+      ```
 
 ## More information
 
