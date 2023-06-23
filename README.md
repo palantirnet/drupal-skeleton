@@ -12,7 +12,7 @@ You should have the development dependencies installed on your Mac before you be
 
 The development dependencies are:
 
-* PHP 8.1+
+* PHP 8.2+
   * Check your PHP version from the command line using `php --version`
   * If your project cannot support PHP 8.2, you should use PHP 8.1.18.
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
