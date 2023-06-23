@@ -27,7 +27,7 @@
         "dmore/behat-chrome-extension": "^1.4",
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
-        "palantirnet/the-build": "^4"
+        "palantirnet/the-build": "dev-drupal-first-install-config-ignore"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
