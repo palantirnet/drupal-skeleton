@@ -17,7 +17,7 @@ webserver_type: apache-fpm
 #mariadb_version: "10.3"
 
 # TODO: Make sure this PHP version matches the project's hosting environment.
-php_version: "8.2"
+php_version: "8.1"
 
 # Add any multisite subdomains to this array. Adding "example" will make this environment
 # available at "example.ddev.site".
