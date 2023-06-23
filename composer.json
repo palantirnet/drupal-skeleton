@@ -17,14 +17,8 @@
     ],
     "require": {
         "composer/installers": "^2.0",
-        "drupal/admin_toolbar": "^3",
-        "drupal/config_ignore": "2.x-dev",
-        "drupal/config_split": "^1",
         "drupal/core-composer-scaffold": "^10",
         "drupal/core-recommended": "^10",
-        "drupal/devel": "^5",
-        "drupal/workbench": "^1",
-        "drupal/workbench_tabs": "^1",
         "drush/drush": "^11"
     },
     "require-dev": {
@@ -33,7 +27,7 @@
         "dmore/behat-chrome-extension": "^1.4",
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
-        "palantirnet/the-build": "^4@beta"
+        "palantirnet/the-build": "dev-drupal-first-install-config-ignore"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
