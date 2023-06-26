@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Run npx which executes node binaries.
+## Usage: npx [node binary] [options]
+## Example: "npx eslint --ext .js docroot/modules/custom"
+
+node_modules/.bin/npx "$@"
