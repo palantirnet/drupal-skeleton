@@ -24,7 +24,6 @@ The development dependencies are:
 The dependencies for linting custom javascript are:
 
 * [Node](https://nodejs.org/en/) version 18.x.x or greater.
-* [npm](https://www.npmjs.com/get-npm) version 9.x.x or greater.
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
@@ -250,4 +249,4 @@ In Drupal 8 development, all (or most) Drupal configuration should be exported a
 * Site build and install process: [palantirnet/the-build](https://github.com/palantirnet/the-build)
 
 ----
-Copyright 2016 - 2021 Palantir.net, Inc.
+Copyright 2016 - 2023 Palantir.net, Inc.
