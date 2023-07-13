@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "devDependencies": {
     "eslint": "8.39.0",
-    "eslint-plugin-yml": "1.5.0",
     "eslint-config-drupal": "5.0.2"
   }
 }
