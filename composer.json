@@ -36,6 +36,7 @@
         "palantirnet/the-build": "^4@beta"
     },
     "suggest": {
+        "acquia/memcache-settings": "If your acquia project uses Cloud Platform, add this package and update acquia settings file based on: https://docs.acquia.com/cloud-platform/performance/memcached/enable/#configuration-for-drupal-9-or-later .",
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
         "drupal/admin_toolbar": "Transforms the default Drupal Toolbar into a drop-down menu.",
         "drupal/environment_indicator": "Adds a configurable color bar to each one of your environments to help identify which environment you are currently working in.",
