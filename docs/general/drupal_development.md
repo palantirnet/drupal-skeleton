@@ -111,5 +111,7 @@ This project uses [eslint](https://eslint.org/docs/latest/use/) to check custom 
 
 If you'd like to handle your custom module's linting independently, add your module directory to the `/.eslintignore` file and add a command to additionally lint your js to the `code-review` phing target in `build.xml`.
 
+Note: There is [some default configuration for eslint](https://github.com/palantirnet/the-build/pull/223/files#diff-339072f52845d316656969cbac2815305c0ccea0ce9de789ba73d78849336067)) that you can override in your project configuration for `the-build` 
+
 ----
 Copyright 2023 Palantir.net, Inc.
