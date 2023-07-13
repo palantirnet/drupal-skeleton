@@ -21,10 +21,6 @@ The development dependencies are:
 * [DDev Local](https://ddev.com/ddev-local/)
   * ddev can be installed with [homebrew](https://brew.sh/): `brew install ddev`
 
-The dependencies for linting custom javascript are:
-
-* [Node](https://nodejs.org/en/) version 18.x.x or greater.
-
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
 Some of the commands below will prompt you for a response, with the default answer in brackets. For this quick start, hit return to accept each default answer:
