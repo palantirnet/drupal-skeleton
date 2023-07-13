@@ -12,8 +12,9 @@ You should have the development dependencies installed on your Mac before you be
 
 The development dependencies are:
 
-* PHP 8.1+
+* PHP 8.2+
   * Check your PHP version from the command line using `php --version`
+  * If your project cannot support PHP 8.2, you should use PHP 8.1.18.
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 * [Composer](https://getcomposer.org/download/)
 * [Docker](https://www.docker.com/)
@@ -36,12 +37,12 @@ Enter a short name for your project [example] :
   ```
   composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
   ```
-  
+
   This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
   ```
   composer create-project palantirnet/drupal-skeleton example dev-drupal9 --no-interaction
   ```
-  
+
 2. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
 
   ```
@@ -52,7 +53,7 @@ Enter a short name for your project [example] :
   # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
   docroot: web
   ```
-  
+
 3. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
 
   ```
@@ -105,7 +106,7 @@ Update the `README`:
 
 Project-specific documentation at [docs/technical_approach.md](docs/technical_approach.md)
 
-  * Add `deployment.md` for deployment instructions  
+  * Add `deployment.md` for deployment instructions
 
 Update the `LICENSE.txt`:
 
