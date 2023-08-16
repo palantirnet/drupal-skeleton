@@ -1,7 +1,8 @@
 {
     "name": "palantirnet/drupal-skeleton",
-    "description": "A Drupal 8 project template.",
+    "description": "A Drupal 10 project template.",
     "type": "project",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Palantir.net",

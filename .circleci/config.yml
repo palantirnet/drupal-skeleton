@@ -99,8 +99,10 @@ jobs:
       - run:
           name: Run Behat tests
           command: |
-            nohup php -S ${CIRCLE_PROJECT_REPONAME}.local:8000 -t $(pwd)/web/ > /tmp/artifacts/phpd.log 2>&1 &
+            cd ${DRUPAL_ROOT}
+            nohup php -S example.ddev.site:8000 .ht.router.php > /tmp/artifacts/phpd.log 2>&1 &
             google-chrome --headless --remote-debugging-port=9222 &>/dev/null &
+            cd ..
             vendor/bin/behat --profile=circleci --suite=default --strict --format=junit --out=/tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts

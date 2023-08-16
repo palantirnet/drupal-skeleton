@@ -1,4 +1,7 @@
-Copyright 2020 Palantir.net, Inc.
+Copyright 2015-2023 Palantir.net, Inc.
+
+This license applies to palantirnet/drupal-skeleton, and not to any derivative projects.
+https://github.com/palantirnet/drupal-skeleton
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
