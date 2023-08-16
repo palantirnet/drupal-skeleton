@@ -13,10 +13,6 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/palantirnet/the-build"
         }
     ],
     "require": {
@@ -37,7 +33,7 @@
         "dmore/behat-chrome-extension": "^1.4",
         "drupal/core-dev": "^10",
         "drupal/drupal-extension": "^5@alpha",
-        "palantirnet/the-build": "dev-dev-37-eslint"
+        "palantirnet/the-build": "^4@beta"
     },
     "suggest": {
         "cweagans/composer-patches": "Try ^1.7. Apply patches to packages, especially Drupal.org contrib.",
