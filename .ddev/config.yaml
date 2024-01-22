@@ -39,6 +39,8 @@ hooks:
     # Install the Node.js version specified in the project's .nvmrc file.
     # TODO: If your project does not use Node.js, you can remove this line.
     - exec: source "$NVM_DIR/nvm.sh" && nvm install --default
+    # Workaround for "dubious ownership" Git errors when using DDEV with VirtioFS.
+    - exec: git config --global --add safe.directory /var/www/html
     # By default, ddev provides a database called 'db'. If you need additional databases,
     # uncomment this section and change "default" to your database name.
 #    - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS default; GRANT ALL ON default.* to 'db'@'%';"
