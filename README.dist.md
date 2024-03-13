@@ -1,6 +1,6 @@
-# { Your Project Name }
+# YOUR-PROJECT
 
-This is the development repository for { your project's } Drupal website. It contains the codebase and an environment to run the site for development.
+This is the development repository for YOUR-PROJECT Drupal website. It contains the codebase and an environment to run the site for development.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ brew install ddev
 
 ## Getting Started
 
-1. Clone the project from github: `git clone https://github.com/palantirnet/your-project.git`
+1. Clone the project from github: `git clone https://github.com/palantirnet/YOUR-PROJECT.git`
 2. From inside the project root, run:
 
   ```
@@ -36,14 +36,14 @@ brew install ddev
     ddev start
   ```
 3. Install the Drupal site: `vendor/bin/phing install` (this can be run inside or outside of ddev)
-4. Visit your site at [your-project.ddev.site](http://your-project.ddev.site)
+4. Visit your site at [YOUR-PROJECT.ddev.site](http://YOUR-PROJECT.ddev.site)
 
 ## Drupal Development
 
 You can refresh/reset your local Drupal site at any time. SSH into your ddev environment and then:
 
 1. Download the most current dependencies: `composer install`
-2. Rebuild your local CSS and Drupal settings file: `phing build`
+2. Rebuild your local CSS and misc filesystem setup: `phing build`
 3. Reinstall Drupal: `phing install` (this will run `build` implicitly)
 4. Run your migrations: `phing migrate`
 5. ... OR run all three phing targets at once: `phing install migrate` (again, `install` runs `build` for you)
@@ -61,13 +61,6 @@ Additional information on developing for Drupal within this environment is in [d
 
 @todo This section needs to be customized per-project.
 
-* `cd styleguide` on your host machine
-* `yarn install`
-* `yarn serve`
-* control+c to stop
-
-For additional documentation, refer to [styleguide/README.md](styleguide/README.md) and [styleguide/docs/*](styleguide/docs/*).
-
 ## Deployment
 
 @todo This section needs to be customized per-project.
@@ -83,4 +76,4 @@ General:
 * [Drupal Development](docs/general/drupal_development.md)
 
 ----
-Copyright 2022 Palantir.net, Inc.
+Copyright 2024 Palantir.net, Inc.
