@@ -201,7 +201,7 @@ drush site-install --existing-config
 
 ### Manage your configuration in code
 
-In Drupal 8 development, all (or most) Drupal configuration should be exported and treated as part of the codebase. On top of this core process, we use the [config_installer profile](https://www.drupal.org/project/config_installer) to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process. We also use [config_split](https://www.drupal.org/project/config_split) to manage environment-specific configuration.
+In Drupal development, all (or most) Drupal configuration should be exported and treated as part of the codebase. We use Drupal's "install from config" installer option to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process. We also use [config_split](https://www.drupal.org/project/config_split) to manage environment-specific configuration.
 
 1. Log into Drupal in your browser and do some basic config customizations:
     * Set the site timezone
