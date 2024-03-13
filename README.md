@@ -64,18 +64,21 @@ Enter a short name for your project [example] :
 
 ### Extra Credit
 
-* Update the `README.md` based on the contents of `README.dist.md`
+* Replace this `README.md` with `README.dist.md`, then customize for your project
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
-* Access your database via phpMyAdmin at [https://example.ddev.site:8037](https://example.ddev.site:8037) using the username `drupal` and the password `drupal`
+* Access your database via phpMyAdmin
+  * URL: [https://example.ddev.site:8037](https://example.ddev.site:8037)
+  * Username: `drupal`
+  * Password: `drupal`
 * View email sent by your development site at [https://example.ddev.site:8026](https://example.ddev.site:8026)
-* View your Solr server at [https://example.ddev.site:8983](https://example.ddev.site:8983)
 * Connect to your Solr server in Drupal with the `search_api_solr` module:
   * HTTP Protocol: `http`
   * Solr host: `solr`
   * Solr port: `8983`
   * Solr path: `/`
   * Solr core: `dev`
+  * View the Solr admin interface: [https://example.ddev.site:8983](https://example.ddev.site:8983)
 
 *Note: Make sure your project directory is in the right place / named correctly, because renaming or moving the project directory (e.g. `example/`) after starting can break your ddev setup.*
 
