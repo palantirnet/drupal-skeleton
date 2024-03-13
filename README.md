@@ -31,16 +31,10 @@ Enter a short name for your project [example] :
 
 ### Steps
 
-1. Create a new project called "example" based on this template:
+1. Create a new Drupal 10 project called "example" based on this template:
 
     ```
     composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
-    ```
-   
-    This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
-
-    ```
-    composer create-project palantirnet/drupal-skeleton example dev-drupal9 --no-interaction
     ```
    
 1. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
