@@ -25,7 +25,7 @@
         "drupal/devel": "^5",
         "drupal/workbench": "^1",
         "drupal/workbench_tabs": "^1",
-        "drush/drush": "^12"
+        "drush/drush": ">=11"
     },
     "require-dev": {
         "behat/behat": "^3.12",
@@ -55,7 +55,8 @@
             "drupal/core-composer-scaffold": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
         },
         "platform": {
             "php": "8.1"
