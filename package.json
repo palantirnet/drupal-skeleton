@@ -1,0 +1,9 @@
+{
+  "name": "palantirnet--drupal-skeleton",
+  "description": "A Drupal 8 project template.",
+  "version": "0.0.0",
+  "devDependencies": {
+    "eslint": "8.39.0",
+    "eslint-config-drupal": "5.0.2"
+  }
+}

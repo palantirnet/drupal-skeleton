@@ -15,12 +15,14 @@ The development dependencies are:
 * PHP 8.2+
   * Check your PHP version from the command line using `php --version`
   * If your project cannot support PHP 8.2, you should use PHP 8.1.18.
-* [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+* Mac only: [XCode command line tools](https://mac.install.guide/commandlinetools/3)
 * [Composer](https://getcomposer.org/download/)
 * [Docker](https://www.docker.com/)
-  * Docker can be installed with [homebrew](https://brew.sh/): `brew install docker --cask`
 * [DDev Local](https://ddev.com/ddev-local/)
-  * ddev can be installed with [homebrew](https://brew.sh/): `brew install ddev`
+
+On Macs, Docker and ddev can be installed with [homebrew](https://brew.sh/):
+  * `brew install docker --cask`
+  * `brew install ddev`
 
 Once you have your dependencies installed, setting up this skeleton will take at least another hour, depending on your internet connection.
 
@@ -32,54 +34,54 @@ Enter a short name for your project [example] :
 
 ### Steps
 
-1. Create a new project called "example" based on this template:
+1. Create a new Drupal 10 project called "example" based on this template:
 
-  ```
-  composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
-  ```
+    ```
+    composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
+    ```
 
-  This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
-  ```
-  composer create-project palantirnet/drupal-skeleton example dev-drupal9 --no-interaction
-  ```
+1. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
 
-2. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
+    ```
+    # Update to match your project name. Using "drupal-skeleton" would make the site
+    # accessible at 'drupal-skeleton.ddev.site'.
+    name: drupal-skeleton
+  
+    # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
+    docroot: web
+    ```
+   
+1. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
 
-  ```
-  # Update to match your project name. Using "drupal-skeleton" would make the site
-  # accessible at 'drupal-skeleton.ddev.site'.
-  name: drupal-skeleton
+    ```
+    ddev start
+    ddev ssh
+    vendor/bin/the-build-installer
+    ```
+   
+1. In your web browser, visit [http://example.ddev.site](http://example.ddev.site)
 
-  # Use 'docroot' for Acquia, or 'web' for Pantheon or Platform.sh.
-  docroot: web
-  ```
-
-3. From inside the ddev environment, run the script from `palantirnet/the-build` to set up the default Drupal variables and install Drupal:
-
-  ```
-  ddev start
-  ddev ssh
-  vendor/bin/the-build-installer
-  ```
-
-5. In your web browser, visit [http://example.ddev.site](http://example.ddev.site)
-6. _Optional:_ While you are logged into the ddev environment, you can run Drush commands like `drush status`.
+1. _Optional:_ While you are logged into the ddev environment, you can run Drush commands like `drush status`.
 
 ### Extra Credit
 
-* Update the `README.md` based on the contents of `README.dist.md`
+* Replace this `README.md` with `README.dist.md`, then customize for your project
 * Update the project name in the `composer.json` file, then run `composer update --lock`
 * Initialize a git repository and commit your work
-* Access your database via phpMyAdmin at [https://example.ddev.site:8037](https://example.ddev.site:8037) using the username `drupal` and the password `drupal`
+* Access your database via phpMyAdmin
+  * URL: [https://example.ddev.site:8037](https://example.ddev.site:8037)
+  * Username: `drupal`
+  * Password: `drupal`
 * View email sent by your development site at [https://example.ddev.site:8026](https://example.ddev.site:8026)
-* View your Solr server at [https://example.ddev.site:8983](https://example.ddev.site:8983)
 * Connect to your Solr server in Drupal with the `search_api_solr` module:
   * HTTP Protocol: `http`
   * Solr host: `solr`
   * Solr port: `8983`
   * Solr path: `/`
   * Solr core: `dev`
-* Note that renaming or moving the `example/` project directory can break your ddev setup
+  * View the Solr admin interface: [https://example.ddev.site:8983](https://example.ddev.site:8983)
+
+*Note: Make sure your project directory is in the right place / named correctly, because renaming or moving the project directory (e.g. `example/`) after starting can break your ddev setup.*
 
 ## Full Project Setup
 
@@ -89,11 +91,6 @@ Use composer to create a new project based on this skeleton, replacing `PROJECTN
 
 ```
 composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-develop --no-interaction
-```
-
-This skeleton is based on Drupal 10. If you would like to install and use Drupal 9 instead, run:
-```
-composer create-project palantirnet/drupal-skeleton PROJECTNAME dev-drupal9 --no-interaction
 ```
 
 ### Update your documentation
@@ -122,6 +119,11 @@ Update the `composer.json`:
   ```
     composer update --lock
   ```
+
+Update the `package.json`:
+
+* Change the `name` from `palantirnet--drupal-skeleton` to `palantirnet--PROJECTNAME` (see [package.json name requirements](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#name))
+* Update the `description` with a brief description of your project.
 
 ### Configure your ddev development environment
 
@@ -170,17 +172,16 @@ git push -u origin develop
 If you're allergic to phing and Benadryl isn't helping, you can also remove the-build:
 
 1. `composer remove --dev palantirnet/the-build`
-2. `rm -r .the-build`
-3. `rm build.xml`
-4. This will remove drush, coder, and phpmd -- if you want those dependencies, you'll need to add them back to your project:
+1. `rm -r .the-build`
+1. `rm build.xml`
+1. This will remove drush, coder, and phpmd -- if you want those dependencies, you'll need to add them back to your project:
 
     ```
     composer require --dev drush/drush drupal/coder phpmd/phpmd
     ```
 
-5. Review your `web/sites/default/settings.*.php` files (the-build managed these for you)
-6. Install your build tooling of choice... or nothing at all...
-7. _Update your project's README_
+1. Install your build tooling of choice... or nothing at all...
+1. _Update your project's README_
 
 See also: [Documentation on using the-build](https://github.com/palantirnet/the-build#using-the-build)
 
@@ -204,35 +205,34 @@ drush site-install --existing-config
 
 ### Manage your configuration in code
 
-In Drupal 8 development, all (or most) Drupal configuration should be exported and treated as part of the codebase. On top of this core process, we use the [config_installer profile](https://www.drupal.org/project/config_installer) to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process. We also use [config_split](https://www.drupal.org/project/config_split) to manage environment-specific configuration.
+In Drupal development, all (or most) Drupal configuration should be exported and treated as part of the codebase. We use Drupal's "install from config" installer option to allow us to use the exported configuration as the basis for a repeatable, automation-friendly build and install process. We also use [config_split](https://www.drupal.org/project/config_split) to manage environment-specific configuration.
 
 1. Log into Drupal in your browser and do some basic config customizations:
+    * Set the site timezone
+    * Disable per-user timezones
+    * Disable user account creation
+    * Remove unnecessary content types
+    * Set the admin email address (your development environment will trap all emails)
+    * Turn the Cron interval down to "never"
+    * Uninstall unnecessary modules (e.g. Search, History, Comment)
+1. Export your config:
 
-  * Set the site timezone
-  * Disable per-user timezones
-  * Disable user account creation
-  * Remove unnecessary content types
-  * Set the admin email address (your development environment will trap all emails)
-  * Turn the Cron interval down to "never"
-  * Uninstall unnecessary modules (e.g. Search, History, Comment)
-2. Export your config:
+    ```
+    drush cex -y
+    ```
 
-  ```
-  drush cex -y
-  ```
+1. You should have a ton of new `*.yml` files in `config/sites/default/`. Add them, and this config change, to git:
 
-3. You should have a ton of new `*.yml` files in `config/sites/default/`. Add them, and this config change, to git:
+      ```
+      git add config/
+      git ci -m "Initial Drupal configuration."
+      git push
+      ```
+1. Reinstall your site and verify that your config is ready to go:
 
-  ```
-  git add config/
-  git ci -m "Initial Drupal configuration."
-  git push
-  ```
-5. Reinstall your site and verify that your config is ready to go:
-
-  ```
-  vendor/bin/phing install
-  ```
+      ```
+      vendor/bin/phing install
+      ```
 
 ## More information
 

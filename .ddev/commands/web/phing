@@ -1,0 +1,5 @@
+#!/bin/bash
+
+## Description: Run phing inside the shell with `ddev phing`
+
+vendor/bin/phing "$@"
