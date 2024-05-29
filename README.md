@@ -14,7 +14,6 @@ The development dependencies are:
 
 * PHP 8.2+
   * Check your PHP version from the command line using `php --version`
-  * If your project cannot support PHP 8.2, you should use PHP 8.1.18.
 * Mac only: [XCode command line tools](https://mac.install.guide/commandlinetools/3)
 * [Composer](https://getcomposer.org/download/)
 * [Docker](https://www.docker.com/)
