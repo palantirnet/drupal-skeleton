@@ -12,7 +12,7 @@ You should have the development dependencies installed on your Mac before you be
 
 The development dependencies are:
 
-* PHP 8.1+
+* PHP 8.2+
   * Check your PHP version from the command line using `php --version`
 * Mac only: [XCode command line tools](https://mac.install.guide/commandlinetools/3)
 * [Composer](https://getcomposer.org/download/)
@@ -38,7 +38,7 @@ Enter a short name for your project [example] :
     ```
     composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
     ```
-   
+
 1. Go into your new project directory and update the ddev configuration in `.ddev/config.yml`:
 
     ```
@@ -102,7 +102,7 @@ Update the `README`:
 
 Project-specific documentation at [docs/technical_approach.md](docs/technical_approach.md)
 
-  * Add `deployment.md` for deployment instructions  
+  * Add `deployment.md` for deployment instructions
 
 Update the `LICENSE.txt`:
 
