@@ -52,5 +52,5 @@ router_https_port: "443"
 provider: default
 use_dns_when_possible: true
 
-# TODO: Once everyone has updated to DDEV 1.23.4, change to nodejs_version: auto
-nodejs_version: 18
+# Use the NodeJS version from `.nvmrc` (or latest if none is defined).
+nodejs_version: auto
