@@ -36,9 +36,6 @@ hooks:
     # Check the ddev version number; version 1.17 or newer is preferred.
     - exec-host: if ! ddev --version | grep -E 'v1\.(1[7-9]|2\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.17 OR NEWER."; exit 1; fi
   post-start:
-    # Install the Node.js version specified in the project's .nvmrc file.
-    # TODO: If your project does not use Node.js, you can remove this line.
-    - exec: source "$NVM_DIR/nvm.sh" && nvm install --default
     # Workaround for "dubious ownership" Git errors when using DDEV with VirtioFS.
     - exec: git config --global --add safe.directory /var/www/html
     # By default, ddev provides a database called 'db'. If you need additional databases,
@@ -54,3 +51,6 @@ router_http_port: "80"
 router_https_port: "443"
 provider: default
 use_dns_when_possible: true
+
+# TODO: Once everyone has updated to DDEV 1.23.4, change to nodejs_version: auto
+nodejs_version: 18
