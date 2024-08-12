@@ -33,8 +33,8 @@ xdebug_enabled: false
 
 hooks:
   pre-start:
-    # Check the ddev version number; version 1.17 or newer is preferred.
-    - exec-host: if ! ddev --version | grep -E 'v1\.(1[7-9]|2\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.17 OR NEWER."; exit 1; fi
+    # Check the ddev version number; version 1.23.4 or newer is required.
+    - exec-host: if ! ddev --version | grep -E 'v1\.(23\.[4-9]|23\.\d\d|2[4-9]|[3-9]\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.23.4 OR NEWER."; exit 1; fi
   post-start:
     # Workaround for "dubious ownership" Git errors when using DDEV with VirtioFS.
     - exec: git config --global --add safe.directory /var/www/html
@@ -52,5 +52,5 @@ router_https_port: "443"
 provider: default
 use_dns_when_possible: true
 
-# TODO: Once everyone has updated to DDEV 1.23.4, change to nodejs_version: auto
-nodejs_version: 18
+# Use the NodeJS version from `.nvmrc` (or latest if none is defined).
+nodejs_version: auto
