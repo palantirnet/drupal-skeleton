@@ -12,14 +12,6 @@ $settings['trusted_host_patterns'] = ['.*'];
 // better performance.
 $settings['class_loader_auto_detect'] = FALSE;
 
-// Enable assertions.
-// @see http://php.net/assert
-// @see https://www.drupal.org/node/2492225
-use Drupal\Component\Assertion\Handle;
-
-assert_options(ASSERT_ACTIVE, TRUE);
-Handle::register();
-
 // Enable local development services, including the null cache backend.
 $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
 
