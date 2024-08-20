@@ -7,7 +7,7 @@ jobs:
     working_directory: ~/drupal-skeleton
     docker:
       - image: cimg/php:8.3-browsers
-      - image: cimg/mysql:5.7
+      - image: cimg/mysql:8.0
         command: --max_allowed_packet=16M
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
