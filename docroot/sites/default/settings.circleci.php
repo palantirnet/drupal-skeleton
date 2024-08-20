@@ -18,14 +18,6 @@ $databases['default']['default'] = array(
 // Allow any host name.
 $settings['trusted_host_patterns'] = ['.*'];
 
-// Enable assertions.
-// @see http://php.net/assert
-// @see https://www.drupal.org/node/2492225
-use Drupal\Component\Assertion\Handle;
-
-assert_options(ASSERT_ACTIVE, TRUE);
-Handle::register();
-
 // Show all error messages, with backtrace information.
 $config['system.logging']['error_level'] = 'verbose';
 
