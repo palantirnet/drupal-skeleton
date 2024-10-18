@@ -15,7 +15,7 @@ services:
             - "ddev-router:${DDEV_HOSTNAME}"
         cap_add:
             - SYS_ADMIN
-        ports:
+        #ports:
         # Exposing this port allows you to visit 127.0.0.1:9222 to see what Headless Chrome doing without
         # any additional configuration; However, you can only have one project using this port at a time.
-            - '9222:9222'
+        #    - '9222:9222'
