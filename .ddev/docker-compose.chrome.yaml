@@ -1,5 +1,4 @@
 # This was taken from https://github.com/drud/ddev-contrib/tree/master/docker-compose-services/headless-chrome.
-version: '3.6'
 services:
     chrome:
         image:  isholgueras/chrome-headless:latest
