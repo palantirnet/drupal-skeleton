@@ -46,8 +46,7 @@ hooks:
 # This allows ddev to manage its own settings.ddev.php file.
 disable_settings_management: false
 
-# TODO: Update to drupal11 when the option is available.
-type: drupal10
+type: drupal11
 router_http_port: "80"
 router_https_port: "443"
 provider: default
