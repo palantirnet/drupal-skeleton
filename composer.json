@@ -55,7 +55,8 @@
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpstan/extension-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "tbachert/spi": false
         },
         "platform": {
             "php": "8.3"
