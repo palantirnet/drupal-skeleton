@@ -1,0 +1,72 @@
+# Example snippet for deploy job in config.yml. Add this code to deploy to Pantheon.
+# Update PANTHEON_PUBKEY with the entry from your known_hosts file for the code server.
+# (To get the known_hosts entry, git clone the SSH URL of the Pantheon repository.)
+#
+# You will also need to add a step to the build job to persist to workspace:
+#
+#      - persist_to_workspace:
+#          root: ..
+#          paths:
+#            - project
+#
+# And, finally, add the new job to the workflow section:
+#
+#      - deploy:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#                - master
+#                - /multidev-.*/
+
+  deploy:
+    working_directory: ~/project
+    docker:
+      - image: cimg/php:8.3-browsers
+    environment:
+      - NODE_VERSION: 20
+      - GITHUB_PUBKEY: "github.com,192.30.253.113 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=="
+      - PANTHEON_PUBKEY: "[codeserver.dev.56f20816-b4b7-4517-a90f-667b4785708d.drush.in]:2222,[35.193.151.123]:2222 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSY3gnr0DrbqJJSnEFy6jazDmAdBm4Zs/EkWIQa7x31qgSYyYJMz5V+pk62lBf2BN42VtubwO83vW9G+yG2K1RGOvZJaK5GBvBb/Ws2ZPcp/4sNHpPzkdd75e5/Pk8AWA59XUbJcBWmrDrHMbWV1j2zqPPikxbqGeTTjSx4QR18LIRei5OwT6VQnaVnJqPAqFZ+oCbpr0DL96foL3UEY8EWT/6GH2cANEGZO4ppbhdDw4uG6TaI7S0lxWMQEVy+iwjCNH/nanjd73cwoYd90E0OVdgNDr3hVbIuE6sUW6UwlaAwuyOM/xJYPg1y0rF66958pyVJlZ9KD5A0kY3bHg7"
+
+    steps:
+      - attach_workspace:
+          at: ..
+      - add_ssh_keys
+      - run:
+          name: Install packages
+          command: sudo apt-get update && sudo apt-get install -y libpng-dev
+
+      - run:
+          name: Install nvm
+          command: |
+            set +e
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            touch $BASH_ENV
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run:
+          name: Configure PHP
+          command: |
+            echo "sendmail_path=/bin/true" | sudo tee -a "/etc/php.d/circleci.ini"
+      - run:
+          name: Configure Git
+          command: |
+            git config --global user.email "circle@palantir.net"
+            git config --global user.name "Circle Deploy"
+      - run:
+          name: Add public keys to known hosts file.
+          command: |
+            mkdir -p ~/.ssh
+            echo $GITHUB_PUBKEY >> ~/.ssh/known_hosts
+            echo $PANTHEON_PUBKEY >> ~/.ssh/known_hosts
+      - run:
+          name: Make sites/default writable for artifact build
+          command: chmod u+w web/sites/default
+      - run:
+          name: Build and deploy an artifact
+          command: |
+            # Shorten multidev branch names from 'multidev-foo' to 'foo', max 11 characters
+            ARTIFACT_BRANCH=$(echo ${CIRCLE_BRANCH} | sed -E 's/^(multidev-)?(.{1,11}).*/\2/')
+            vendor/bin/phing artifact -Dartifact.result=push -Dartifact.git.remote_branch=${ARTIFACT_BRANCH}

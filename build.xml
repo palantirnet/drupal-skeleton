@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+
+<!--
+  @file build.xml
+  Build targets for this project. This file should be customized for your project.
+
+  For a full list of targets, try:
+    phing -l
+
+  @see https://github.com/palantirnet/the-build
+  -->
+
+<project name="drupal-skeleton" default="list">
+
+    <!-- Add property loading and targets from palantirnet/the-build. -->
+    <import file="vendor/palantirnet/the-build/targets/the-build.xml" />
+
+
+    <!-- Make these additional targets available by default. -->
+    <import file="vendor/palantirnet/the-build/targets/drupal.xml" />
+
+
+    <!-- Additional optional targets. -->
+    <import file="vendor/palantirnet/the-build/targets/artifact.xml" />
+    <import file="vendor/palantirnet/the-build/targets/acquia.xml" />
+    <import file="vendor/palantirnet/the-build/targets/styleguide.xml" />
+
+
+    <!-- Target: build -->
+    <target name="build" depends="styleguide,set-site" description="Build the application.">
+        <!-- Create the Drupal custom code directories. -->
+        <foreach list="${drupal.create_dirs}" param="dir" target="mkdir" />
+
+        <!-- Set permissions on the sites subdirectory. -->
+        <mkdir dir="${drupal.root}/sites/${drupal.site.dir}" />
+        <chmod file="${drupal.root}/sites/${drupal.site.dir}" mode="750" />
+
+        <!-- Create the public files directory and make it world writable. -->
+        <mkdir dir="${drupal.root}/${drupal.site.settings.file_public_path}" />
+        <chmod file="${drupal.root}/${drupal.site.settings.file_public_path}" mode="744" />
+
+        <!-- Create the private files directory and make it private. -->
+        <mkdir dir="${drupal.root}/${drupal.site.settings.file_private_path}" />
+        <chmod file="${drupal.root}/${drupal.site.settings.file_private_path}" mode="640" />
+
+        <!-- Include styleguide resources in the theme. This approach will symlink
+             resources in development environments, and copy them for artifact builds. -->
+        <!-- <includeresource relative="true" source="${build.dir}/styleguide/source/assets/css" dest="${build.dir}/${drupal.root}/themes/custom/example_theme/css" /> -->
+    </target>
+
+
+    <!-- Target: install
+         Running this target will also run the build target.
+         -->
+    <target name="install" depends="set-site,build,drupal-validate-clean-config,drupal-has-database-connection,drupal-install-if-no-config" description="Install the application.">
+        <drush command="site-install" assume="yes">
+            <option name="site-name">${projectname}</option>
+            <option name="account-name">${drupal.site.admin_user}</option>
+            <option name="account-pass">admin</option>
+            <option name="existing-config" />
+        </drush>
+    </target>
+
+
+    <!-- Target: build-all
+         Run the build target for all configured multisites. This is the same as running:
+           phing sites-run -Dtarget=build
+         -->
+    <target name="build-all" description="Run the 'build' target against all multisites.">
+        <phingcall target="sites-run">
+            <property name="target" value="build" />
+        </phingcall>
+    </target>
+
+
+    <!-- Target: install-all
+         Run the install target for all configured multisites. This is the same as running:
+           phing sites-run -Dtarget=install
+         -->
+    <target name="install-all" description="Run the 'install' target against all multisites.">
+        <phingcall target="sites-run">
+            <property name="target" value="install" />
+        </phingcall>
+    </target>
+
+
+    <!-- Target: migrate -->
+    <target name="migrate" description="Run the migrations.">
+        <echo>Configure this target to load sample data and run the migrations.</echo>
+    </target>
+
+
+    <!-- Target: load -->
+    <target name="load" depends="set-site" description="Load a database dump.">
+        <phingcall target="drupal-load-db" />
+        <drush command="cache-rebuild" />
+    </target>
+
+
+    <!-- Target: test -->
+    <target name="test" description="Run all the tests." depends="code-review,behat" />
+
+
+    <!-- Target: behat -->
+    <target name="behat" description="Run the Behat tests.">
+        <property name="behat.command" value="${behat.bin} ${behat.args}" />
+        <echo msg="$> ${behat.command}" />
+        <exec command="${behat.command}" logoutput="true" checkreturn="true" />
+    </target>
+
+
+    <!-- Target: code-review -->
+    <target name="code-review" description="Run the automated code reviews.">
+        <!-- Run PHP's built in linter ('php -l') -->
+        <phplint deprecatedAsError="true" haltonfailure="true">
+            <fileset dir="${drupal.root}" includesfile="${phplint.includesfile}" />
+        </phplint>
+
+        <!-- Run PHP Code Sniffer. -->
+        <echo msg="$> vendor/bin/phpcs" />
+        <exec command="vendor/bin/phpcs" logoutput="true" checkreturn="true" />
+
+        <!-- Run PHP Mess Detector. -->
+        <echo msg="$> vendor/bin/phpmd" />
+        <exec command="vendor/bin/phpmd ${phpmd.directories} ${phpmd.format} ${phpmd.rulesets} --suffixes ${phpmd.suffixes}" logoutput="true" checkreturn="true" />
+
+        <!-- Run Drupal Check. -->
+        <foreach list="${drupal-check.directories}" param="drupal-check.dir" target="drupal-check" />
+
+        <!-- Run eslint -->
+        <phingcall target="eslint" />
+
+        <!-- Ensure the composer.lock file is up to date -->
+        <exec command="composer validate --no-check-all --no-check-publish" logoutput="true" checkreturn="true" />
+    </target>
+
+
+    <!-- Separated out so that we can use foreach. drupal-check only accepts a single directory argument. -->
+    <target name="drupal-check" hidden="true">
+        <fail unless="drupal-check.dir" />
+        <property name="drupal-check.bin" value="vendor/bin/drupal-check" />
+        <property name="drupal-check.command" value="${drupal-check.bin} ${drupal-check.dir}" />
+
+        <echo msg="$> ${drupal-check.command}" />
+        <exec command="${drupal-check.command}" logoutput="true" checkreturn="true" />
+    </target>
+
+    <!-- Target: eslint -->
+    <target name="eslint" depends="install-node-dependencies">
+        <!-- Lint custom module and theme (by default) javascript. -->
+        <echo msg="$> yarn run eslint --ext ${eslint.extensions} ${eslint.directory}" />
+        <exec command="yarn run eslint --fix-dry-run --ext ${eslint.extensions} --no-error-on-unmatched-pattern ${eslint.directory}" logoutput="true" checkreturn="true" />
+    </target>
+
+
+    <!-- Target: code-fix -->
+    <target name="code-fix" description="Run the automated code fixer.">
+        <!-- Run PHP Code Beautifier and Fixer. -->
+        <echo msg="$> vendor/bin/phpcbf" />
+        <exec command="vendor/bin/phpcbf" logoutput="true" checkreturn="false" />
+    </target>
+
+    <!-- Target: install-node-dependencies -->
+    <target name="install-node-dependencies" depends="" description="Install project, core, and custom module node dependencies">
+        <echo msg="Install project node dependencies to get eslint libraries." />
+        <exec dir="${drupal.root}/.." command="yarn install" logoutput="true" />
+    </target>
+
+
+    <!-- Target: artifact -->
+    <target name="artifact" description="Build and deploy the application.">
+        <phing phingfile="build.xml" target="artifact-main" inheritAll="false" haltonfailure="true">
+            <property name="build.env" value="acquia" />
+        </phing>
+    </target>
+
+
+    <!-- Default target: list -->
+    <target name="list" hidden="true">
+        <exec command="${phing.home}/bin/phing -q -f ${phing.file} -l" passthru="true"/>
+        <echo>Find more documentation for palantirnet/the-build on GitHub:
+
+            https://github.com/palantirnet/the-build#using-the-build</echo>
+    </target>
+
+
+</project>

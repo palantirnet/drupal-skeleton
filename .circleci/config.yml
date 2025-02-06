@@ -1,7 +1,10 @@
-# This CircleCI configuration is for testing the drupal-skeleton. For project-specific
-# testing, use the configuration installed by palantirnet/the-build.
-
 version: 2.1
+# To use browsers on CircleCI, uncomment the lines below and add steps to install them.
+# For example, add these to `jobs.build.steps`:
+# - browser-tools/install-chrome
+# - browser-tools/install-chromedriver
+# orbs:
+#   browser-tools: circleci/browser-tools@1.2.3
 jobs:
   build:
     working_directory: ~/drupal-skeleton
@@ -16,39 +19,41 @@ jobs:
 
     environment:
       - PALANTIR_ENVIRONMENT: circleci
-      - DRUPAL_ROOT: web
-      - NODE_VERSION: 18
+      - DRUPAL_ROOT: docroot
+      - NODE_VERSION: 20
 
     steps:
       - run:
           name: Install packages
-          command: sudo apt-get update && sudo apt-get install -y default-mysql-client
+          command: |
+            sudo apt-get update && sudo apt-get install -y libpng-dev default-mysql-client
+      - run:
+          name: Install nvm
+          command: |
+            set +e
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            touch $BASH_ENV
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
       - run:
           name: Configure PHP
           command: |
             echo "sendmail_path=/bin/true" | sudo tee -a "/etc/php.d/circleci.ini"
+      - run:
+          name: Update Composer
+          command: |
+            sudo composer self-update
       - run:
           name: Create artifacts directory
           command: mkdir /tmp/artifacts
       - run:
           name: Configure URL in /etc/hosts
           command: echo 127.0.0.1 ${CIRCLE_PROJECT_REPONAME}.local | sudo tee -a /etc/hosts
-      - run:
-          name: Update to latest version of Composer
-          command: sudo composer self-update
 
-      # Note: phing and drupal-check have mutually exclusive requirements.
-      # It'd be better to add drupal-check as a dependency of the drupal project
-      # rather than as part of the virtual environment, but this will have to do
-      # for now. Also note, drupal-check is added as part of the-vagrant so it
-      # is available to run within our VM.
-      - run:
-          name: Install drupal-check
-          command: |
-            curl -O -L https://github.com/mglaman/drupal-check/releases/download/1.0.9/drupal-check.phar
-            mkdir --parents ~/bin
-            mv drupal-check.phar ~/bin/drupal-check
-            chmod +x ~/bin/drupal-check
+      # Package cache
+      - restore_cache:
+          keys:
+            - package-cache-v1-
 
       # Source cache
       - restore_cache:
@@ -57,33 +62,31 @@ jobs:
             - source-v1-
 
       - checkout
+      - run:
+          name: Composer install
+          command: composer install --no-interaction --prefer-dist
+      - run:
+          name: Yarn install
+          command: yarn install
 
-      # Source cache - update when branch changes
+      # Package cache. This is updated when the contents of the ~/.cache directory change.
+      # Both Composer and Yarn use this directory.
+      - run: ls -1R ~/.cache/ > /tmp/package-cache.txt
+      - save_cache:
+          key: package-cache-v1-{{ checksum "/tmp/package-cache.txt" }}
+          paths:
+              - ~/.cache
+
+      # Source cache. This is updated for each different branch.
       - save_cache:
           key: source-v1-{{ .Branch }}
           paths:
             - ".git"
 
-      # Composer package cache
-      - restore_cache:
-          keys:
-            - composer-v1-
-
+      # Run code reviews before installing Drupal, so that tests fail earlier.
       - run:
-          name: Composer install
-          command: composer install --no-interaction --prefer-dist
-
-      # Composer package cache - update when the contents of the Composer cache directory
-      # change
-      - run: ls -1R ~/.cache/composer/ > /tmp/composer-cache.txt
-      - save_cache:
-          key: composer-v1-{{ checksum "/tmp/composer-cache.txt" }}
-          paths:
-              - ~/.cache/composer
-
-      - run:
-          name: Install the-build in the project
-          command: printf 'drupal-skeleton\nhttp://drupal-skeleton.local\npantheon\nn' | vendor/bin/the-build-installer
+          name: Run code reviews
+          command: vendor/bin/phing code-review
 
       - run:
           name: Wait for DB
@@ -95,15 +98,19 @@ jobs:
           command: vendor/bin/phing build
       - run:
           name: Install Drupal
-          command: printf 'y' | vendor/bin/phing install -Ddrupal.validate_clean_config.bypass=yes -Ddrupal.sites.default.profile=standard
+          command: vendor/bin/phing install
+      - run:
+          name: Run any migrations
+          command: vendor/bin/phing migrate
       - run:
           name: Run Behat tests
           command: |
-            cd ${DRUPAL_ROOT}
-            nohup php -S example.ddev.site:8000 .ht.router.php > /tmp/artifacts/phpd.log 2>&1 &
-            google-chrome --headless --remote-debugging-port=9222 &>/dev/null &
-            cd ..
-            vendor/bin/behat --profile=circleci --suite=default --strict --format=junit --out=/tmp/artifacts
+              cd ${DRUPAL_ROOT}
+              nohup php -S ${CIRCLE_PROJECT_REPONAME}.local:8000 .ht.router.php > /tmp/artifacts/phpd.log 2>&1 &
+              google-chrome --headless --remote-debugging-port=9222 &>/dev/null &
+              cd ..
+              vendor/bin/phing test
+
       - store_artifacts:
           path: /tmp/artifacts
       - store_test_results:

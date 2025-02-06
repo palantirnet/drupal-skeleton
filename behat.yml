@@ -1,0 +1,40 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+      filters:
+        tags: "~@skipci"
+  gherkin:
+    cache: ~
+  extensions:
+    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+    Drupal\MinkExtension:
+      browserkit_http: ~
+      chrome:
+        api_url: "http://chrome:9222"
+      browser_name: chrome
+      javascript_session: chrome
+      base_url: http://drupal-skeleton.ddev.site
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drupal'
+      drupal:
+        drupal_root: 'docroot'
+      text:
+        username_field: 'name'
+        password_field: 'pass'
+        log_out: 'Log out'
+      region_map:
+        anywhere: "*"
+
+circleci:
+  extensions:
+    Drupal\MinkExtension:
+      chrome:
+        api_url: "http://localhost:9222"
+      base_url: http://drupal-skeleton.ddev.site:8000

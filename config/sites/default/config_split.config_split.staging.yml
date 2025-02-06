@@ -1,0 +1,18 @@
+uuid: b2b624aa-949a-4c24-8b74-a9a41358b8ba
+langcode: en
+status: false
+dependencies: {  }
+_core:
+  default_config_hash: nWs03hJ5RzZ_43KzD0iA9-vMAHZolS82q8ZI1whQZJ4
+id: staging
+label: Staging
+description: 'Configuration for use on shared staging environments.'
+weight: -2
+stackable: false
+storage: null
+folder: ../config/config_split/staging
+module: {  }
+theme: {  }
+complete_list: {  }
+partial_list: {  }
+no_patching: false

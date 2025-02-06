@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<!--
+   @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml#the-annotated-sample-file
+   @see https://www.drupal.org/docs/develop/standards
+   @see https://github.com/squizlabs/PHP_CodeSniffer
+   @see https://www.drupal.org/project/coder
+   @see vendor/drupal/coder/coder_sniffer/
+-->
+
+<ruleset name="drupal-skeleton">
+  <description>PHP_CodeSniffer configuration.</description>
+
+  <!-- Warnings and errors should throw an exception. -->
+  <config name="ignore_warnings_on_exit" value="0" />
+  <config name="ignore_errors_on_exit" value="0" />
+
+  <!-- Set extensions to scan. -->
+  <arg name="extensions" value="php,module,inc,install,test,profile,theme,info,yml,css"/>
+
+  <!-- Use colors in output. -->
+  <arg name="colors"/>
+
+  <!-- Show progress. -->
+  <arg value="p"/>
+
+  <!-- Include existing standards. -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+
+  <!-- Directories to scan. -->
+  <file>docroot/modules/custom</file>
+  <file>docroot/themes/custom</file>
+  <file>features/bootstrap</file>
+
+  <exclude-pattern>*/behat</exclude-pattern>
+  <exclude-pattern>*/node_modules</exclude-pattern>
+  <exclude-pattern>*/vendor</exclude-pattern>
+
+</ruleset>

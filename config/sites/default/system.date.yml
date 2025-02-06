@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: IVsFTD1mvR2NGBP_1myt9kFIFmGepH4PyaN5aQBYpno
+first_day: 0
+country:
+  default: US
+timezone:
+  default: America/Chicago
+  user:
+    configurable: false
+    default: 0
+    warn: false

@@ -1,0 +1,18 @@
+uuid: d72c074b-ae99-4e78-af0c-039c083b8fe9
+langcode: en
+status: false
+dependencies: {  }
+_core:
+  default_config_hash: kd4XRM_UGrY7PLGfpwsU4CzJGjFCctO-8L7yYR4S_Tg
+id: production
+label: Production
+description: 'Configuration for use on the production environment only.'
+weight: -1
+stackable: false
+storage: null
+folder: ../config/config_split/production
+module: {  }
+theme: {  }
+complete_list: {  }
+partial_list: {  }
+no_patching: false
