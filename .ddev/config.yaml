@@ -7,14 +7,14 @@ name: drupal-skeleton
 
 # TODO: If the project uses Acquia hosting, use these settings.
 docroot: docroot
-mysql_version: "5.7"
+mysql_version: "8.0"
 webserver_type: apache-fpm
 
 # TODO: If the project uses Pantheon or Platform.sh hosting, remove the Acquia settings
 # and use these settings instead.
 #docroot: web
 #webserver_type: nginx-fpm
-#mariadb_version: "10.3"
+#mariadb_version: "10.6"
 
 # TODO: Make sure this PHP version matches the project's hosting environment.
 php_version: "8.3"
@@ -34,7 +34,7 @@ xdebug_enabled: false
 hooks:
   pre-start:
     # Check the ddev version number; version 1.23.4 or newer is required.
-    - exec-host: if ! ddev --version | grep -E 'v1\.(23\.[4-9]|23\.\d\d|2[4-9]|[3-9]\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.23.4 OR NEWER."; exit 1; fi
+    - exec-host: if ! ddev --version | grep -E 'v1\.(2[4-9]|[3-9]\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.24.0 OR NEWER."; exit 1; fi
   post-start:
     # Workaround for "dubious ownership" Git errors when using DDEV with VirtioFS.
     - exec: git config --global --add safe.directory /var/www/html
@@ -46,7 +46,7 @@ hooks:
 # This allows ddev to manage its own settings.ddev.php file.
 disable_settings_management: false
 
-type: drupal10
+type: drupal11
 router_http_port: "80"
 router_https_port: "443"
 provider: default
