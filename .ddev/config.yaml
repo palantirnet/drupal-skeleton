@@ -34,7 +34,7 @@ xdebug_enabled: false
 hooks:
   pre-start:
     # Check the ddev version number; version 1.23.4 or newer is required.
-    - exec-host: if ! ddev --version | grep -E 'v1\.(24\.\d+|2[5-9]|[3-9]\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.24.0 OR NEWER."; exit 1; fi
+    - exec-host: if ! ddev --version | grep -E 'v1\.(2[4-9]|[3-9]\d)'; then echo ">>> PLEASE UPDATE DDEV TO VERSION 1.24.0 OR NEWER."; exit 1; fi
   post-start:
     # Workaround for "dubious ownership" Git errors when using DDEV with VirtioFS.
     - exec: git config --global --add safe.directory /var/www/html
