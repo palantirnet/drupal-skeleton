@@ -1,0 +1,7 @@
+{
+  "patches": {
+    "drupal/admin_toolbar": {
+      "Move block menu items under content": "patches/private/block-menu-links-pass.patch"
+    }
+  }
+}
