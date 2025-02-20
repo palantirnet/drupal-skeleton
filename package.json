@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "yarn": ">= 4.1.1",
-    "node": ">= 20.0"
+    "node": ">= 22.0"
   },
   "devDependencies": {
     "eslint": "^8.39.0",
