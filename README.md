@@ -20,6 +20,7 @@ The development dependencies are:
 * [DDev Local](https://ddev.com/ddev-local/)
 
 On Macs, Docker and ddev can be installed with [homebrew](https://brew.sh/):
+
   * `brew install docker --cask`
   * `brew install ddev`
 
@@ -33,7 +34,7 @@ Enter a short name for your project [example] :
 
 ### Steps
 
-1. Create a new Drupal 10 project called "example" based on this template:
+1. Create a new Drupal project called "example" based on this template:
 
     ```
     composer create-project palantirnet/drupal-skeleton example dev-develop --no-interaction
@@ -238,4 +239,4 @@ In Drupal development, all (or most) Drupal configuration should be exported and
 * Site build and install process: [palantirnet/the-build](https://github.com/palantirnet/the-build)
 
 ----
-Copyright 2016 - 2021 Palantir.net, Inc.
+Copyright 2016 - 2025 Palantir.net, Inc.

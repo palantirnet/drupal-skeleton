@@ -1,8 +1,6 @@
 # Drupal Development
 
-
-
-From outside the VM, you can find the files for:
+From outside the ddev environment, you can find the files for:
 
 * The custom theme at `web/themes/custom/`
 * Custom modules at `web/modules/custom/`
@@ -14,7 +12,7 @@ From outside the VM, you can find the files for:
 * Template files for Drupal `settings.php` at `.the-build/drupal/settings.php` and `.the-build/drupal/settings.<hosting-platform>.php`
 * Behat tests at `features/`
 
-From within the VM:
+From within ddev:
 
 * Run `drush` commands from anywhere within the repository
 * Add a module using `composer require drupal/new_module`
@@ -26,17 +24,17 @@ From within the VM:
 
 ## The Drupal root
 
-This project uses [Composer Installers](https://github.com/composer/installers), [drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold), and [palantirnet/the-build](https://github.com/palantirnet/the-build) to assemble our Drupal root in `web`. Dig into `web` to find the both contrib Drupal code (installed by composer) and custom Drupal code (included in the git repository).
+This project uses [Composer Installers](https://github.com/composer/installers), [drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold), and [palantirnet/the-build](https://github.com/palantirnet/the-build) to assemble our Drupal root in `docroot` (Acquia projects) or `web` (other Drupal hosts). Dig into the Drupal root to find the both contrib Drupal code (installed by composer) and custom Drupal code (included in the git repository).
 
 ## Add modules
 
-Drupal contrib dependencies are managed with composer, and are not checked directly into this repository. To add a module, ssh into your VM, then:
+Drupal contrib dependencies are managed with composer, and are not checked directly into this repository. To add a module, you can:
 
 1. Download the module with composer: `composer require drupal/bad_judgement:~8.1`
-2. Enable the module with drush: `drush en bad_judgement`
+2. Enable the module with drush: `ddev drush en bad_judgement`
 3. Visit your local site and configure the module as necessary
-4. Export the config with the module enabled: `drush config-export`
-5. Commit the changes to `composer.json`, `composer.lock`, and `conf/drupal/config/*`.
+4. Export the config with the module enabled: `ddev drush config-export`
+5. Commit the changes to `composer.json`, `composer.lock`, and `config/*`.
 
 Note that the module code itself will be excluded by the project's `.gitignore`; Composer will manage downloading and installing the module code for other developers when they run `composer install`.
 
@@ -56,7 +54,7 @@ Existing splits are defined by a YML file at `config/sites/default/config_split.
 #### Exporting shared configuration for all environments
 
 1. Make any changes in the Drupal UI or via drush as usual
-1. Use drush to export the shared configuration to `config/sites/default`
+2. Use drush to export the shared configuration to `config/sites/default`
 
 #### Exporting environment-specific config
 
@@ -87,15 +85,7 @@ Existing splits are defined by a YML file at `config/sites/default/config_split.
 
 ### Setting specific config variables
 
-Some specific config variables are managed on a per-environment basis using `settings.build.php` templating, which is part of the `phing build` step. See:
-
-* `.the-build/drupal/settings.build.php`: The template used for the VM and CircleCI environments
-* `.the-build/drupal/settings.build-acquia.php`: The template used for the Acquia environment
-* `.the-build/build.yml`: Properties used by `phing` targets
-* `.the-build/build.circle.yml`: Property overrides used when running `phing` commands on CircleCI
-* `.the-build/build.acquia.yml`: Property overrides used when running the `phing` command to deploy to Acquia
-
-When you make changes to these files, you will generally need to run `phing build` in order to see your changes.
+Some specific Drupal configuration is managed on a per-environment basis using different `settings.*.php` files, which are located in the Drupal sites directory (e.g. `docroot/sites/default/`). You can edit these files directly, with the exception of `settings.ddev.php`.
 
 ### Test Drupal
 
@@ -114,4 +104,4 @@ If you'd like to handle your custom module's linting independently, add your mod
 Note: There is [some default configuration for eslint](https://github.com/palantirnet/the-build/pull/223/files#diff-339072f52845d316656969cbac2815305c0ccea0ce9de789ba73d78849336067)) that you can override in your project configuration for `the-build` 
 
 ----
-Copyright 2023 Palantir.net, Inc.
+Copyright 2023-2025 Palantir.net, Inc.

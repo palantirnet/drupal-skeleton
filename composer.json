@@ -1,6 +1,6 @@
 {
     "name": "palantirnet/drupal-skeleton",
-    "description": "A Drupal 10 project template.",
+    "description": "A Drupal project template.",
     "type": "project",
     "license": "proprietary",
     "authors": [
@@ -18,22 +18,21 @@
     "require": {
         "composer/installers": "^2.0",
         "drupal/admin_toolbar": "^3",
-        "drupal/config_ignore": "2.x-dev",
-        "drupal/config_split": "^1",
-        "drupal/core-composer-scaffold": "^10",
-        "drupal/core-recommended": "^10",
+        "drupal/config_ignore": "^3",
+        "drupal/config_split": "^2",
+        "drupal/core-composer-scaffold": "^11",
+        "drupal/core-recommended": "^11",
         "drupal/devel": "^5",
-        "drupal/workbench": "^1",
-        "drupal/workbench_tabs": "^1",
-        "drush/drush": ">=11"
+        "drupal/workbench": "^1.5",
+        "drupal/workbench_tabs": "^1.8",
+        "drush/drush": "^13"
     },
     "require-dev": {
         "behat/behat": "^3.12",
-        "behat/mink-goutte-driver": "^2.0",
         "dmore/behat-chrome-extension": "^1.4",
-        "drupal/core-dev": "^10",
-        "drupal/drupal-extension": "^5@alpha",
-        "palantirnet/the-build": "^4@beta"
+        "drupal/core-dev": "^11",
+        "drupal/drupal-extension": "^5",
+        "palantirnet/the-build": "^4.3"
     },
     "suggest": {
         "acquia/memcache-settings": "If your acquia project uses Cloud Platform (and not Cloud Next), add this package and update acquia settings file based on: https://docs.acquia.com/cloud-platform/performance/memcached/enable/#configuration-for-drupal-9-or-later .",
@@ -56,7 +55,8 @@
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpstan/extension-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "tbachert/spi": false
         },
         "platform": {
             "php": "8.3"
@@ -90,7 +90,8 @@
             "docroot/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/Commands/contrib/{$name}": ["type:drupal-drush"],
             "docroot/modules/custom/{$name}": ["type:drupal-custom-module"],
-            "docroot/themes/custom/{$name}": ["type:drupal-custom-theme"]
+            "docroot/themes/custom/{$name}": ["type:drupal-custom-theme"],
+            "recipes/{$name}": ["type:drupal-recipe"]
         },
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,

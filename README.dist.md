@@ -83,4 +83,4 @@ General:
 * [Drupal Development](docs/general/drupal_development.md)
 
 ----
-Copyright 2022 Palantir.net, Inc.
+Copyright 2025 Palantir.net, Inc.
