@@ -1,0 +1,15 @@
+_meta:
+  version: '1.0'
+  entity_type: shortcut
+  uuid: 3537f64f-3266-4e15-a442-9004bb5f8e09
+  bundle: default
+  default_langcode: en
+default:
+  title:
+    -
+      value: 'Manage Taxonomy'
+  link:
+    -
+      uri: 'internal:/admin/structure/taxonomy'
+      title: ''
+      options: {  }

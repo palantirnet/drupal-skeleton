@@ -1,0 +1,30 @@
+name: Skeleton
+description: Replacement for the_build_utility
+type: 'Administration'
+
+install:
+  - admin_toolbar
+  - admin_toolbar_tools
+  - config_ignore
+  - config_split
+  - config_split
+  - devel
+  - workbench
+  - workbench_tabs
+
+config:
+  user.settings:
+    register: admin_only
+
+  system.date:
+    country:
+      default: US
+    timezone:
+      default: 'America/Chicago'
+    timezone:
+      user:
+        configurable: FALSE
+
+# todo: delete fields on comment entity
+# todo: delete state variable 'comment.node_comment_statistics_scale'
+# todo: uninstall if installed: automated_cron, big_pipe, comment, contact, history, search, tour

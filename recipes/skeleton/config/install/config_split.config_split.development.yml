@@ -1,0 +1,15 @@
+langcode: en
+status: false
+dependencies: {  }
+id: development
+label: Development
+description: 'Configuration for local development environments.'
+folder: ../config/config_split/development
+module:
+  devel: 0
+theme: {  }
+blacklist: {  }
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: -3
