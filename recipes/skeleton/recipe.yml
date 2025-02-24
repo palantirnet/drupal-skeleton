@@ -1,34 +1,107 @@
 name: Skeleton
-description: Replacement for the_build_utility
-type: 'Administration'
+description: Replacement for Standard install profile + the_build_utility
+type: 'Site'
+
+recipes:
+  - core/recipes/basic_block_type
+  - core/recipes/basic_shortcuts
+  - core/recipes/article_tags
+  - core/recipes/article_content_type
+  - core/recipes/page_content_type
+  - core/recipes/basic_html_format_editor
+  - core/recipes/full_html_format_editor
+  - core/recipes/core_recommended_performance
+  - core/recipes/core_recommended_maintenance
+  - core/recipes/core_recommended_admin_theme
+  - core/recipes/core_recommended_front_end_theme
+  - core/recipes/restricted_html_format
+  - core/recipes/administrator_role
+  - core/recipes/content_editor_role
 
 install:
   - admin_toolbar
   - admin_toolbar_tools
+  - config
   - config_ignore
   - config_split
   - config_split
+  - contextual
+  - datetime
   - devel
+  - field_ui
+  - help
+  - image
+  - menu_link_content
+  - menu_ui
+  - options
+  - shortcut
+  - toolbar
+  - views_ui
   - workbench
   - workbench_tabs
 
+# This recipe is intended to set up a full site from scratch, replacing the 'Standard' recipe.
 config:
   strict: false
+  import:
+    claro:
+      - block.block.claro_help
+    help:
+      - search.page.help_search
+      - block.block.claro_help_search
+    image:
+      - image.style.large
+      - image.style.thumbnail
+    node:
+      - views.view.content
+      - views.view.frontpage
+      - views.view.glossary
+    olivero:
+      - block.block.olivero_help
+      - block.block.olivero_syndicate
+    user:
+      - search.page.user_search
+      - views.view.user_admin_people
+
   actions:
+    node.settings:
+      simpleConfigUpdate:
+        use_admin_theme: true
+    system.site:
+      simpleConfigUpdate:
+        page.front: /node
+    user.role.anonymous:
+      grantPermission: 'access content'
+    user.role.authenticated:
+      grantPermissions:
+        - 'access content'
+        - 'delete own files'
+    user.role.content_editor:
+      grantPermissions:
+        - 'access content overview'
+        - 'access contextual links'
+        - 'access files overview'
+        - 'access toolbar'
+        - 'administer url aliases'
+        - 'create terms in tags'
+        - 'create url aliases'
+        - 'edit terms in tags'
+        - 'delete own files'
+        - 'revert all revisions'
+        - 'view all revisions'
+        - 'view the administration theme'
+      grantPermissionsForEachNodeType:
+        - 'create %bundle content'
+        - 'delete %bundle revisions'
+        - 'delete own %bundle content'
+        - 'edit own %bundle content'
     user.settings:
       simpleConfigUpdate:
+        verify_mail: true
         register: admin_only
+        cancel_method: user_cancel_block
     system.date:
         simpleConfigUpdate:
           country.default: US
           timezone.default: 'America/Chicago'
           timezone.user.configurable: FALSE
-    field.storage.node.comment:
-      disable: []
-    field.field.node.article.comment:
-      disable: []
-
-
-# todo: delete fields on comment entity
-# todo: delete state variable 'comment.node_comment_statistics_scale'
-# todo: uninstall if installed: automated_cron, big_pipe, comment, contact, history, search, tour
