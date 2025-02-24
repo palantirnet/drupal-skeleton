@@ -13,17 +13,21 @@ install:
   - workbench_tabs
 
 config:
-  user.settings:
-    register: admin_only
+  strict: false
+  actions:
+    user.settings:
+      simpleConfigUpdate:
+        register: admin_only
+    system.date:
+        simpleConfigUpdate:
+          country.default: US
+          timezone.default: 'America/Chicago'
+          timezone.user.configurable: FALSE
+    field.storage.node.comment:
+      disable: []
+    field.field.node.article.comment:
+      disable: []
 
-  system.date:
-    country:
-      default: US
-    timezone:
-      default: 'America/Chicago'
-    timezone:
-      user:
-        configurable: FALSE
 
 # todo: delete fields on comment entity
 # todo: delete state variable 'comment.node_comment_statistics_scale'
