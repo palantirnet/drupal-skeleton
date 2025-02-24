@@ -7,7 +7,7 @@ _meta:
 default:
   title:
     -
-      value: 'Status Report'
+      value: 'Status report'
   link:
     -
       uri: 'internal:/admin/reports/status'

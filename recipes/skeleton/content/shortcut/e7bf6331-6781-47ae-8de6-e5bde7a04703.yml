@@ -7,7 +7,7 @@ _meta:
 default:
   title:
     -
-      value: 'Manage Menus'
+      value: 'Manage menus'
   link:
     -
       uri: 'internal:/admin/structure/menu'
