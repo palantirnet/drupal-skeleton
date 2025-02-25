@@ -5,8 +5,6 @@ type: 'Site'
 recipes:
   - core/recipes/basic_block_type
   - core/recipes/basic_shortcuts
-  - core/recipes/article_tags
-  - core/recipes/article_content_type
   - core/recipes/page_content_type
   - core/recipes/basic_html_format_editor
   - core/recipes/full_html_format_editor
@@ -35,6 +33,7 @@ install:
   - menu_ui
   - options
   - shortcut
+  - taxonomy
   - toolbar
   - views_ui
   - workbench
@@ -83,9 +82,7 @@ config:
         - 'access files overview'
         - 'access toolbar'
         - 'administer url aliases'
-        - 'create terms in tags'
         - 'create url aliases'
-        - 'edit terms in tags'
         - 'delete own files'
         - 'revert all revisions'
         - 'view all revisions'
