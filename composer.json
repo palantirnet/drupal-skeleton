@@ -17,15 +17,17 @@
     ],
     "require": {
         "composer/installers": "^2.0",
-        "drupal/admin_toolbar": "^3",
+        "drupal/admin_toolbar": "^3.5",
         "drupal/config_ignore": "^3",
-        "drupal/config_split": "^2",
+        "drupal/config_split": "^2.0",
         "drupal/core-composer-scaffold": "^11",
         "drupal/core-recommended": "^11",
-        "drupal/devel": "^5",
-        "drupal/workbench": "^1.5",
+        "drupal/devel": "^5.3",
+        "drupal/memcache": "^2.7",
+        "drupal/workbench": "^1.6",
         "drupal/workbench_tabs": "^1.8",
-        "drush/drush": "^13"
+        "drush/drush": "^13",
+        "typhonius/acquia-php-sdk-v2": "^3.4"
     },
     "require-dev": {
         "behat/behat": "^3.12",
