@@ -45,11 +45,28 @@ class Artifact {
     $source_repository = $git->open(getcwd());
     $artifact_repository = self::initializeRepository($buildDirectory, $remoteGit, $remoteBaseBranch);
 
+self::safeToBuild($source_repository);
+
+
     $temporaryBranch = 'artifact-' . $source_repository->getLastCommit()->getId();
     $event->getIO()->write('Creating temporary branch: ' . $temporaryBranch);
+    if (in_array($temporaryBranch, $artifact_repository->getBranches())) {
+      $artifact_repository->removeBranch($temporaryBranch);
+    }
     $artifact_repository->createBranch($temporaryBranch, TRUE);
 
 
+  }
+
+  protected static function safeToBuild(GitRepository $repository): bool {
+    $result = $repository->run('status', ['--porcelain']);
+
+    if ($result->hasOutput()) {
+      print "output";
+      print_r($result->getOutput());
+    }
+
+    return TRUE;
   }
 
   /**
