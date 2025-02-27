@@ -45,8 +45,7 @@ class Artifact {
     $source_repository = $git->open(getcwd());
     $artifact_repository = self::initializeRepository($buildDirectory, $remoteGit, $remoteBaseBranch);
 
-self::safeToBuild($source_repository);
-
+    self::safeToBuild($source_repository);
 
     $temporaryBranch = 'artifact-' . $source_repository->getLastCommit()->getId();
     $event->getIO()->write('Creating temporary branch: ' . $temporaryBranch);
@@ -55,17 +54,23 @@ self::safeToBuild($source_repository);
     }
     $artifact_repository->createBranch($temporaryBranch, TRUE);
 
-
   }
 
+  /**
+   *
+   */
   protected static function safeToBuild(GitRepository $repository): bool {
     $result = $repository->run('status', ['--porcelain']);
 
     if ($result->hasOutput()) {
-      print "output";
-      print_r($result->getOutput());
+      print "Repository status:    dirty\n";
+      print "  * You have changes which must be committed before you may build an artifact.\n";
+      print "  * Modified files:\n";
+      print $result->getOutputAsString();
+      return FALSE;
     }
 
+    print "Repository status:    clean\n";
     return TRUE;
   }
 
