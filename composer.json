@@ -112,12 +112,12 @@
             "drupal/core": "-p2"
         },
         "artifact": {
-            "remote_git": "../example-artifact-repo",
-            "remote_base_branch": "main",
-            "git_branch_prefix": "artifact-",
-            "git_tag_prefix": "artifact-",
-            "build_directory": "artifacts/build",
-            "templates": {
+            "git_remote": "../example-artifact-repo",
+            "directory": "artifacts/build",
+            "prefix": "artifact-",
+            "git_remote_base_branch": "main",
+            "git_remote_name": "origin",
+            "template_map": {
                 ".gitignore": "vendor/palantirnet/the-build/defaults/artifact/gitignore",
                 "README.md": "vendor/palantirnet/the-build/defaults/artifact/README.md"
             }
