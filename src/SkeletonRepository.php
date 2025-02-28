@@ -44,5 +44,18 @@ class SkeletonRepository extends GitRepository {
     return in_array("{$remote}/{$branch}", $branches);
   }
 
+  public function listFiles(): array {
+    $result = $this->run('ls-files');
+    return $result->getOutput();
+  }
+
+  public function reset(): void {
+    $this->run('reset', '--hard');
+  }
+
+  public function clean(): void {
+    $this->run('clean', '-ffd');
+  }
+
 
 }

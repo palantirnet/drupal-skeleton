@@ -19,7 +19,6 @@ class Artifact {
     $composer = $event->getComposer();
     $extra = $composer->getPackage()->getExtra();
 
-
 /*
         <!-- This property MUST be provided. -->
         <fail unless="artifact.git.remote" message="The remote git repository must be configured in the 'artifact.git.remote' property." />
@@ -80,7 +79,7 @@ class Artifact {
     $artifactGitTag = $source_repository->getCurrentTag();
 
     $artifactGitTemporaryBranch = 'artifact-' . $artifactGitCommit;
-    $artifactGitArtifactTag = $artifactPrefix . $artifactGitTag;
+    $artifactGitArtifactTag = $artifactGitTag ? $artifactPrefix . $artifactGitTag : '';
     $artifactGitRemoteBranch = $artifactPrefix . $artifactGitBranch;
 
     $event->getIO()->write('artifactGitCommit: ' . $artifactGitCommit);
@@ -98,11 +97,42 @@ class Artifact {
     // reset artifact repository to remote base branch
 
         //<phingcall target="artifact-setupBranch" />
-    self::setupBranch($artifact_repository, $artifactGitRemoteName, $artifactGitRemoteBranch, $artifactGitTemporaryBranch);
+    self::setupBranch($artifact_repository, $artifactGitRemoteName, $artifactGitRemoteBranch, $artifactGitTemporaryBranch, $artifactGitRemoteBaseBranch);
         //<phingcall target="artifact-updateCode" />
+    self::updateCode($artifact_repository, $source_repository, $artifactTemplateMap);
         //<phingcall target="artifact-build" />
+    self::artifactBuild($artifact_repository);
         //<phingcall target="artifact-commit" />
+    self::artifactCommit($artifact_repository, $source_repository, $artifactGitArtifactTag);
         //<phingcall target="artifact-finish" />
+
+    // prompt the user to push the changes to the remote branch or cancel
+    // ask for user input
+    //         <selectone list="push,keep,discard" propertyName="artifact.result" message="Push artifact changes to the '${artifact.git.remote_branch}' branch?" />
+
+    $arguments = $event->getArguments();
+    $argumentAction = array_intersect(['push', 'keep', 'discard'], $arguments);
+    if (count($argumentAction) == 1) {
+      $artifactResult = $arguments[0];
+    }
+    else {
+      $artifactResult = $event->getIO()->select(
+        "Push artifact changes to the '{$artifactGitRemoteBranch}' branch?",
+        ['push' => 'push', 'keep' => 'keep', 'discard' => 'discard'], 'push');
+    }
+
+    if ($artifactResult === 'push') {
+      self::artifactPush($artifact_repository, $artifactGitRemoteName, $artifactGitTemporaryBranch, $artifactGitRemoteBranch, $artifactGitArtifactTag, $artifactGitRemoteBaseBranch);
+    }
+    elseif ($artifactResult === 'keep') {
+      self::artifactKeep($artifact_repository, $artifactGitArtifactTag);
+    }
+    else {
+      self::artifactDiscard($artifact_repository, $artifactGitArtifactTag, $artifactGitRemoteBaseBranch, $artifactGitTemporaryBranch);
+    }
+
+
+
   }
 
   /**
@@ -156,7 +186,7 @@ class Artifact {
     </target>
 */
 
-  protected static function setupBranch(SkeletonRepository $repository, string $remote, string $remoteBranch, $temporaryBranch): void {
+  protected static function setupBranch(SkeletonRepository $repository, string $remote, string $remoteBranch, $temporaryBranch, $artifactGitRemoteBaseBranch): void {
     if (!$repository->hasRemoteBranch($remoteBranch, $remote)) {
       $repository->createBranch($remoteBranch);
       $repository->push([$remote, $remoteBranch]);
@@ -168,6 +198,7 @@ class Artifact {
       $repository->createBranch($temporaryBranch);
     }
     catch (\Exception $e) {
+      $repository->checkout($artifactGitRemoteBaseBranch);
       $repository->removeBranch($temporaryBranch);
       $repository->createBranch($temporaryBranch);
     }
@@ -212,7 +243,68 @@ class Artifact {
     </target>
 
 */
-  protected static function updateCode() {}
+  protected static function updateCode(SkeletonRepository $artifactRepository, SkeletonRepository $sourceRepository, array $templateMap): void {
+    $directory = $artifactRepository->getRepositoryPath();
+
+    // Callback to remove the root .git directory from the files to be deleted.
+    $filter = function ($current, $key, $iterator) {
+      $subpath = substr($current->getPathname(), strlen($iterator->getPath()) + 1);
+      if (empty($subpath) || strpos($subpath, '.git/') === 0 || $subpath === '.git') {
+        return FALSE;
+      }
+      return TRUE;
+    };
+
+    // Iterator for all of the files in the artifact.
+    $innerIterator = new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS);
+    $filterIterator = new \RecursiveCallbackFilterIterator($innerIterator, $filter);
+
+    // Iterator for all of the files in the artifact EXCEPT the .git directory.
+    $iterator = new \RecursiveIteratorIterator($filterIterator, \RecursiveIteratorIterator::CHILD_FIRST);
+
+    // Remove all files in the artifact directory.
+    /** @var \SplFileInfo $item */
+    foreach ($iterator as $item) {
+      if (file_exists($item->getPathname())) {
+        chmod($item->getPathname(), 0750);
+        try {
+          if ($item->isDir()) {
+            rmdir($item->getPathname());
+          } else {
+            unlink($item->getPathname());
+          }
+        } catch (\Exception $e) {
+          print "Failed to remove {$item->getPathname()}: {$e->getMessage()}\n";
+        }
+      }
+    }
+
+    // Copy all the files checked in to the source repository to the artifact repository.
+    $files = $sourceRepository->listFiles();
+    foreach ($files as $file) {
+      $source = $sourceRepository->getRepositoryPath() . '/' . $file;
+      $destination = $directory . '/' . $file;
+      $destinationDir = dirname($destination);
+
+      if (!is_dir($destinationDir)) {
+        mkdir($destinationDir, 0750, TRUE);
+      }
+
+      copy($source, $destination);
+    }
+
+    // Copy the templates into the artifact.
+    foreach ($templateMap as $destination => $source) {
+      $destination = $directory . '/' . $destination;
+      $destinationDir = dirname($destination);
+
+      if (!is_dir($destinationDir)) {
+        mkdir($destinationDir, 0750, TRUE);
+      }
+
+      copy($source, $destination);
+    }
+  }
 
   /*
 
@@ -232,22 +324,33 @@ class Artifact {
         <foreachkey prefix="drupal.sites" omitKeys="_defaults" target="artifact-build-one" keyParam="site_key" prefixParam="prefix" />
     </target>
 */
-/*
 
+  protected static function artifactBuild(SkeletonRepository $artifactRepository): void {
+    // Initialize Composer Installer
+    $composer = new \Composer\Console\Application();
+    $composer->setAutoExit(false);
 
-    <target name="artifact-build-one" hidden="true">
-        <!--
-            - Override the Drupal root so that it is within the artifact directory.
-            - Override the "artifact mode" so that files managed with the
-              <includeresource /> task are copied into the artifact instead of symlinked.
-            -->
-        <phing target="build" phingfile="${phing.file}" inheritAll="false" dir="." haltonfailure="true">
-            <property name="build.site" value="${site_key}" />
-            <property name="drupal.root" value="${artifact.directory}/${drupal.root}" override="true" />
-            <property name="includeresource.mode" value="copy" override="true" />
-        </phing>
-    </target>
-*/
+    // Run the install command
+    $input = new \Symfony\Component\Console\Input\ArrayInput([
+      'command' => 'install',
+      '--no-interaction' => true,
+      '--no-dev' => true,
+      '--ignore-platform-reqs' => true,
+      '--working-dir' => $artifactRepository->getRepositoryPath(),
+    ]);
+    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+
+    $result = $composer->run($input, $output);
+
+    // Check if the command was successful
+    if ($result !== 0) {
+      throw new \RuntimeException("Failed to run composer install in {$artifactRepository->getRepositoryPath()}.");
+    }
+
+    // Output the result
+    print "Composer install completed successfully in {$artifactRepository->getRepositoryPath()}.\n";
+  }
+
 /*
 
 
@@ -267,12 +370,20 @@ class Artifact {
         </if>
     </target>
 */
+
+  protected static function artifactCommit(SkeletonRepository $artifactRepository, SkeletonRepository $sourceRepository, string $artifactTag): void {
+    $commit = $sourceRepository->getLastCommit();
+    $message = "Drupal artifact build of {$commit->getId()}";
+
+    $artifactRepository->addAllChanges();
+    $artifactRepository->commit($message);
+
+    if ($artifactTag) {
+      $artifactRepository->createTag($artifactTag);
+    }
+  }
+
 /*
-
-
-    <target name="artifact-finish" hidden="true">
-        <selectone list="push,keep,discard" propertyName="artifact.result" message="Push artifact changes to the '${artifact.git.remote_branch}' branch?" />
-
         <if>
             <equals arg1="${artifact.result}" arg2="push" />
             <then>
@@ -281,29 +392,6 @@ class Artifact {
                 <phingcall target="artifact-resetState" />
             </then>
         </if>
-
-        <if>
-            <equals arg1="${artifact.result}" arg2="keep" />
-            <then>
-                <!-- Keep the temporary branch, but delete any tag that was created, since if we run the artifact
-                     generation again, the tag should be re-created against the regenerated artifact. -->
-                <phingcall target="artifact-cleanupTag" />
-                <echo>Artifact changes are in the temporary branch '${artifact.git.temporary_branch}'</echo>
-            </then>
-        </if>
-
-        <if>
-            <equals arg1="${artifact.result}" arg2="discard" />
-            <then>
-                <!-- Delete the temporary branch and any tag that was created. -->
-                <phingcall target="artifact-cleanupTag" />
-                <phingcall target="artifact-resetState" />
-            </then>
-        </if>
-    </target>
-
-*/
-/*
 
     <target name="artifact-push" hidden="true">
         <echo>Pushing changes.</echo>
@@ -317,7 +405,55 @@ class Artifact {
             </then>
         </if>
     </target>
+
 */
+
+  protected static function artifactPush(SkeletonRepository $artifactRepository, string $remote, string $temporaryBranch, string $remoteBranch, string $artifactTag, string $remoteBaseBranch): void {
+    print "Pushing changes.\n";
+    $artifactRepository->push([$remote, "{$temporaryBranch}:{$remoteBranch}"]);
+    if ($artifactTag) {
+      $artifactRepository->push([$remote, $artifactTag]);
+    }
+
+    self::artifactResetState($artifactRepository, $remoteBaseBranch, $temporaryBranch);
+  }
+
+  /*
+          <if>
+              <equals arg1="${artifact.result}" arg2="keep" />
+              <then>
+                  <!-- Keep the temporary branch, but delete any tag that was created, since if we run the artifact
+                       generation again, the tag should be re-created against the regenerated artifact. -->
+                  <phingcall target="artifact-cleanupTag" />
+                  <echo>Artifact changes are in the temporary branch '${artifact.git.temporary_branch}'</echo>
+              </then>
+          </if>
+  */
+
+  protected static function artifactKeep(SkeletonRepository $artifactRepository, string $artifactTag): void {
+    self::artifactCleanupTag($artifactRepository, $artifactTag);
+    print "Artifact changes are in the temporary branch '{$artifactRepository->getCurrentBranchName()}'\n";
+  }
+
+  /*
+        <if>
+            <equals arg1="${artifact.result}" arg2="discard" />
+            <then>
+                <!-- Delete the temporary branch and any tag that was created. -->
+                <phingcall target="artifact-cleanupTag" />
+                <phingcall target="artifact-resetState" />
+            </then>
+        </if>
+    </target>
+
+*/
+
+  protected static function artifactDiscard(SkeletonRepository $artifactRepository, string $artifactTag, string $remoteBaseBranch, string $temporaryBranch): void {
+    self::artifactCleanupTag($artifactRepository, $artifactTag);
+    self::artifactResetState($artifactRepository, $remoteBaseBranch, $temporaryBranch);
+  }
+
+
 /*
 
 
@@ -330,6 +466,11 @@ class Artifact {
         </if>
     </target>
 */
+  protected static function artifactCleanupTag(SkeletonRepository $artifactRepository, string $artifactTag): void {
+    if ($artifactTag) {
+      $artifactRepository->removeTag($artifactTag);
+    }
+  }
 /*
 
 
@@ -341,5 +482,42 @@ class Artifact {
         <exec dir="${artifact.directory}" command="git branch -D ${artifact.git.temporary_branch}" checkreturn="true" logoutput="true" />
     </target>
     */
+  protected static function artifactResetState(SkeletonRepository $artifactRepository, string $remoteBaseBranch, string $temporaryBranch): void {
+    // make the whole thing writable
+
+    // Callback to ignore the root .git directory.
+    $filter = function ($current, $key, $iterator) {
+      $subpath = substr($current->getPathname(), strlen($iterator->getPath()) + 1);
+      if (empty($subpath) || strpos($subpath, '.git/') === 0 || $subpath === '.git') {
+        return FALSE;
+      }
+      return TRUE;
+    };
+
+    // Iterator for all the files in the artifact.
+    $innerIterator = new \RecursiveDirectoryIterator($artifactRepository->getRepositoryPath(), \RecursiveDirectoryIterator::SKIP_DOTS);
+    $filterIterator = new \RecursiveCallbackFilterIterator($innerIterator, $filter);
+
+    // Iterator for all the files in the artifact EXCEPT the .git directory.
+    $iterator = new \RecursiveIteratorIterator($filterIterator, \RecursiveIteratorIterator::CHILD_FIRST);
+
+    // Update permissions for all files in the artifact directory.
+    /** @var \SplFileInfo $item */
+    foreach ($iterator as $item) {
+      chmod($item->getPathname(), 0750);
+    }
+
+    // reset to HEAD
+    $artifactRepository->reset();
+
+    // checkout the remote base branch
+    $artifactRepository->checkout($remoteBaseBranch);
+
+    // clean the working directory
+    $artifactRepository->clean();
+
+    // delete the temporary branch
+    $artifactRepository->removeBranch($temporaryBranch);
+  }
 
 }
