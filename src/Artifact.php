@@ -15,18 +15,33 @@ class Artifact {
    * @param \Composer\Script\Event $event
    *   The Composer event.
    */
-  public static function createArtifact(Event $event): void {
+  public static function create(Event $event): void {
     // Get artifact configuration options from the composer.json file.
     $composer = $event->getComposer();
     $extra = $composer->getPackage()->getExtra();
 
     // @todo error handling for missing configuration options.
     $artifactGitRemote = $extra['artifact']['git_remote'];
+
     $artifactDirectory = $extra['artifact']['directory'];
     $artifactPrefix = $extra['artifact']['prefix'];
     $artifactGitRemoteBaseBranch = $extra['artifact']['git_remote_base_branch'];
     $artifactGitRemoteName = $extra['artifact']['git_remote_name'];
     $artifactTemplateMap = $extra['artifact']['template_map'];
+
+    $defaults = [
+      'git_remote' => '',
+      'directory' => '',
+      'template_map' => [
+        ".gitignore" => "vendor/palantirnet/the-build/defaults/artifact/gitignore",
+        "README.md" => "vendor/palantirnet/the-build/defaults/artifact/README.md",
+      ],
+      'git_remote_base_branch' => 'main',
+      'prefix' => 'artifact',
+    ];
+    // Merge the defaults with the configuration options.
+    $config = array_merge($defaults, $extra['artifact']);
+    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix']);
 
     $git = new SkeletonGit();
     $source_repository = $git->open(getcwd());
@@ -34,42 +49,28 @@ class Artifact {
     // @todo make this block artifact creation, unless a flag is passed to force it.
     self::safeToBuild($source_repository);
 
-    /*
-
-            <!-- Get the current commit, branch, message, and tag so that they can be used to label the
-                 resulting artifact and reset the repository after the artifact is built. -->
-            <exec command="git rev-parse HEAD" outputProperty="artifact.git.commit" checkreturn="true" />
-            <!-- @TODO Handle the case when this command outputs "HEAD". This happens when
-                 building a repo from a detatched head state (e.g. you've checked out a tag),
-                 and it causes pushing the artifact to fail because "HEAD" is not a branch you
-                 can push to. -->
-            <exec command="git rev-parse --abbrev-ref HEAD" outputProperty="artifact.git.branch" checkreturn="true" />
-            <exec command="git log -1 --oneline" outputProperty="artifact.git.commit_message" />
-            <exec command="git describe --tags --exact-match" outputProperty="artifact.git.tag" returnProperty="artifact.git.no_tag" />
-
-            <!-- Create a temporary branch name based on the commit for building the artifact,
-                 to avoid branch conflicts. -->
-            <property name="artifact.git.temporary_branch" value="artifact-${artifact.git.commit}" override="true" />
-            <!-- Prefix the repository tag so that we're not using the exact same tag on the
-                 artifact and on the repository, to avoid confusion, especially when the
-                 artifact is built on a branch of the development repository. -->
-            <property name="artifact.git.artifact_tag" value="${artifact.prefix}${artifact.git.tag}" override="true" />
-
-            <!-- If the remote branch isn't configured, use a remote branch based on the name
-                 of the current branch. This won't overwrite the property value if it is
-                 already set. -->
-            <property name="artifact.git.remote_branch" value="${artifact.prefix}${artifact.git.branch}" />
-    */
-
-    //Get the current commit, branch, message, and tag so that they can be used to label the
-    //                 resulting artifact and reset the repository after the artifact is built.
+    // Get the current commit, branch, message, and tag so that they can be used
+    // to label the resulting artifact and reset the repository after the
+    // artifact is built.
     $artifactGitCommit = $source_repository->getLastCommit()->getId();
+    // @todo Handle the case when this command outputs "HEAD".
+    // This happens when building a repo from a detatched head state (e.g.
+    // you've checked out a tag), and it causes pushing the artifact to fail
+    // because "HEAD" is not a branch you can push to.
     $artifactGitBranch = $source_repository->getCurrentBranchName();
     $artifactGitCommitMessage = $source_repository->getLastCommit()->getSubject();
     $artifactGitTag = $source_repository->getCurrentTag();
 
+    // Create a temporary branch name based on the commit for building the
+    // artifact, to avoid branch conflicts.
     $artifactGitTemporaryBranch = 'artifact-' . $artifactGitCommit;
+    // Prefix the repository tag so that we're not using the exact same tag on
+    // the artifact and on the repository, to avoid confusion, especially when
+    // the artifact is built on a branch of the development repository.
     $artifactGitArtifactTag = $artifactGitTag ? $artifactPrefix . $artifactGitTag : '';
+    // If the remote branch isn't configured, use a remote branch based on the
+    // name of the current branch. This won't overwrite the property value if it
+    // is already set.
     $artifactGitRemoteBranch = $artifactPrefix . $artifactGitBranch;
 
     $event->getIO()->write('artifactGitCommit: ' . $artifactGitCommit);
@@ -80,10 +81,6 @@ class Artifact {
     $event->getIO()->write('artifactGitArtifactTag: ' . $artifactGitArtifactTag);
     $event->getIO()->write('artifactGitRemoteBranch: ' . $artifactGitRemoteBranch);
 
-    return;
-
-
-        //<phingcall target="artifact-initializeRepository" />
     $artifact_repository = $git->openOrClone($artifactDirectory, $artifactGitRemote);
     // reset artifact repository to remote base branch
 
@@ -121,10 +118,41 @@ class Artifact {
     else {
       self::artifactDiscard($artifact_repository, $artifactGitArtifactTag, $artifactGitRemoteBaseBranch, $artifactGitTemporaryBranch);
     }
-
-
-
   }
+
+  protected string $gitRemote;
+  protected string $directory;
+  protected array $templateMap;
+  protected string $baseBranch;
+  protected string $prefix;
+
+  protected SkeletonRepository $artifactRepository;
+  protected SkeletonRepository $sourceRepository;
+  protected SkeletonGit $git;
+
+  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact') {
+    $this->gitRemote = $gitRemote;
+    $this->directory = $directory;
+    $this->templateMap = $templateMap;
+    $this->baseBranch = $baseBranch;
+    $this->prefix = $prefix;
+
+    $this->git = new SkeletonGit();
+    $this->sourceRepository = $this->git->open(getcwd());
+  }
+
+  public function getSourceRepository(): SkeletonRepository {
+    return $this->sourceRepository;
+  }
+
+  public function getArtifactRepository(): SkeletonRepository {
+    if (!$this->artifactRepository) {
+      $git = new SkeletonGit();
+      $this->artifactRepository = $git->openOrClone($this->directory, $this->gitRemote);
+    }
+    return $this->artifactRepository;
+  }
+
 
   /**
    *

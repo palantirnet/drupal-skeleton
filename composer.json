@@ -44,7 +44,7 @@
     },
     "scripts": {
         "create-artifact": [
-            "Skeleton\\Artifact::createArtifact"
+            "Skeleton\\Artifact::create"
         ]
     },
     "suggest": {
