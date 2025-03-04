@@ -118,7 +118,7 @@ class Artifact {
     else {
       $artifactResult = $event->getIO()->select(
         "Push artifact changes to the '{$artifactGitRemoteBranch}' branch?",
-        ['push' => 'push', 'keep' => 'keep', 'discard' => 'discard'], 'push');
+        ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
     }
 
     if ($artifactResult === 'push') {
@@ -325,12 +325,20 @@ class Artifact {
     </target>
 */
 
+  /**
+   * Build the artifact.
+   *
+   * @param SkeletonRepository $artifactRepository
+   *   The artifact repository.
+   *
+   * @throws \Exception
+   */
   protected static function artifactBuild(SkeletonRepository $artifactRepository): void {
-    // Initialize Composer Installer
+    // Initialize Composer Installer.
     $composer = new \Composer\Console\Application();
     $composer->setAutoExit(false);
 
-    // Run the install command
+    // Run the install command.
     $input = new \Symfony\Component\Console\Input\ArrayInput([
       'command' => 'install',
       '--no-interaction' => true,
@@ -342,12 +350,12 @@ class Artifact {
 
     $result = $composer->run($input, $output);
 
-    // Check if the command was successful
+    // Check if the command was successful.
     if ($result !== 0) {
       throw new \RuntimeException("Failed to run composer install in {$artifactRepository->getRepositoryPath()}.");
     }
 
-    // Output the result
+    // Output the result.
     print "Composer install completed successfully in {$artifactRepository->getRepositoryPath()}.\n";
   }
 
@@ -410,7 +418,13 @@ class Artifact {
 
   protected static function artifactPush(SkeletonRepository $artifactRepository, string $remote, string $temporaryBranch, string $remoteBranch, string $artifactTag, string $remoteBaseBranch): void {
     print "Pushing changes.\n";
-    $artifactRepository->push([$remote, "{$temporaryBranch}:{$remoteBranch}"]);
+    try {
+      $artifactRepository->push([$remote, "{$temporaryBranch}:{$remoteBranch}"]);
+    }
+    catch (\Exception $e) {
+      print $e->getMessage() . "\n";
+    }
+
     if ($artifactTag) {
       $artifactRepository->push([$remote, $artifactTag]);
     }
@@ -517,7 +531,7 @@ class Artifact {
     $artifactRepository->clean();
 
     // delete the temporary branch
-    $artifactRepository->removeBranch($temporaryBranch);
+    $artifactRepository->forceRemoveBranch($temporaryBranch);
   }
 
 }
