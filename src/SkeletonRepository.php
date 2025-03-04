@@ -57,5 +57,9 @@ class SkeletonRepository extends GitRepository {
     $this->run('clean', '-ffd');
   }
 
+  public function forceRemoveBranch($branch): void {
+    $this->run('branch', ['-D' => $branch]);
+  }
+
 
 }

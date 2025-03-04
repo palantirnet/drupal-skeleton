@@ -199,7 +199,7 @@ class Artifact {
     }
     catch (\Exception $e) {
       $repository->checkout($artifactGitRemoteBaseBranch);
-      $repository->removeBranch($temporaryBranch);
+      $repository->forceRemoveBranch($temporaryBranch);
       $repository->createBranch($temporaryBranch);
     }
 
