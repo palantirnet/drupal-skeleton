@@ -13,26 +13,14 @@ class Artifact {
    * Create an artifact.
    *
    * @param \Composer\Script\Event $event
+   *   The Composer event.
    */
   public static function createArtifact(Event $event): void {
     // Get artifact configuration options from the composer.json file.
     $composer = $event->getComposer();
     $extra = $composer->getPackage()->getExtra();
 
-/*
-        <!-- This property MUST be provided. -->
-        <fail unless="artifact.git.remote" message="The remote git repository must be configured in the 'artifact.git.remote' property." />
-
-        <!-- Defaults are set in defaults.yml -->
-        <fail unless="artifact.directory" />
-        <fail unless="artifact.prefix" />
-        <fail unless="artifact.git.remote_base_branch" />
-        <fail unless="artifact.git.remote_name" />
-        <fail unless="artifact.gitignore_template" />
-        <fail unless="artifact.readme_template" />
-
-*/
-
+    // @todo error handling for missing configuration options.
     $artifactGitRemote = $extra['artifact']['git_remote'];
     $artifactDirectory = $extra['artifact']['directory'];
     $artifactPrefix = $extra['artifact']['prefix'];
@@ -43,7 +31,7 @@ class Artifact {
     $git = new SkeletonGit();
     $source_repository = $git->open(getcwd());
 
-    //<phingcall target="artifact-safeToBuild" />
+    // @todo make this block artifact creation, unless a flag is passed to force it.
     self::safeToBuild($source_repository);
 
     /*
@@ -73,6 +61,8 @@ class Artifact {
             <property name="artifact.git.remote_branch" value="${artifact.prefix}${artifact.git.branch}" />
     */
 
+    //Get the current commit, branch, message, and tag so that they can be used to label the
+    //                 resulting artifact and reset the repository after the artifact is built.
     $artifactGitCommit = $source_repository->getLastCommit()->getId();
     $artifactGitBranch = $source_repository->getCurrentBranchName();
     $artifactGitCommitMessage = $source_repository->getLastCommit()->getSubject();
@@ -90,6 +80,7 @@ class Artifact {
     $event->getIO()->write('artifactGitArtifactTag: ' . $artifactGitArtifactTag);
     $event->getIO()->write('artifactGitRemoteBranch: ' . $artifactGitRemoteBranch);
 
+    return;
 
 
         //<phingcall target="artifact-initializeRepository" />
