@@ -38,16 +38,25 @@ class Artifact {
       ],
       'git_remote_base_branch' => 'main',
       'prefix' => 'artifact',
+      // Temporary flag to allow building artifacts with uncommitted changes.
+      // @todo pass this in as a command line option.
+      'build_dirty' => TRUE,
     ];
     // Merge the defaults with the configuration options.
     $config = array_merge($defaults, $extra['artifact']);
-    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix']);
+    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix'], $config['build_dirty']);
 
-    $git = new SkeletonGit();
-    $source_repository = $git->open(getcwd());
+    // Don't build if the repository has uncommitted changes.
+    try {
+      $artifact->safeToBuild();
+    }
+    catch (\Exception $e) {
+      $event->getIO()->write($e->getMessage());
+      return;
+    }
 
-    // @todo make this block artifact creation, unless a flag is passed to force it.
-    self::safeToBuild($source_repository);
+    $artifact->updateBaseBranch();
+    return;
 
     // Get the current commit, branch, message, and tag so that they can be used
     // to label the resulting artifact and reset the repository after the
@@ -81,11 +90,11 @@ class Artifact {
     $event->getIO()->write('artifactGitArtifactTag: ' . $artifactGitArtifactTag);
     $event->getIO()->write('artifactGitRemoteBranch: ' . $artifactGitRemoteBranch);
 
-    $artifact_repository = $git->openOrClone($artifactDirectory, $artifactGitRemote);
     // reset artifact repository to remote base branch
 
         //<phingcall target="artifact-setupBranch" />
     self::setupBranch($artifact_repository, $artifactGitRemoteName, $artifactGitRemoteBranch, $artifactGitTemporaryBranch, $artifactGitRemoteBaseBranch);
+    $artifact->setup();
         //<phingcall target="artifact-updateCode" />
     self::updateCode($artifact_repository, $source_repository, $artifactTemplateMap);
         //<phingcall target="artifact-build" />
@@ -129,13 +138,15 @@ class Artifact {
   protected SkeletonRepository $artifactRepository;
   protected SkeletonRepository $sourceRepository;
   protected SkeletonGit $git;
+  protected bool $buildDirty;
 
-  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact') {
+  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact', bool $buildDirty = FALSE) {
     $this->gitRemote = $gitRemote;
     $this->directory = $directory;
     $this->templateMap = $templateMap;
     $this->baseBranch = $baseBranch;
     $this->prefix = $prefix;
+    $this->buildDirty = $buildDirty;
 
     $this->git = new SkeletonGit();
     $this->sourceRepository = $this->git->open(getcwd());
@@ -146,7 +157,7 @@ class Artifact {
   }
 
   public function getArtifactRepository(): SkeletonRepository {
-    if (!$this->artifactRepository) {
+    if (!isset($this->artifactRepository)) {
       $git = new SkeletonGit();
       $this->artifactRepository = $git->openOrClone($this->directory, $this->gitRemote);
     }
@@ -157,17 +168,15 @@ class Artifact {
   /**
    *
    */
-  protected static function safeToBuild(SkeletonRepository $repository): bool {
-    if ($repository->hasChanges()) {
-      print "Repository status:    dirty\n\n";
-      print "  * You have changes which must be committed before you may build an artifact.\n\n";
-      print "  * Modified files:\n      ";
-      print implode("\n      ", $repository->showChanges());
-      print "\n\n";
-      return FALSE;
+  public function safeToBuild(): bool {
+    if (!$this->buildDirty && $this->sourceRepository->hasChanges()) {
+      $message = "You have changes which must be committed before you may build an artifact.\n";
+      $message .= "Modified files:\n  ";
+      $message .= implode("\n  ", $this->sourceRepository->showChanges());
+
+      throw new \Exception($message);
     }
 
-    print "Repository status:    clean\n";
     return TRUE;
   }
 
@@ -204,6 +213,16 @@ class Artifact {
         <echo>Building on temporary branch '${artifact.git.temporary_branch}'.</echo>
     </target>
 */
+
+  public function updateBaseBranch() {
+    // Get the latest changes to the base branch
+    $artifactRepo = $this->getArtifactRepository();
+    $artifactRepo->fetch(['origin', $this->baseBranch]);
+    $artifactRepo->checkout("origin/{$this->baseBranch}");
+
+    $artifactRepo->forceRemoveBranch($this->baseBranch);
+    $artifactRepo->createBranch($this->baseBranch, TRUE);
+  }
 
   protected static function setupBranch(SkeletonRepository $repository, string $remote, string $remoteBranch, $temporaryBranch, $artifactGitRemoteBaseBranch): void {
     if (!$repository->hasRemoteBranch($remoteBranch, $remote)) {
