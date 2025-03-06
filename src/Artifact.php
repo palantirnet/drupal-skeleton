@@ -55,8 +55,14 @@ class Artifact {
       return;
     }
 
-    $artifact->updateBaseBranch();
+    $artifact->setupBranches();
+    $artifact->removeArtifactFiles();
+    $artifact->copySource();
+    $artifact->copyTemplates();
+    $artifact->build();
+    $artifact->commit();
     return;
+
 
     // Get the current commit, branch, message, and tag so that they can be used
     // to label the resulting artifact and reset the repository after the
@@ -90,16 +96,6 @@ class Artifact {
     $event->getIO()->write('artifactGitArtifactTag: ' . $artifactGitArtifactTag);
     $event->getIO()->write('artifactGitRemoteBranch: ' . $artifactGitRemoteBranch);
 
-    // reset artifact repository to remote base branch
-
-        //<phingcall target="artifact-setupBranch" />
-    self::setupBranch($artifact_repository, $artifactGitRemoteName, $artifactGitRemoteBranch, $artifactGitTemporaryBranch, $artifactGitRemoteBaseBranch);
-    $artifact->setup();
-        //<phingcall target="artifact-updateCode" />
-    self::updateCode($artifact_repository, $source_repository, $artifactTemplateMap);
-        //<phingcall target="artifact-build" />
-    self::artifactBuild($artifact_repository);
-        //<phingcall target="artifact-commit" />
     self::artifactCommit($artifact_repository, $source_repository, $artifactGitArtifactTag);
         //<phingcall target="artifact-finish" />
 
@@ -214,34 +210,48 @@ class Artifact {
     </target>
 */
 
-  public function updateBaseBranch() {
-    // Get the latest changes to the base branch
+  public function syncBranch($branchName) {
+    // Get the latest changes to the base branch.
     $artifactRepo = $this->getArtifactRepository();
-    $artifactRepo->fetch(['origin', $this->baseBranch]);
-    $artifactRepo->checkout("origin/{$this->baseBranch}");
+    $artifactRepo->fetch(['origin', $branchName]);
+    $artifactRepo->checkout("origin/{$branchName}");
 
-    $artifactRepo->forceRemoveBranch($this->baseBranch);
-    $artifactRepo->createBranch($this->baseBranch, TRUE);
+    if ($artifactRepo->hasLocalBranch($branchName)) {
+      $artifactRepo->forceRemoveBranch($branchName);
+    }
+    $artifactRepo->createBranch($branchName, TRUE);
   }
 
-  protected static function setupBranch(SkeletonRepository $repository, string $remote, string $remoteBranch, $temporaryBranch, $artifactGitRemoteBaseBranch): void {
-    if (!$repository->hasRemoteBranch($remoteBranch, $remote)) {
-      $repository->createBranch($remoteBranch);
-      $repository->push([$remote, $remoteBranch]);
-      $repository->removeBranch($remoteBranch);
-      print "created remote branch: $remote/$remoteBranch\n";
+  public function getTemporaryBranch(): string {
+    return $this->prefix . '-' . $this->sourceRepository->getLastCommit()->getId();
+  }
+
+  public function getBuildBranch(): string {
+    return $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
+  }
+
+  public function setupBranches(): void {
+    $artifactRepo = $this->getArtifactRepository();
+
+    // Ensure the build branch exists on the remote repository.
+    if (!$artifactRepo->hasRemoteBranch($this->getBuildBranch(), 'origin')) {
+      // Check out the latest upstream version of the base branch.
+      $this->syncBranch($this->baseBranch);
+
+      $artifactRepo->createBranch($this->getBuildBranch(), TRUE);
+      $artifactRepo->push(['origin', $this->getBuildBranch()]);
+      print "created remote branch: origin/{$this->getBuildBranch()}\n";
     }
 
-    try {
-      $repository->createBranch($temporaryBranch);
-    }
-    catch (\Exception $e) {
-      $repository->checkout($artifactGitRemoteBaseBranch);
-      $repository->forceRemoveBranch($temporaryBranch);
-      $repository->createBranch($temporaryBranch);
+    // Check out the latest upstream version of the build branch.
+    $this->syncBranch($this->getBuildBranch());
+
+    if ($artifactRepo->hasLocalBranch($this->getTemporaryBranch())) {
+      $artifactRepo->forceRemoveBranch($this->getTemporaryBranch());
     }
 
-    $repository->checkout($temporaryBranch);
+    $artifactRepo->createBranch($this->getTemporaryBranch(), TRUE);
+    print "created temporary local branch: {$this->getTemporaryBranch()}\n";
   }
 
   /*
@@ -281,9 +291,8 @@ class Artifact {
     </target>
 
 */
-  protected static function updateCode(SkeletonRepository $artifactRepository, SkeletonRepository $sourceRepository, array $templateMap): void {
-    $directory = $artifactRepository->getRepositoryPath();
 
+  protected function removeArtifactFiles() {
     // Callback to remove the root .git directory from the files to be deleted.
     $filter = function ($current, $key, $iterator) {
       $subpath = substr($current->getPathname(), strlen($iterator->getPath()) + 1);
@@ -294,7 +303,7 @@ class Artifact {
     };
 
     // Iterator for all of the files in the artifact.
-    $innerIterator = new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS);
+    $innerIterator = new \RecursiveDirectoryIterator($this->artifactRepository->getRepositoryPath(), \RecursiveDirectoryIterator::SKIP_DOTS);
     $filterIterator = new \RecursiveCallbackFilterIterator($innerIterator, $filter);
 
     // Iterator for all of the files in the artifact EXCEPT the .git directory.
@@ -303,39 +312,39 @@ class Artifact {
     // Remove all files in the artifact directory.
     /** @var \SplFileInfo $item */
     foreach ($iterator as $item) {
-      if (file_exists($item->getPathname())) {
-        chmod($item->getPathname(), 0750);
-        try {
-          if ($item->isDir()) {
-            rmdir($item->getPathname());
-          } else {
-            unlink($item->getPathname());
-          }
-        } catch (\Exception $e) {
-          print "Failed to remove {$item->getPathname()}: {$e->getMessage()}\n";
-        }
+      if ($item->isDir()) {
+        rmdir($item->getPathname());
+      }
+      elseif ($item->isFile() || $item->isLink()) {
+        unlink($item->getPathname());
       }
     }
+  }
 
-    // Copy all the files checked in to the source repository to the artifact repository.
-    $files = $sourceRepository->listFiles();
-    foreach ($files as $file) {
-      $source = $sourceRepository->getRepositoryPath() . '/' . $file;
-      $destination = $directory . '/' . $file;
+  /**
+   * Copy files checked in to the source repository to the artifact repository.
+   */
+  public function copySource() {
+    $files = $this->getSourceRepository()->listFiles();
+    $this->copyFileMap(array_combine($files, $files));
+  }
+
+  /**
+   * Copy templates into the artifact.
+   */
+  public function copyTemplates() {
+    $this->copyFileMap($this->templateMap);
+  }
+
+  protected function copyFileMap($map) {
+    $source_path = $this->sourceRepository->getRepositoryPath();
+    $destination_path = $this->artifactRepository->getRepositoryPath();
+
+    foreach ($map as $d => $s) {
+      $destination = "{$destination_path}/{$d}";
+      $source = "{$source_path}/{$s}";
+
       $destinationDir = dirname($destination);
-
-      if (!is_dir($destinationDir)) {
-        mkdir($destinationDir, 0750, TRUE);
-      }
-
-      copy($source, $destination);
-    }
-
-    // Copy the templates into the artifact.
-    foreach ($templateMap as $destination => $source) {
-      $destination = $directory . '/' . $destination;
-      $destinationDir = dirname($destination);
-
       if (!is_dir($destinationDir)) {
         mkdir($destinationDir, 0750, TRUE);
       }
@@ -366,12 +375,9 @@ class Artifact {
   /**
    * Build the artifact.
    *
-   * @param SkeletonRepository $artifactRepository
-   *   The artifact repository.
-   *
    * @throws \Exception
    */
-  protected static function artifactBuild(SkeletonRepository $artifactRepository): void {
+  public function build(): void {
     // Initialize Composer Installer.
     $composer = new \Composer\Console\Application();
     $composer->setAutoExit(false);
@@ -382,7 +388,7 @@ class Artifact {
       '--no-interaction' => true,
       '--no-dev' => true,
       '--ignore-platform-reqs' => true,
-      '--working-dir' => $artifactRepository->getRepositoryPath(),
+      '--working-dir' => $this->getArtifactRepository()->getRepositoryPath(),
     ]);
     $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
@@ -390,11 +396,11 @@ class Artifact {
 
     // Check if the command was successful.
     if ($result !== 0) {
-      throw new \RuntimeException("Failed to run composer install in {$artifactRepository->getRepositoryPath()}.");
+      throw new \RuntimeException("Failed to run composer install in {$this->getArtifactRepository()->getRepositoryPath()}.");
     }
 
     // Output the result.
-    print "Composer install completed successfully in {$artifactRepository->getRepositoryPath()}.\n";
+    print "Composer install completed successfully in {$this->getArtifactRepository()->getRepositoryPath()}.\n";
   }
 
 /*
@@ -417,16 +423,31 @@ class Artifact {
     </target>
 */
 
-  protected static function artifactCommit(SkeletonRepository $artifactRepository, SkeletonRepository $sourceRepository, string $artifactTag): void {
-    $commit = $sourceRepository->getLastCommit();
+  public function commit(): void {
+    $commit = $this->getSourceRepository()->getLastCommit();
     $message = "Drupal artifact build of {$commit->getId()}";
 
-    $artifactRepository->addAllChanges();
-    $artifactRepository->commit($message);
+    $this->getArtifactRepository()->addAllChanges();
+    $this->getArtifactRepository()->commit($message);
 
-    if ($artifactTag) {
-      $artifactRepository->createTag($artifactTag);
+    $tag = $this->getSourceRepository()->getCurrentTag();
+    if ($tag) {
+      $this->getArtifactRepository()->createTag("{$this->prefix}-{$tag}");
     }
+  }
+
+  public function getTag(): string {
+    // @todo Handle the case when this command outputs "HEAD".
+    // This happens when building a repo from a detatched head state (e.g.
+    // you've checked out a tag), and it causes pushing the artifact to fail
+    // because "HEAD" is not a branch you can push to.
+    $currentTag = $this->sourceRepository->getCurrentTag();
+
+    if ($currentTag) {
+      return ($this->prefix ? "{$this->prefix}-" : '') . $currentTag;
+    }
+
+    return '';
   }
 
 /*
