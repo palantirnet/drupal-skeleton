@@ -68,7 +68,7 @@ class Artifact {
 
     // Run build steps.
     $artifact->build();
-
+    // @todo allow running other composer scripts as part of the build steps.
     // Commit the changes to the artifact repository.
     $artifact->commit();
 
@@ -87,13 +87,15 @@ class Artifact {
     if ($artifactResult === 'push') {
       $event->getIO()->write("Pushing artifact.");
       $artifact->push();
+      $artifact->resetState();
     }
     elseif ($artifactResult === 'keep') {
-      $artifact->keep();
+      $artifact->cleanupTag();
       $event->getIO()->write("Artifact changes are in the temporary branch '{$artifact->getTemporaryBranch()}'");
     }
     else {
-      $artifact->discard();
+      $artifact->cleanupTag();
+      $artifact->resetState();
       $event->getIO()->write("Artifact changes have been discarded.");
     }
   }
@@ -170,17 +172,17 @@ class Artifact {
   }
 
   /**
-   * // Create a temporary branch name based on the commit for building the
-   * // artifact, to avoid branch conflicts.
+   * Create a temporary branch name based on the commit for building the
+   * artifact, to avoid branch conflicts.
    */
   public function getTemporaryBranch(): string {
     return $this->prefix . '-' . $this->sourceRepository->getLastCommit()->getId();
   }
 
   /**
-   * // If the remote branch isn't configured, use a remote branch based on the
-   * // name of the current branch. This won't overwrite the property value if it
-   * // is already set.
+   * If the remote branch isn't configured, use a remote branch based on the
+   * name of the current branch. This won't overwrite the property value if it
+   * is already set.
    */
   public function getBuildBranch(): string {
     return $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
@@ -312,7 +314,7 @@ class Artifact {
   }
 
   /**
-   *
+   * Commit changes to the artifact repository.
    */
   public function commit(): void {
     $commit = $this->getSourceRepository()->getLastCommit();
@@ -328,9 +330,11 @@ class Artifact {
   }
 
   /**
-   * // Prefix the repository tag so that we're not using the exact same tag on
-   * // the artifact and on the repository, to avoid confusion, especially when
-   * // the artifact is built on a branch of the development repository.
+   * Get a tag for the artifact.
+   *
+   * Prefix the repository tag so that we're not using the exact same tag on
+   * the artifact and on the repository, to avoid confusion, especially when
+   * the artifact is built on a branch of the development repository.
    */
   public function getTag(): string {
     // @todo Handle the case when this command outputs "HEAD".
@@ -347,34 +351,17 @@ class Artifact {
   }
 
   /**
-   *
+   * Push the built artifact to the remote repository.
    */
   public function push() {
     $this->getArtifactRepository()->push(['origin', "{$this->getTemporaryBranch()}:{$this->getBuildBranch()}"]);
     if ($this->getTag()) {
       $this->getArtifactRepository()->push(['origin', $this->getTag()]);
     }
-
-    $this->resetState();
   }
 
   /**
-   *
-   */
-  public function keep() {
-    $this->cleanupTag();
-  }
-
-  /**
-   *
-   */
-  public function discard(): void {
-    $this->cleanupTag();
-    $this->resetState();
-  }
-
-  /**
-   *
+   * Delete the tag if we're not pushing the build.
    */
   protected function cleanupTag() {
     $tag = $this->getTag();
@@ -384,7 +371,7 @@ class Artifact {
   }
 
   /**
-   *
+   * Reset the artifact repository to the base branch.
    */
   public function resetState() {
     $artifactRepository = $this->getArtifactRepository();
