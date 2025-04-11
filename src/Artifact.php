@@ -2,6 +2,7 @@
 
 namespace Skeleton;
 
+use Composer\IO\IOInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Composer\Console\Application;
@@ -10,7 +11,24 @@ use Composer\Script\Event;
 /**
  * Generate deployment artifacts for the project.
  *
- * Run 'composer create-artifact -- --build-branch=main --build-dirty'
+ * Run 'composer create-artifact'
+ *
+ * Options:
+ *   --build-branch=BRANCH_NAME
+ *     Push the artifact to a specific remote branch. Without this argument, the
+ *     branch will be named 'artifact-CURRENT_BRANCH'.
+ *   --build-dirty
+ *     Allow building an artifact from a repository with un-committed changes.
+ *     This option is for debugging the build process, not for production
+ *     builds.
+ *   push | keep | discard
+ *     What to do with a successful artifact build. If this is not provided as
+ *     an argument, the user will be prompted interactively.
+ *
+ * Examples:
+ *   composer create-artifact push
+ *   composer create-artifact -- --build-branch=main push
+ *   composer create-artifact -- --build-dirty keep
  */
 class Artifact {
 
@@ -27,70 +45,34 @@ class Artifact {
     $config = self::processConfig($extra['artifact'] ?? []);
 
     // Construct the artifact object.
-    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix'], $config['build_dirty']);
+    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix']);
+
+    $artifact->setIO($event->getIO());
 
     // Apply command line arguments.
     $arguments = self::processArgs($event->getArguments());
     if (isset($arguments['build-branch'])) {
       // Build to a specific branch, e.g. `main`, instead of `artifact-main`.
-      //   composer create-artifact --build-branch=main
       $artifact->setBuildBranch($arguments['build-branch']);
     }
     if (isset($arguments['build-dirty'])) {
       // Allow building with un-committed local changes.
-      //   composer create-artifact --build-dirty
       $artifact->allowDirtyBuild(TRUE);
     }
 
-    // Don't build if the repository has uncommitted changes.
-    try {
-      $artifact->safeToBuild();
+    // Discard, keep, or push a successful artifact. If this argument is not
+    // provided, the user will be prompted.
+    if (isset($arguments['discard'])) {
+      $artifact->setResultAction('discard');
     }
-    catch (\Exception $e) {
-      $event->getIO()->write($e->getMessage());
-      return;
+    elseif (isset($arguments['keep'])) {
+      $artifact->setResultAction('keep');
     }
-
-    // Fetch the latest artifact and set up build branches.
-    $artifact->setupBranches();
-
-    // Copy files from the source repository to the artifact repository.
-    $artifact->removeArtifactFiles();
-    $artifact->copySource();
-    $artifact->copyTemplates();
-
-    // Run build steps.
-    $artifact->build();
-    // @todo allow running other composer scripts as part of the build steps.
-    // Commit the changes to the artifact repository.
-    $artifact->commit();
-
-    // Prompt the user to push the changes to the remote branch or cancel.
-    $arguments = $event->getArguments();
-    $argumentAction = array_intersect(['push', 'keep', 'discard'], $arguments);
-    if (count($argumentAction) == 1) {
-      $artifactResult = $arguments[0];
-    }
-    else {
-      $artifactResult = $event->getIO()->select(
-        "Push artifact changes to the '{$artifact->buildBranch}' branch?",
-        ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
+    elseif (isset($arguments['push'])) {
+      $artifact->setResultAction('push');
     }
 
-    if ($artifactResult === 'push') {
-      $event->getIO()->write("Pushing artifact.");
-      $artifact->push();
-      $artifact->resetState();
-    }
-    elseif ($artifactResult === 'keep') {
-      $artifact->cleanupTag();
-      $event->getIO()->write("Artifact changes are in the temporary branch '{$artifact->getTemporaryBranch()}'");
-    }
-    else {
-      $artifact->cleanupTag();
-      $artifact->resetState();
-      $event->getIO()->write("Artifact changes have been discarded.");
-    }
+    $artifact->run();
   }
 
   public static function processConfig($config_from_composer) {
@@ -146,6 +128,9 @@ class Artifact {
   protected SkeletonGit $git;
   protected bool $buildDirty = FALSE;
   protected string $buildBranch;
+  protected IOInterface $io;
+
+  protected string $resultAction;
 
   public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact') {
     $this->gitRemote = $gitRemote;
@@ -160,23 +145,125 @@ class Artifact {
     $this->buildBranch = $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
   }
 
+  /**
+   * Allow building an artifact from a repository with un-committed changes.
+   *
+   * This option is for debugging the build process, not for production builds.
+   *
+   * @param bool $allow
+   *   Whether to allow building with un-committed changes.
+   */
   public function allowDirtyBuild(bool $allow): void {
     $this->buildDirty = $allow;
   }
 
+  /**
+   * Push the artifact to a specific branch instead of 'artifact-CURRENT-BRANCH'.
+   *
+   * @param string $branch
+   *   The name of the branch to push to.
+   */
   public function setBuildBranch(string $branch): void {
     $this->buildBranch = $branch;
   }
 
   /**
+   * Provide an IO object.
    *
+   * @param IOInterface $io
+   */
+  public function setIO(IOInterface $io): void {
+    $this->io = $io;
+  }
+
+  /**
+   * Output messages about the status of the artifact build.
+   */
+  protected function writeIO($message) {
+    if (isset($this->io)) {
+      $this->io->write($message);
+    }
+  }
+
+  /**
+   * What to do with a successful artifact build.
+   *
+   * @param string $action
+   *   The action to take with a successful artifact build: "push", "keep", or
+   *   "discard".
+   */
+  protected function setResultAction(string $action) {
+    if (in_array($action, ['push', 'keep', 'discard'])) {
+      $this->resultAction = $action;
+    }
+    else {
+      throw new \Exception("Action must be 'push', 'keep', or 'discard'.");
+    }
+  }
+
+  /**
+   * Run the artifact process.
+   */
+  public function run() {
+    // Don't build if the repository has uncommitted changes.
+    try {
+      $this->safeToBuild();
+    }
+    catch (\Exception $e) {
+      $this->writeIO($e->getMessage());
+      return;
+    }
+
+    // Fetch the latest artifact and set up build branches.
+    $this->setupBranches();
+
+    // Copy files from the source repository to the artifact repository.
+    $this->removeArtifactFiles();
+    $this->copySource();
+    $this->copyTemplates();
+
+    // Run build steps.
+    $this->build();
+    // @todo allow running other composer scripts as part of the build steps.
+
+    // Commit the changes to the artifact repository.
+    $this->commit();
+
+    // Prompt the user to push the changes to the remote branch or cancel.
+    if (empty($this->resultAction) && $this->io) {
+      $this->io->select(
+        "Push artifact changes to the '{$this->buildBranch}' branch?",
+        ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
+    }
+    else {
+      throw new \Exception("Missing required action argument 'push', 'keep', or 'discard'.");
+    }
+
+    if ($this->resultAction === 'push') {
+      $this->writeIO("Pushing artifact.");
+      $this->push();
+      $this->resetState();
+    }
+    elseif ($this->resultAction === 'keep') {
+      $this->cleanupTag();
+      $this->writeIO("Artifact changes are in the temporary branch '{$this->getTemporaryBranch()}'");
+    }
+    else {
+      $this->cleanupTag();
+      $this->resetState();
+      $this->writeIO("Artifact changes have been discarded.");
+    }
+  }
+
+  /**
+   * Get the source repository.
    */
   public function getSourceRepository(): SkeletonRepository {
     return $this->sourceRepository;
   }
 
   /**
-   *
+   * Get the artifact repository, cloning if it does not yet exist.
    */
   public function getArtifactRepository(): SkeletonRepository {
     if (!isset($this->artifactRepository)) {
@@ -187,7 +274,7 @@ class Artifact {
   }
 
   /**
-   *
+   * Check for un-committed changes to the source repository.
    */
   public function safeToBuild(): bool {
     if (!$this->buildDirty && $this->sourceRepository->hasChanges()) {
