@@ -9,6 +9,8 @@ use Composer\Script\Event;
 
 /**
  * Generate deployment artifacts for the project.
+ *
+ * Run 'composer create-artifact -- --build-branch=main --build-dirty'
  */
 class Artifact {
 
@@ -22,32 +24,23 @@ class Artifact {
     // Get artifact configuration options from the composer.json file.
     $composer = $event->getComposer();
     $extra = $composer->getPackage()->getExtra();
+    $config = self::processConfig($extra['artifact'] ?? []);
 
-    // @todo error handling for missing configuration options.
-    $defaults = [
-      'git_remote' => '',
-      'directory' => '',
-      'template_map' => [
-        ".gitignore" => "vendor/palantirnet/the-build/defaults/artifact/gitignore",
-        "README.md" => "vendor/palantirnet/the-build/defaults/artifact/README.md",
-      ],
-      'git_remote_base_branch' => 'main',
-      'prefix' => 'artifact',
-      // Temporary flag to allow building artifacts with uncommitted changes.
-      // @todo pass this in as a command line option.
-      'build_dirty' => TRUE,
-    ];
-    // Merge the defaults with the configuration options.
-    $config = array_merge($defaults, $extra['artifact']);
-
-    if (empty($config['git_remote'])) {
-      throw new \Exception("The artifact 'git_remote' configuration option is required.");
-    }
-    if (empty($config['directory'])) {
-      throw new \Exception("The artifact 'directory' configuration option is required.");
-    }
-
+    // Construct the artifact object.
     $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix'], $config['build_dirty']);
+
+    // Apply command line arguments.
+    $arguments = self::processArgs($event->getArguments());
+    if (isset($arguments['build-branch'])) {
+      // Build to a specific branch, e.g. `main`, instead of `artifact-main`.
+      //   composer create-artifact --build-branch=main
+      $artifact->setBuildBranch($arguments['build-branch']);
+    }
+    if (isset($arguments['build-dirty'])) {
+      // Allow building with un-committed local changes.
+      //   composer create-artifact --build-dirty
+      $artifact->allowDirtyBuild(TRUE);
+    }
 
     // Don't build if the repository has uncommitted changes.
     try {
@@ -80,7 +73,7 @@ class Artifact {
     }
     else {
       $artifactResult = $event->getIO()->select(
-        "Push artifact changes to the '{$artifact->getBuildBranch()}' branch?",
+        "Push artifact changes to the '{$artifact->buildBranch}' branch?",
         ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
     }
 
@@ -100,6 +93,48 @@ class Artifact {
     }
   }
 
+  public static function processConfig($config_from_composer) {
+    $defaults = [
+      'git_remote' => '',
+      'directory' => '',
+      'template_map' => [
+        ".gitignore" => "vendor/palantirnet/the-build/defaults/artifact/gitignore",
+        "README.md" => "vendor/palantirnet/the-build/defaults/artifact/README.md",
+      ],
+      'git_remote_base_branch' => 'main',
+      'prefix' => 'artifact',
+    ];
+
+    // Merge the defaults with the configuration options.
+    $config = array_merge($defaults, $config_from_composer);
+
+    // Check that the required configuration options are set.
+    foreach ($defaults as $key => $value) {
+      if (empty($config[$key])) {
+        throw new \Exception("The artifact '{$key}' configuration option is required.");
+      }
+    }
+
+    return $config;
+  }
+
+  public static function processArgs($arguments) {
+    $arguments = array_map(function ($arg) {
+      return trim($arg, '-');
+    }, $arguments);
+
+    $keys = array_map(function ($arg) {
+      return current(explode('=', $arg, 2));
+    }, $arguments);
+
+    $values = array_map(function ($arg) {
+      $parts = explode('=', $arg, 2);
+      return end($parts);
+    }, $arguments);
+
+    return array_combine($keys, $values);
+  }
+
   protected string $gitRemote;
   protected string $directory;
   protected array $templateMap;
@@ -109,18 +144,28 @@ class Artifact {
   protected SkeletonRepository $artifactRepository;
   protected SkeletonRepository $sourceRepository;
   protected SkeletonGit $git;
-  protected bool $buildDirty;
+  protected bool $buildDirty = FALSE;
+  protected string $buildBranch;
 
-  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact', bool $buildDirty = FALSE) {
+  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact') {
     $this->gitRemote = $gitRemote;
     $this->directory = $directory;
     $this->templateMap = $templateMap;
     $this->baseBranch = $baseBranch;
     $this->prefix = $prefix;
-    $this->buildDirty = $buildDirty;
 
     $this->git = new SkeletonGit();
     $this->sourceRepository = $this->git->open(getcwd());
+
+    $this->buildBranch = $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
+  }
+
+  public function allowDirtyBuild(bool $allow): void {
+    $this->buildDirty = $allow;
+  }
+
+  public function setBuildBranch(string $branch): void {
+    $this->buildBranch = $branch;
   }
 
   /**
@@ -172,20 +217,12 @@ class Artifact {
   }
 
   /**
-   * Create a temporary branch name based on the commit for building the
-   * artifact, to avoid branch conflicts.
+   * Create a temporary branch name based on the commit hash.
+   *
+   * This branch name is used to avoid conflicts while building the artifact.
    */
   public function getTemporaryBranch(): string {
     return $this->prefix . '-' . $this->sourceRepository->getLastCommit()->getId();
-  }
-
-  /**
-   * If the remote branch isn't configured, use a remote branch based on the
-   * name of the current branch. This won't overwrite the property value if it
-   * is already set.
-   */
-  public function getBuildBranch(): string {
-    return $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
   }
 
   /**
@@ -195,17 +232,18 @@ class Artifact {
     $artifactRepo = $this->getArtifactRepository();
 
     // Ensure the build branch exists on the remote repository.
-    if (!$artifactRepo->hasRemoteBranch($this->getBuildBranch(), 'origin')) {
+    if (!$artifactRepo->hasRemoteBranch($this->buildBranch, 'origin')) {
       // Check out the latest upstream version of the base branch.
       $this->syncBranch($this->baseBranch);
 
-      $artifactRepo->createBranch($this->getBuildBranch(), TRUE);
-      $artifactRepo->push(['origin', $this->getBuildBranch()]);
-      print "created remote branch: origin/{$this->getBuildBranch()}\n";
+      $artifactRepo->createBranch($this->buildBranch, TRUE);
+      $artifactRepo->push(['origin', $this->buildBranch]);
+      // @todo pass messages without "print"
+      print "created remote branch: origin/{$this->buildBranch}\n";
     }
 
     // Check out the latest upstream version of the build branch.
-    $this->syncBranch($this->getBuildBranch());
+    $this->syncBranch($this->buildBranch);
 
     if ($artifactRepo->hasLocalBranch($this->getTemporaryBranch())) {
       $artifactRepo->forceRemoveBranch($this->getTemporaryBranch());
@@ -216,26 +254,28 @@ class Artifact {
   }
 
   /**
+   * Empty the artifact directory.
    *
+   * This is used in preparation for copying files from the source repository.
    */
   protected function removeArtifactFiles() {
     // Callback to remove the root .git directory from the files to be deleted.
     $filter = function ($current, $key, $iterator) {
       $subpath = substr($current->getPathname(), strlen($iterator->getPath()) + 1);
-      if (empty($subpath) || strpos($subpath, '.git/') === 0 || $subpath === '.git') {
+      if (empty($subpath) || str_starts_with($subpath, '.git/') || $subpath === '.git') {
         return FALSE;
       }
       return TRUE;
     };
 
-    // Iterator for all of the files in the artifact.
+    // Iterator for all the files in the artifact.
     $innerIterator = new \RecursiveDirectoryIterator($this->artifactRepository->getRepositoryPath(), \RecursiveDirectoryIterator::SKIP_DOTS);
     $filterIterator = new \RecursiveCallbackFilterIterator($innerIterator, $filter);
 
-    // Iterator for all of the files in the artifact EXCEPT the .git directory.
+    // Iterator for all the files in the artifact EXCEPT the .git directory.
     $iterator = new \RecursiveIteratorIterator($filterIterator, \RecursiveIteratorIterator::CHILD_FIRST);
 
-    // Remove all files in the artifact directory.
+    // Remove each file, symlink, or directory.
     /** @var \SplFileInfo $item */
     foreach ($iterator as $item) {
       if ($item->isDir()) {
@@ -263,7 +303,10 @@ class Artifact {
   }
 
   /**
+   * Copy an array of files into place.
    *
+   * @param array $map
+   *   An associative array of destination => source file paths.
    */
   protected function copyFileMap($map) {
     $source_path = $this->sourceRepository->getRepositoryPath();
@@ -354,7 +397,7 @@ class Artifact {
    * Push the built artifact to the remote repository.
    */
   public function push() {
-    $this->getArtifactRepository()->push(['origin', "{$this->getTemporaryBranch()}:{$this->getBuildBranch()}"]);
+    $this->getArtifactRepository()->push(['origin', "{$this->getTemporaryBranch()}:{$this->buildBranch}"]);
     if ($this->getTag()) {
       $this->getArtifactRepository()->push(['origin', $this->getTag()]);
     }
