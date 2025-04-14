@@ -575,11 +575,11 @@ class Artifact {
    * @throws \Exception
    */
   public function build(): void {
-    // Initialize Composer Installer.
+    // Initialize Composer.
     $composer = new Application();
     $composer->setAutoExit(FALSE);
 
-    // Run the install command.
+    // Run the 'composer install' command.
     $input = new ArrayInput([
       'command' => 'install',
       '--no-interaction' => TRUE,
