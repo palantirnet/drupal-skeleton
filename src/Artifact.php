@@ -291,13 +291,34 @@ class Artifact {
    *   The action to take with a successful artifact build: "push", "keep", or
    *   "discard".
    */
-  protected function setResultAction(string $action) {
+  public function setResultAction(string $action) {
     if (in_array($action, ['push', 'keep', 'discard'])) {
       $this->resultAction = $action;
     }
     else {
       throw new \Exception("Action must be 'push', 'keep', or 'discard'.");
     }
+  }
+
+  /**
+   * Get the result action, or prompt the user if one is not set.
+   *
+   * @return string
+   *   Either 'push', 'keep', or 'discard'.
+   *
+   * @throws \Exception
+   */
+  protected function getResultAction(): string {
+    if (empty($this->resultAction) && $this->io) {
+      $this->resultAction = $this->io->select(
+        "Push artifact changes to the '{$this->buildBranch}' branch?",
+        ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
+    }
+    else {
+      throw new \Exception("Missing required action argument 'push', 'keep', or 'discard'.");
+    }
+
+    return $this->resultAction;
   }
 
   /**
@@ -329,21 +350,14 @@ class Artifact {
     $this->commit();
 
     // Prompt the user to push the changes to the remote branch or cancel.
-    if (empty($this->resultAction) && $this->io) {
-      $this->io->select(
-        "Push artifact changes to the '{$this->buildBranch}' branch?",
-        ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
-    }
-    else {
-      throw new \Exception("Missing required action argument 'push', 'keep', or 'discard'.");
-    }
+    $action = $this->getResultAction();
 
-    if ($this->resultAction === 'push') {
+    if ($action === 'push') {
       $this->writeIo("Pushing artifact.");
       $this->push();
       $this->resetState();
     }
-    elseif ($this->resultAction === 'keep') {
+    elseif ($action === 'keep') {
       $this->cleanupTag();
       $this->writeIo("Artifact changes are in the temporary branch '{$this->getTemporaryBranch()}'");
     }
