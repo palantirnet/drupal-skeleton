@@ -431,8 +431,7 @@ class Artifact {
 
       $artifactRepo->createBranch($this->buildBranch, TRUE);
       $artifactRepo->push(['origin', $this->buildBranch]);
-      // @todo pass messages without "print"
-      print "created remote branch: origin/{$this->buildBranch}\n";
+      $this->writeIo("Created remote branch: origin/{$this->buildBranch}\n");
     }
 
     // Check out the latest upstream version of the build branch.
@@ -443,7 +442,7 @@ class Artifact {
     }
 
     $artifactRepo->createBranch($this->getTemporaryBranch(), TRUE);
-    print "created temporary local branch: {$this->getTemporaryBranch()}\n";
+    $this->writeIo("Created temporary local branch: {$this->getTemporaryBranch()}\n");
   }
 
   /**
@@ -546,7 +545,7 @@ class Artifact {
     }
 
     // Output the result.
-    print "Composer install completed successfully in {$this->getArtifactRepository()->getRepositoryPath()}.\n";
+    $this->writeIo("Composer install completed successfully in {$this->getArtifactRepository()->getRepositoryPath()}.\n");
   }
 
   /**
