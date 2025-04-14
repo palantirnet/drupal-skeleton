@@ -11,6 +11,11 @@ class SkeletonGit extends Git {
 
   /**
    * {@inheritdoc}
+   *
+   * @return \Skeleton\SkeletonRepository
+   *   The repository object.
+   *
+   * @throws \CzProject\GitPhp\GitException
    */
   public function open($directory) {
     return new SkeletonRepository($directory, $this->runner);
@@ -24,7 +29,7 @@ class SkeletonGit extends Git {
    * @param string $url
    *   The git URL.
    *
-   * @return \CzProject\GitPhp\GitRepository|SkeletonRepository
+   * @return \Skeleton\SkeletonRepository
    *   The repository object.
    *
    * @throws \CzProject\GitPhp\GitException
@@ -44,6 +49,11 @@ class SkeletonGit extends Git {
    * {@inheritdoc}
    *
    * Ensure that this returns our repository class.
+   *
+   * @return \Skeleton\SkeletonRepository
+   *   The repository object.
+   *
+   * @throws \CzProject\GitPhp\GitException
    */
   public function cloneRepository($url, $directory = NULL, array $params = NULL) {
     $repository = parent::cloneRepository($url, $directory, $params);
