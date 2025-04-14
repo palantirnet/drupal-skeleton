@@ -335,7 +335,8 @@ class Artifact {
     }
 
     // Fetch the latest artifact and set up build branches.
-    $this->setupBranches();
+    $this->setupBuildBranch();
+    $this->setupLocalBranch();
 
     // Copy files from the source repository to the artifact repository.
     $this->removeArtifactFiles();
@@ -431,11 +432,9 @@ class Artifact {
   /**
    * Make sure the build branch exists on the remote repository.
    *
-   * ... and set up a temporary local branch.
-   *
-   * @todo split this into two methods.
+   * @throws \CzProject\GitPhp\GitException
    */
-  public function setupBranches(): void {
+  public function setupBuildBranch(): void {
     $artifactRepo = $this->getArtifactRepository();
 
     // Ensure the build branch exists on the remote repository.
@@ -450,7 +449,20 @@ class Artifact {
 
     // Check out the latest upstream version of the build branch.
     $this->syncBranch($this->buildBranch);
+  }
 
+  /**
+   * Set up the temporary local branch for this artifact build.
+   *
+   * Assumes that Artifact::setupBuildBranch() has already been called.
+   *
+   * @throws \CzProject\GitPhp\GitException
+   */
+  public function setupLocalBranch(): void {
+    $artifactRepo = $this->getArtifactRepository();
+
+    // If a previous build failed or had the result action 'keep', the temporary
+    // branch may already exist.
     if ($artifactRepo->hasLocalBranch($this->getTemporaryBranch())) {
       $artifactRepo->forceRemoveBranch($this->getTemporaryBranch());
     }
