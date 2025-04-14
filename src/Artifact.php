@@ -29,6 +29,37 @@ use Composer\Script\Event;
  *   composer create-artifact push
  *   composer create-artifact -- --build-branch=main push
  *   composer create-artifact -- --build-dirty keep
+ *
+ * The artifact can be configured in the 'extra' section of composer.json. Full
+ * configuration options are:
+ *
+ * @code
+ *  "artifact": {
+ *    "git_remote": "../example-artifact-repo",      # REQUIRED: a git URL
+ *    "directory": "artifacts/build",                # REQUIRED: path where the artifact should be built
+ *    "prefix": "artifact",                          # Optional: prefix for artifact branch and tag names
+ *    "git_remote_base_branch": "main",              # Optional: base branch to branch off of
+ *    "git_remote_name": "origin",                   # @todo unused?
+ *    "template_map": {                              # Optional: Array of files to copy in to the artifact, destination => source
+ *      ".gitignore": "vendor/palantirnet/the-build/defaults/artifact/gitignore",
+ *      "README.md": "vendor/palantirnet/the-build/defaults/artifact/README.md"
+ *    },
+ *    "extra_build_steps": [                         # Optional: array of extra composer scripts/commands to run as build steps. These are run after "composer install --no-dev".
+ *      {
+ *        "command": "outdated",                      # (Example: specify the command)
+ *        "--direct": true                            # (Example: include flags as key => value)
+ *      }
+ *    ]
+ *  }
+ * @endcode
+ *
+ * The minimum configuration in composer.json is:
+ * @code
+ *  "artifact": {
+ *    "git_remote": "../example-artifact-repo",
+ *    "directory": "artifacts/build"
+ *  }
+ * @endcode
  */
 class Artifact {
 
@@ -45,7 +76,7 @@ class Artifact {
     $config = self::processConfig($extra['artifact'] ?? []);
 
     // Construct the artifact object.
-    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix']);
+    $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix'], $config['build_steps']);
 
     $artifact->setIo($event->getIO());
 
@@ -107,6 +138,21 @@ class Artifact {
       if (empty($config[$key])) {
         throw new \Exception("The artifact '{$key}' configuration option is required.");
       }
+    }
+
+    // Optional configuration values.
+    // This default build step should always be present.
+    $config['build_steps'] = [
+      [
+        "command" => "install",
+        "--no-dev" => TRUE,
+        "--ignore-platform-reqs" => TRUE,
+      ],
+    ];
+
+    // Merge in extra build steps.
+    if (isset($config['extra_build_steps'])) {
+      $config['build_steps'] = array_merge($config['build_steps'], $config['extra_build_steps']);
     }
 
     return $config;
@@ -177,6 +223,13 @@ class Artifact {
   protected string $prefix;
 
   /**
+   * Array of build steps to run.
+   *
+   * @var array
+   */
+  protected array $buildSteps;
+
+  /**
    * Git repository object for the artifact repository.
    *
    * @var SkeletonRepository
@@ -230,12 +283,13 @@ class Artifact {
    */
   protected string $resultAction;
 
-  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact') {
+  public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact', array $buildSteps) {
     $this->gitRemote = $gitRemote;
     $this->directory = $directory;
     $this->templateMap = $templateMap;
     $this->baseBranch = $baseBranch;
     $this->prefix = $prefix;
+    $this->buildSteps = $buildSteps;
 
     $this->git = new SkeletonGit();
     $this->sourceRepository = $this->git->open(getcwd());
@@ -370,7 +424,6 @@ class Artifact {
     $this->copyTemplates();
 
     // Run build steps.
-    // @todo allow running other composer scripts as part of the build steps.
     $this->build();
 
     // Commit the changes to the artifact repository.
@@ -579,25 +632,24 @@ class Artifact {
     $composer = new Application();
     $composer->setAutoExit(FALSE);
 
-    // Run the 'composer install' command.
-    $input = new ArrayInput([
-      'command' => 'install',
-      '--no-interaction' => TRUE,
-      '--no-dev' => TRUE,
-      '--ignore-platform-reqs' => TRUE,
-      '--working-dir' => $this->getArtifactRepository()->getRepositoryPath(),
-    ]);
-    $output = new ConsoleOutput();
+    foreach ($this->buildSteps as $step) {
+      if (isset($step['command'])) {
+        $step['--no-interaction'] = TRUE;
+        $step['--working-dir'] = $this->getArtifactRepository()->getRepositoryPath();
 
-    $result = $composer->run($input, $output);
+        $input = new ArrayInput($step);
+        $output = new ConsoleOutput();
 
-    // Check if the command was successful.
-    if ($result !== 0) {
-      throw new \RuntimeException("Failed to run composer install in {$this->getArtifactRepository()->getRepositoryPath()}.");
+        $result = $composer->run($input, $output);
+
+        if ($result !== 0) {
+          throw new \RuntimeException("Failed to run composer {$step['command']} in {$this->getArtifactRepository()->getRepositoryPath()}.");
+        }
+
+        $this->writeIo("Composer {$step['command']} completed successfully in {$this->getArtifactRepository()->getRepositoryPath()}.\n");
+
+      }
     }
-
-    // Output the result.
-    $this->writeIo("Composer install completed successfully in {$this->getArtifactRepository()->getRepositoryPath()}.\n");
   }
 
   /**

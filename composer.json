@@ -120,7 +120,12 @@
             "template_map": {
                 ".gitignore": "vendor/palantirnet/the-build/defaults/artifact/gitignore",
                 "README.md": "vendor/palantirnet/the-build/defaults/artifact/README.md"
-            }
+            },
+            "extra_build_steps": [
+                {
+                    "command": "outdated"
+                }
+            ]
         }
     }
 }
