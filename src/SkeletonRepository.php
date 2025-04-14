@@ -20,7 +20,6 @@ class SkeletonRepository extends GitRepository {
     try {
       $result = $this->run('describe', '--tags', '--exact-match');
       if ($result->hasOutput()) {
-        print_r($result->getOutput());
         $tag = $result->getOutput()[0];
       }
     }
