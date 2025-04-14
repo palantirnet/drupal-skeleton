@@ -5,7 +5,7 @@ namespace Skeleton;
 use CzProject\GitPhp\Git;
 
 /**
- * Use our own repository class.
+ * Override in order to use our own repository class.
  */
 class SkeletonGit extends Git {
 
@@ -19,12 +19,17 @@ class SkeletonGit extends Git {
   /**
    * Get or clone a repository.
    *
-   * @param $directory
-   * @param $url
+   * @param string $directory
+   *   The directory where the repository should live.
+   * @param string $url
+   *   The git URL.
+   *
    * @return \CzProject\GitPhp\GitRepository|SkeletonRepository
+   *   The repository object.
+   *
    * @throws \CzProject\GitPhp\GitException
    */
-  public function openOrClone($directory, $url) {
+  public function openOrClone(string $directory, string $url) {
     try {
       $repository = $this->open($directory);
     }

@@ -11,7 +11,7 @@ use Composer\Script\Event;
 /**
  * Generate deployment artifacts for the project.
  *
- * Run 'composer create-artifact'
+ * Run 'composer create-artifact'. Use -- to pass arguments to the script.
  *
  * Options:
  *   --build-branch=BRANCH_NAME
@@ -59,11 +59,23 @@ use Composer\Script\Event;
  *    "directory": "artifacts/build"
  *  }
  * @endcode
+ *
+ * @todo Consider refactoring this into a symfony/console Command class per https://getcomposer.org/doc/articles/scripts.md
+ * The Symfony console command class provides some argument handling that might
+ * be nice, given that arguments are required for this script.
+ *
+ * @todo What other refactors would make sense for this?
+ * This class is very procedural, and there may be ways to make it more
+ * maintainable and better at handling errors.
+ *
+ * @todo Consider breaking the artifact work out into a separate class from the command (basically from the constructor on down).
+ *
+ * @see Artifact::run() for the main logic.
  */
 class Artifact {
 
   /**
-   * Create an artifact.
+   * Trigger the artifact creation from a Composer script Event.
    *
    * @param \Composer\Script\Event $event
    *   The Composer event.
@@ -106,10 +118,10 @@ class Artifact {
   }
 
   /**
-   * Extract command line arguments and apply default values.
+   * Handle configuration from the Composer 'extra' array, and apply defaults.
    *
    * @param array $config_from_composer
-   *   Array of configuration from Composer 'extras'.
+   *   Array of configuration from Composer 'extra'.
    *
    * @return array
    *   Configuration array with defaults applied.
@@ -118,9 +130,12 @@ class Artifact {
    *   When required values are missing.
    */
   public static function processConfig(array $config_from_composer) {
+    // These configuration options are required.
     $defaults = [
       'git_remote' => '',
       'directory' => '',
+      // If a configuration overrides this, they are responsible for mapping the
+      // gitignore and README files.
       'template_map' => [
         ".gitignore" => "vendor/palantirnet/the-build/defaults/artifact/gitignore",
         "README.md" => "vendor/palantirnet/the-build/defaults/artifact/README.md",
@@ -140,7 +155,7 @@ class Artifact {
     }
 
     // Optional configuration values.
-    // This default build step should always be present.
+    // This default build step will always be present.
     $config['build_steps'] = [
       [
         "command" => "install",
@@ -422,7 +437,8 @@ class Artifact {
     $this->copySource();
     $this->copyTemplates();
 
-    // Run build steps.
+    // Run build steps. We don't catch exceptions here, because we want to be
+    // able to examine a failed artifact build for debugging.
     $this->build();
 
     // Commit the changes to the artifact repository.
