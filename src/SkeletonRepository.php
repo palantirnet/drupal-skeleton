@@ -27,8 +27,6 @@ class SkeletonRepository extends GitRepository {
       $tag = '';
     }
 
-    throw new \Exception('nope');
-
     return $tag;
   }
 

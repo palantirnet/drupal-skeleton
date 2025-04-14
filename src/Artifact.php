@@ -39,7 +39,6 @@ use Composer\Script\Event;
  *    "directory": "artifacts/build",                # REQUIRED: path where the artifact should be built
  *    "prefix": "artifact",                          # Optional: prefix for artifact branch and tag names
  *    "git_remote_base_branch": "main",              # Optional: base branch to branch off of
- *    "git_remote_name": "origin",                   # @todo unused?
  *    "template_map": {                              # Optional: Array of files to copy in to the artifact, destination => source
  *      ".gitignore": "vendor/palantirnet/the-build/defaults/artifact/gitignore",
  *      "README.md": "vendor/palantirnet/the-build/defaults/artifact/README.md"
