@@ -17,7 +17,7 @@ class SkeletonGit extends Git {
   }
 
   /**
-   * Get or clone a repository.
+   * Open or clone a repository.
    *
    * @param string $directory
    *   The directory where the repository should live.
@@ -38,6 +38,16 @@ class SkeletonGit extends Git {
     }
 
     return $repository;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Ensure that this returns our repository class.
+   */
+  public function cloneRepository($url, $directory = NULL, array $params = NULL) {
+    $repository = parent::cloneRepository($url, $directory, $params);
+    return $this->open($repository->getRepositoryPath());
   }
 
 }
