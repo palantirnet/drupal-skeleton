@@ -47,7 +47,7 @@ class Artifact {
     // Construct the artifact object.
     $artifact = new Artifact($config['git_remote'], $config['directory'], $config['template_map'], $config['git_remote_base_branch'], $config['prefix']);
 
-    $artifact->setIO($event->getIO());
+    $artifact->setIo($event->getIO());
 
     // Apply command line arguments.
     $arguments = self::processArgs($event->getArguments());
@@ -75,7 +75,19 @@ class Artifact {
     $artifact->run();
   }
 
-  public static function processConfig($config_from_composer) {
+  /**
+   * Extract command line arguments and apply default values.
+   *
+   * @param array $config_from_composer
+   *   Array of configuration from Composer 'extras'.
+   *
+   * @return array
+   *   Configuration array with defaults applied.
+   *
+   * @throws \Exception
+   *   When required values are missing.
+   */
+  public static function processConfig(array $config_from_composer) {
     $defaults = [
       'git_remote' => '',
       'directory' => '',
@@ -100,7 +112,16 @@ class Artifact {
     return $config;
   }
 
-  public static function processArgs($arguments) {
+  /**
+   * Process command line arguments.
+   *
+   * @param array $arguments
+   *   Array of arguments from the Composer event.
+   *
+   * @return array|false[]
+   *   Array of arguments.
+   */
+  public static function processArgs(array $arguments) {
     $arguments = array_map(function ($arg) {
       return trim($arg, '-');
     }, $arguments);
@@ -117,19 +138,96 @@ class Artifact {
     return array_combine($keys, $values);
   }
 
+  /**
+   * Git URL for the artifact repository.
+   *
+   * @var string
+   */
   protected string $gitRemote;
+
+  /**
+   * Local directory where the artifact git repository should live.
+   *
+   * @var string
+   */
   protected string $directory;
+
+  /**
+   * Map of templates that should be copied into the artifact.
+   *
+   * Keys are the template destination path within the artifact, values are the
+   * template source paths relative to the source repository root.
+   *
+   * @var array
+   */
   protected array $templateMap;
+
+  /**
+   * The branch of the artifact repository to use as the base for the build.
+   *
+   * @var string
+   */
   protected string $baseBranch;
+
+  /**
+   * Prefix for the artifact branch and tag names.
+   *
+   * @var string
+   */
   protected string $prefix;
 
+  /**
+   * Git repository object for the artifact repository.
+   *
+   * @var SkeletonRepository
+   */
   protected SkeletonRepository $artifactRepository;
+
+  /**
+   * Git repository object for the source repository.
+   *
+   * @var SkeletonRepository
+   */
   protected SkeletonRepository $sourceRepository;
+
+  /**
+   * Class for interacting with git.
+   *
+   * @var SkeletonGit
+   */
   protected SkeletonGit $git;
+
+  /**
+   * Whether to allow building a source repository with local changes.
+   *
+   * @var bool
+   */
   protected bool $buildDirty = FALSE;
+
+  /**
+   * The branch to push the artifact to.
+   *
+   * This will be set using the $prefix and the current source branch name, or
+   * it can be overridden by passing --build-branch=BRANCH_NAME.
+   *
+   * @var string
+   */
   protected string $buildBranch;
+
+  /**
+   * IO interface from the composer event.
+   *
+   * @var \Composer\IO\IOInterface
+   */
   protected IOInterface $io;
 
+  /**
+   * Action to perform with a successful artifact build.
+   *
+   * This may be 'push', 'keep', or 'discard'.
+   *
+   * @var string
+   */
   protected string $resultAction;
 
   public function __construct(string $gitRemote, string $directory, array $templateMap, string $baseBranch = 'main', string $prefix = 'artifact') {
@@ -158,7 +256,7 @@ class Artifact {
   }
 
   /**
-   * Push the artifact to a specific branch instead of 'artifact-CURRENT-BRANCH'.
+   * Push the artifact to a given branch instead of 'artifact-CURRENT-BRANCH'.
    *
    * @param string $branch
    *   The name of the branch to push to.
@@ -170,16 +268,17 @@ class Artifact {
   /**
    * Provide an IO object.
    *
-   * @param IOInterface $io
+   * @param \Composer\IO\IOInterface $io
+   *   The IO object from the Composer event.
    */
-  public function setIO(IOInterface $io): void {
+  public function setIo(IOInterface $io): void {
     $this->io = $io;
   }
 
   /**
    * Output messages about the status of the artifact build.
    */
-  protected function writeIO($message) {
+  protected function writeIo(string $message) {
     if (isset($this->io)) {
       $this->io->write($message);
     }
@@ -210,7 +309,7 @@ class Artifact {
       $this->safeToBuild();
     }
     catch (\Exception $e) {
-      $this->writeIO($e->getMessage());
+      $this->writeIo($e->getMessage());
       return;
     }
 
@@ -223,8 +322,8 @@ class Artifact {
     $this->copyTemplates();
 
     // Run build steps.
-    $this->build();
     // @todo allow running other composer scripts as part of the build steps.
+    $this->build();
 
     // Commit the changes to the artifact repository.
     $this->commit();
@@ -240,18 +339,18 @@ class Artifact {
     }
 
     if ($this->resultAction === 'push') {
-      $this->writeIO("Pushing artifact.");
+      $this->writeIo("Pushing artifact.");
       $this->push();
       $this->resetState();
     }
     elseif ($this->resultAction === 'keep') {
       $this->cleanupTag();
-      $this->writeIO("Artifact changes are in the temporary branch '{$this->getTemporaryBranch()}'");
+      $this->writeIo("Artifact changes are in the temporary branch '{$this->getTemporaryBranch()}'");
     }
     else {
       $this->cleanupTag();
       $this->resetState();
-      $this->writeIO("Artifact changes have been discarded.");
+      $this->writeIo("Artifact changes have been discarded.");
     }
   }
 
@@ -289,7 +388,10 @@ class Artifact {
   }
 
   /**
+   * Ensure a branch is up to date with the remote.
    *
+   * @param string $branchName
+   *   The branch to sync.
    */
   public function syncBranch($branchName) {
     // Get the latest changes to the base branch.
@@ -313,7 +415,11 @@ class Artifact {
   }
 
   /**
+   * Make sure the build branch exists on the remote repository.
    *
+   * ... and set up a temporary local branch.
+   *
+   * @todo split this into two methods.
    */
   public function setupBranches(): void {
     $artifactRepo = $this->getArtifactRepository();
