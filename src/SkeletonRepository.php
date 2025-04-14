@@ -2,6 +2,7 @@
 
 namespace Skeleton;
 
+use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
 
 /**
@@ -18,6 +19,7 @@ class SkeletonRepository extends GitRepository {
     try {
       $result = $this->run('describe', '--tags', '--exact-match');
       if ($result->hasOutput()) {
+        print_r($result->getOutput());
         $tag = $result->getOutput()[0];
       }
     }
@@ -25,7 +27,25 @@ class SkeletonRepository extends GitRepository {
       $tag = '';
     }
 
+    throw new \Exception('nope');
+
     return $tag;
+  }
+
+  public function getCurrentBranchName() {
+    try {
+      $branch = $this->extractFromCommand(['branch', '--show-current', '--no-color'], 'trim');
+
+      if (is_array($branch)) {
+        return $branch[0];
+      }
+
+    }
+    catch (GitException $e) {
+      // Nothing.
+    }
+
+    throw new GitException('Getting of current branch name failed.');
   }
 
   /**

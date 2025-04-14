@@ -239,8 +239,6 @@ class Artifact {
 
     $this->git = new SkeletonGit();
     $this->sourceRepository = $this->git->open(getcwd());
-
-    $this->buildBranch = $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
   }
 
   /**
@@ -263,6 +261,34 @@ class Artifact {
    */
   public function setBuildBranch(string $branch): void {
     $this->buildBranch = $branch;
+  }
+
+  /**
+   * Get the branch to push the artifact to.
+   *
+   * If this hasn't been set by the user, it will be generated based on the
+   * prefix + the current branch of the source repository.
+   *
+   * If the source repository is being built from a tag or detached head commit,
+   * this will throw an exception -- the user MUST pass a build branch in this
+   * case.
+   *
+   * @return string
+   *   The build branch name.
+   *
+   * @throws \Exception
+   */
+  public function getBuildBranch(): string {
+    if (empty($this->buildBranch)) {
+      try {
+        $this->buildBranch = $this->prefix . '-' . $this->sourceRepository->getCurrentBranchName();
+      }
+      catch (\Exception $e) {
+        throw new \Exception('Building from a tag or detached head. Please provide a destination build branch with --build-branch=BRANCH_NAME');
+      }
+    }
+
+    return $this->buildBranch;
   }
 
   /**
@@ -311,7 +337,7 @@ class Artifact {
   protected function getResultAction(): string {
     if (empty($this->resultAction) && $this->io) {
       $this->resultAction = $this->io->select(
-        "Push artifact changes to the '{$this->buildBranch}' branch?",
+        "Push artifact changes to the '{$this->getBuildBranch()}' branch?",
         ['push' => 'push (default)', 'keep' => 'keep', 'discard' => 'discard'], 'push');
     }
     else {
@@ -438,17 +464,17 @@ class Artifact {
     $artifactRepo = $this->getArtifactRepository();
 
     // Ensure the build branch exists on the remote repository.
-    if (!$artifactRepo->hasRemoteBranch($this->buildBranch, 'origin')) {
+    if (!$artifactRepo->hasRemoteBranch($this->getBuildBranch(), 'origin')) {
       // Check out the latest upstream version of the base branch.
       $this->syncBranch($this->baseBranch);
 
-      $artifactRepo->createBranch($this->buildBranch, TRUE);
-      $artifactRepo->push(['origin', $this->buildBranch]);
-      $this->writeIo("Created remote branch: origin/{$this->buildBranch}\n");
+      $artifactRepo->createBranch($this->getBuildBranch(), TRUE);
+      $artifactRepo->push(['origin', $this->getBuildBranch()]);
+      $this->writeIo("Created remote branch: origin/{$this->getBuildBranch()}\n");
     }
 
     // Check out the latest upstream version of the build branch.
-    $this->syncBranch($this->buildBranch);
+    $this->syncBranch($this->getBuildBranch());
   }
 
   /**
@@ -598,10 +624,6 @@ class Artifact {
    * the artifact is built on a branch of the development repository.
    */
   public function getTag(): string {
-    // @todo Handle the case when this command outputs "HEAD".
-    // This happens when building a repo from a detatched head state (e.g.
-    // you've checked out a tag), and it causes pushing the artifact to fail
-    // because "HEAD" is not a branch you can push to.
     $currentTag = $this->sourceRepository->getCurrentTag();
 
     if ($currentTag) {
@@ -615,7 +637,7 @@ class Artifact {
    * Push the built artifact to the remote repository.
    */
   public function push() {
-    $this->getArtifactRepository()->push(['origin', "{$this->getTemporaryBranch()}:{$this->buildBranch}"]);
+    $this->getArtifactRepository()->push(['origin', "{$this->getTemporaryBranch()}:{$this->getBuildBranch()}"]);
     if ($this->getTag()) {
       $this->getArtifactRepository()->push(['origin', $this->getTag()]);
     }
