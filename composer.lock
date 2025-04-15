@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56dac569066926c023e89046f19a162d",
+    "content-hash": "8accf3c04774b4aef228d3c393165b62",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3381,6 +3381,41 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.4.0"
             },
             "time": "2024-12-30T11:07:19+00:00"
+        },
+        {
+            "name": "palantirnet/the-artifact",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:palantirnet/the-artifact.git",
+                "reference": "61c77f74aa8ce0d1bac2fe47692230e41d7d443f"
+            },
+            "require": {
+                "composer/installers": "^2.0"
+            },
+            "default-branch": true,
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "TheArtifact\\": "src/"
+                }
+            },
+            "scripts": {
+                "create-artifact": [
+                    "TheArtifact\\ArtifactCommand::create"
+                ]
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Palantir.net",
+                    "email": "info@palantir.net"
+                }
+            ],
+            "description": "Build 'artifacts' for a project.",
+            "time": "2025-04-15T19:53:15+00:00"
         },
         {
             "name": "pear/archive_tar",
@@ -14951,6 +14986,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "palantirnet/the-artifact": 20,
         "palantirnet/the-build": 20
     },
     "prefer-stable": true,
