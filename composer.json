@@ -50,6 +50,9 @@
     "scripts": {
         "create-artifact": [
             "TheArtifact\\ArtifactCommand::create"
+        ],
+        "foo": [
+            "TheArtifact\\ArtifactCommand::foo"
         ]
     },
     "scripts-descriptions": {
