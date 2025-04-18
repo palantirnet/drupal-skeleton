@@ -11,6 +11,10 @@
     ],
     "repositories": [
         {
+            "type": "git",
+            "url": "git@github.com:palantirnet/the-artifact.git"
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -25,7 +29,8 @@
         "drupal/devel": "^5",
         "drupal/workbench": "^1.5",
         "drupal/workbench_tabs": "^1.8",
-        "drush/drush": "^13"
+        "drush/drush": "^13",
+        "palantirnet/the-artifact": "dev-main"
     },
     "require-dev": {
         "behat/behat": "^3.12",
@@ -97,6 +102,18 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "the-artifact": {
+            "git_remote": "../example-artifact-repo",
+            "directory": "artifacts/build"
         }
+    },
+    "scripts": {
+        "create-artifact": [
+            "TheArtifact\\ArtifactCommand::create"
+        ]
+    },
+    "scripts-descriptions": {
+        "create-artifact": "Build an artifact from the current codebase."
     }
 }
