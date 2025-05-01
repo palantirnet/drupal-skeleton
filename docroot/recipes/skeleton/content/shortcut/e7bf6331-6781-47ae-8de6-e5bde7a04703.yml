@@ -1,0 +1,15 @@
+_meta:
+  version: '1.0'
+  entity_type: shortcut
+  uuid: e7bf6331-6781-47ae-8de6-e5bde7a04703
+  bundle: default
+  default_langcode: en
+default:
+  title:
+    -
+      value: 'Manage menus'
+  link:
+    -
+      uri: 'internal:/admin/structure/menu'
+      title: ''
+      options: {  }

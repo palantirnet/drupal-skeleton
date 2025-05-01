@@ -1,0 +1,15 @@
+_meta:
+  version: '1.0'
+  entity_type: shortcut
+  uuid: b3080349-aa05-484a-a2c0-e22281a750cf
+  bundle: default
+  default_langcode: en
+default:
+  title:
+    -
+      value: 'Status report'
+  link:
+    -
+      uri: 'internal:/admin/reports/status'
+      title: ''
+      options: {  }
