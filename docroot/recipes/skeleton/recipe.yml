@@ -45,9 +45,6 @@ config:
   import:
     claro:
       - block.block.claro_help
-    help:
-      - search.page.help_search
-      - block.block.claro_help_search
     image:
       - image.style.large
       - image.style.thumbnail
@@ -59,7 +56,6 @@ config:
       - block.block.olivero_help
       - block.block.olivero_syndicate
     user:
-      - search.page.user_search
       - views.view.user_admin_people
 
   actions:
