@@ -1,7 +1,11 @@
 {
   "name": "palantirnet--drupal-skeleton",
-  "description": "A Drupal 11 project template.",
-  "version": "0.0.0",
+  "description": "A Drupal project template.",
+  "private": true,
+  "engines": {
+    "yarn": ">= 4.1.1",
+    "node": ">= 22.0"
+  },
   "devDependencies": {
     "eslint": "^8.39.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -11,5 +15,6 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-yml": "^1.14.0",
     "prettier": "^3.3.3"
-  }
+  },
+  "packageManager": "yarn@4.1.1"
 }
