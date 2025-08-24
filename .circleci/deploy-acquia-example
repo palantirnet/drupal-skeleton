@@ -1,0 +1,66 @@
+# Example snippet for deploy job in config.yml. Add this code to deploy to Acquia. Update ACQUIA_PUBKEY
+# with the entry from your known_hosts file for the Git remote host.
+#
+# You will also need to add a step to the build job to persist to workspace:
+#
+#      - persist_to_workspace:
+#          root: ..
+#          paths:
+#            - project
+#
+# And, finally, add the new job to the workflow section:
+#
+#      - deploy:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
+
+  deploy:
+    working_directory: ~/project
+    docker:
+      - image: cimg/php:8.3-browsers
+    environment:
+      - NODE_VERSION: 20
+      - GITHUB_PUBKEY: "github.com,192.30.253.113 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=="
+      - ACQUIA_PUBKEY: "svn-23450.prod.hosting.acquia.com,54.245.120.237 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDit0Rj8j59i9Gj2vOg2TXjIbPswIc27PwncapyBLi9R3FtECXq+md1BfykBJjME83m78CtqkTlWwNZu+LyhF+IYlshKo82JXQzV4kWwi5L9H7KpdyFDMDLVCNVYmU4EQY9ngRq1cwbMBYsfWxv4sSlbsvZv2C8U7luNoc4SiBY4sGpgiMJLFOHWRw6YvhOamLTKfxSoJUT8uRbfkamxas1EK21XjvrdUSN0Bf5LmTdvs/9iIaUH4AlYr0SW0tc2IbIuoFVxuvSzZj2GJjmtCcW1poDMQLTGq+EuO4Mk1WyoUSJC9L8CFonKH7++EPHopvIbPMinO4r2zLEot3lL5TH"
+
+    steps:
+      - attach_workspace:
+          at: ..
+      - add_ssh_keys
+      - run:
+          name: Install packages
+          command: sudo apt-get update && sudo apt-get install -y libpng-dev
+
+      - run:
+          name: Install nvm
+          command: |
+            set +e
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            touch $BASH_ENV
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run:
+          name: Configure PHP
+          command: |
+            echo "sendmail_path=/bin/true" | sudo tee -a "/etc/php.d/circleci.ini"
+      - run:
+          name: Configure Git
+          command: |
+            git config --global user.email "circle@palantir.net"
+            git config --global user.name "Circle Deploy"
+      - run:
+          name: Add public keys to known hosts file.
+          command: |
+            mkdir -p ~/.ssh
+            echo $GITHUB_PUBKEY  >> ~/.ssh/known_hosts
+            echo $ACQUIA_PUBKEY  >> ~/.ssh/known_hosts
+      - run:
+          name: Make sites/default writable for artifact build
+          command: chmod u+w docroot/sites/default
+      - run:
+          name: Build and deploy an artifact
+          command: vendor/bin/phing artifact -Dpush=y

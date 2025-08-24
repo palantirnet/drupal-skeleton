@@ -1,0 +1,26 @@
+command:
+  sql:
+    dump:
+      options:
+        # Omit cache and similar tables from sql:dump and sql:sync operations.
+        structure-tables-key: common
+
+sql:
+  # List of tables whose *data* is skipped by the 'sql-dump' and 'sql-sync'
+  # commands when the "--structure-tables-key=common" option is provided.
+  structure-tables:
+    common:
+      - 'cache'
+      - 'cache_*'
+      - 'history'
+      - 'search_*'
+      - 'sessions'
+      - 'watchdog'
+
+# Uncomment the following and change the URL to your site's preferred hostname.
+# This allows URLs to be generated that don't include `default` when no alias is
+# used.
+#
+# options:
+#   # Set the default site URI.
+#   uri: https://project.local

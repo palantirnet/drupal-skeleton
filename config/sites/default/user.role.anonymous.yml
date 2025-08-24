@@ -1,0 +1,18 @@
+uuid: 9f54904a-9fa7-4e3b-a8a7-0b0b1511e35e
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.restricted_html
+  module:
+    - filter
+    - system
+_core:
+  default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access content'
+  - 'use text format restricted_html'

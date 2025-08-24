@@ -1,0 +1,19 @@
+uuid: b5fe7689-278f-4c7d-b97a-9b657b68a2b1
+langcode: en
+status: false
+dependencies: {  }
+_core:
+  default_config_hash: SuTVmpi-bU16eqyYZPp4yQU-yAGNOF3uaReHXpOIzfo
+id: development
+label: Development
+description: 'Configuration for local development environments.'
+weight: -3
+stackable: false
+storage: null
+folder: ../config/config_split/development
+module:
+  devel: 0
+theme: {  }
+complete_list: {  }
+partial_list: {  }
+no_patching: false
