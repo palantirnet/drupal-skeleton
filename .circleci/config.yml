@@ -29,7 +29,9 @@ jobs:
             echo "sendmail_path=/bin/true" | sudo tee -a "/etc/php.d/circleci.ini"
       - run:
           name: Create artifacts directory
-          command: mkdir /tmp/artifacts
+          # The screenshot subdirectory must exist, or FailAid falls back to
+          # writing screenshots at / and loses them on every failure.
+          command: mkdir -p /tmp/artifacts/FailAid_screenshots
       - run:
           name: Configure URL in /etc/hosts
           command: echo 127.0.0.1 ${CIRCLE_PROJECT_REPONAME}.local | sudo tee -a /etc/hosts

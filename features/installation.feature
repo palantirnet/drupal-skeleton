@@ -10,4 +10,7 @@ Feature: Installation
     And I fill in "name" with "admin"
     And I fill in "pass" with "admin"
     And I press "Log in"
-    Then I should see the link "Log out"
+    # Not "I should see the link 'Log out'": on a cold render cache the account
+    # menu block is a BigPipe placeholder, which this non-JS scenario never
+    # resolves. "Member for" is rendered server-side on the profile page.
+    Then I should see the text "Member for"

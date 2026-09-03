@@ -6,7 +6,7 @@ Feature: Installation
 
   Scenario: Verify that js behat test works.
     Given I am logged in as a user with the "administrator" role
-    When I am on "/admin/modules/update"
+    When I am on "/admin/reports/updates"
     And I should see the link "Check manually"
     And I click "Check manually"
     Then I should see the text "Status message"
