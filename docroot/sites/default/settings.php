@@ -82,20 +82,20 @@ if (getenv('CIRCLECI') == 'true' && file_exists(__DIR__ . '/settings.circleci.ph
 
 // Acquia
 if (getenv('AH_SITE_GROUP') && file_exists(__DIR__ . '/settings.acquia.php')) {
-  include __DIR__ . '/settings.acquia-custom.php';
   include __DIR__ . '/settings.acquia.php';
+  include __DIR__ . '/settings.acquia-custom.php';
 }
 
 // Pantheon
 if (getenv('PANTHEON_ENVIRONMENT') && file_exists(__DIR__ . '/settings.pantheon.php')) {
-  include __DIR__ . '/settings.pantheon-custom.php';
   include __DIR__ . '/settings.pantheon.php';
+  include __DIR__ . '/settings.pantheon-custom.php';
 }
 
 // Platform.sh
 if (getenv('PLATFORM_APPLICATION') && file_exists(__DIR__ . '/settings.platform.php')) {
-  include __DIR__ . '/settings.platform-custom.php';
   include __DIR__ . '/settings.platform.php';
+  include __DIR__ . '/settings.platform-custom.php';
 }
 
 /**
